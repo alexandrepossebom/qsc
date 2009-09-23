@@ -27,6 +27,7 @@ private:
     void repaintAll();
     void repaintEstado();
     void repaintNacionalidade();
+    void repaintTipoTelefone();
 
 
 private slots:

@@ -19,7 +19,7 @@ QList<Estado> EstadoController::getAll()
     }
 
     QSqlQuery query;
-    query.prepare("select nome,id from estado order by nome");
+    query.prepare("select nome,uf from estado order by nome");
 
     if (!query.exec())
     {

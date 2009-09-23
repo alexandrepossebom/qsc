@@ -26,7 +26,9 @@ SOURCES += main.cpp \
     bairro.cpp \
     bairrocontroller.cpp \
     cep.cpp \
-    cepcontroller.cpp
+    cepcontroller.cpp \
+    tipotelefone.cpp \
+    tipotelefonecontroller.cpp
 HEADERS += mainwindow.h \
     clienteaddview.h \
     vendaaddview.h \
@@ -48,7 +50,9 @@ HEADERS += mainwindow.h \
     bairro.h \
     bairrocontroller.h \
     cep.h \
-    cepcontroller.h
+    cepcontroller.h \
+    tipotelefone.h \
+    tipotelefonecontroller.h
 FORMS += mainwindow.ui \
     clienteaddview.ui \
     vendaaddview.ui \

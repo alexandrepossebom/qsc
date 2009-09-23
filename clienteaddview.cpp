@@ -11,6 +11,8 @@
 #include "estadocontroller.h"
 #include "cep.h"
 #include "cepcontroller.h"
+#include "tipotelefonecontroller.h"
+#include "tipotelefone.h"
 #include <QDate>
 #include <QDebug>
 
@@ -132,6 +134,7 @@ void ClienteAddView::repaintAll()
     repaintEmpresa();
     repaintEstado();
     repaintNacionalidade();
+    repaintTipoTelefone();
 }
 
 void ClienteAddView::repaintEmpresa()
@@ -169,6 +172,27 @@ void ClienteAddView::repaintNacionalidade()
         m_ui->nacionalidadeComboBox->setCurrentIndex(br);
 }
 
+
+void ClienteAddView::repaintTipoTelefone()
+{
+    m_ui->tp1comboBox->clear();
+    m_ui->tp2comboBox->clear();
+    m_ui->tp3comboBox->clear();
+    TipoTelefoneController ttc;
+    QList<TipoTelefone> tipos;
+    tipos = ttc.getAll();
+
+    while (!tipos.isEmpty())
+    {
+        TipoTelefone tipo;
+        tipo = tipos.takeFirst();
+        QVariant v( tipo.getId() );
+        m_ui->tp1comboBox->addItem( tipo.getNome() , v );
+        m_ui->tp2comboBox->addItem( tipo.getNome() , v );
+        m_ui->tp3comboBox->addItem( tipo.getNome() , v );
+    }
+
+}
 void ClienteAddView::repaintEstado()
 {
 
