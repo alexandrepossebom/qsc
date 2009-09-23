@@ -20,7 +20,11 @@ SOURCES += main.cpp \
     enderecocontroller.cpp \
     estado.cpp \
     estadocontroller.cpp \
-    nacionalidadecontroller.cpp
+    nacionalidadecontroller.cpp \
+    cidade.cpp \
+    cidadecontroller.cpp \
+    bairro.cpp \
+    bairrocontroller.cpp
 HEADERS += mainwindow.h \
     clienteaddview.h \
     vendaaddview.h \
@@ -36,7 +40,11 @@ HEADERS += mainwindow.h \
     enderecocontroller.h \
     estado.h \
     estadocontroller.h \
-    nacionalidadecontroller.h
+    nacionalidadecontroller.h \
+    cidade.h \
+    cidadecontroller.h \
+    bairro.h \
+    bairrocontroller.h
 FORMS += mainwindow.ui \
     clienteaddview.ui \
     vendaaddview.ui \

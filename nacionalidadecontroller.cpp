@@ -34,6 +34,10 @@ QString NacionalidadeController::getError()
     QString cep;
     QString cidade;
 
+    int num_cidades = 0;
+    int num_enderecos = 0;
+    int num_bairros = 0;
+    int num_ceps = 0;
 
     while (query.next()) {
 
@@ -42,52 +46,69 @@ QString NacionalidadeController::getError()
         endereco = query.value(2).toString().append(" ").append( query.value(3).toString() );
         cep = query.value(4).toString().replace("-","");
         QSqlQuery queryCidade;
-        queryCidade.prepare("insert into cidade (estado_uf,nome) VALUES ('PR',:nome)");
+        queryCidade.prepare("insert into cidade (nome) VALUES (:nome)");
         queryCidade.bindValue(":nome", cidade);
-        int id = 0;
+        int cidade_id = 0;
         if(!queryCidade.exec()){
-            queryCidade.prepare("select id from cidade where estado_uf = 'PR' and nome = :nome");
+            queryCidade.prepare("select id from cidade where nome = :nome");
             queryCidade.bindValue(":nome", cidade);
             queryCidade.exec();
             queryCidade.next();
-            id = queryCidade.value(0).toInt();
+            cidade_id = queryCidade.value(0).toInt();
         }else{
-            id = queryCidade.lastInsertId().toInt();
+            cidade_id = queryCidade.lastInsertId().toInt();
+            num_cidades++;
         }
 
+        int bairro_id = 0;
 
         QSqlQuery queryBairro;
-        queryBairro.prepare("insert into bairro (cidade_id,nome) VALUES (:id,:nome)");
+        queryBairro.prepare("insert into bairro (nome) VALUES (:nome)");
         queryBairro.bindValue(":nome", bairro);
-        queryBairro.bindValue(":id", id);
         if(!queryBairro.exec()){
-            queryBairro.prepare("select id from bairro where cidade_id = :id and nome = :nome");
+            queryBairro.prepare("select id from bairro where nome = :nome");
             queryBairro.bindValue(":nome", bairro);
-            queryBairro.bindValue(":id", id);
             queryBairro.exec();
             queryBairro.next();
-            id = queryBairro.value(0).toInt();
+            bairro_id = queryBairro.value(0).toInt();
         }else{
-            id = queryBairro.lastInsertId().toInt();
+            bairro_id = queryBairro.lastInsertId().toInt();
+            num_bairros++;
         }
 
-
+        int endereco_id = 0;
 
         QSqlQuery queryEndereco;
-        queryEndereco.prepare("insert into endereco (bairro_id,nome) VALUES (:id,:nome)");
+        queryEndereco.prepare("insert into endereco (nome) VALUES (:nome)");
         queryEndereco.bindValue(":nome", endereco);
-        queryEndereco.bindValue(":id", id);
         if(!queryEndereco.exec()){
-            qDebug() << queryEndereco.lastError().text();
+            queryEndereco.prepare("select id from endereco where nome = :nome");
+            queryEndereco.bindValue(":nome", bairro);
+            queryEndereco.exec();
+            queryEndereco.next();
+            endereco_id = queryEndereco.value(0).toInt();
+        }else{
+            endereco_id = queryEndereco.lastInsertId().toInt();
+            num_enderecos++;
         }
 
         QSqlQuery queryCep;
-        queryCep.prepare("insert into cep (endereco_id,cep) VALUES (:id,:cep)");
-        queryCep.bindValue(":id", queryEndereco.lastInsertId().toInt());
+        queryCep.prepare("insert into cep (endereco_id,bairro_id,cidade_id,estado_uf,cep) VALUES (:endereco_id,:bairro_id,:cidade_id,:estado_uf,:cep)");
+        queryCep.bindValue(":endereco_id", endereco_id);
+        queryCep.bindValue(":bairro_id", bairro_id);
+        queryCep.bindValue(":cidade_id", cidade_id);
+        queryCep.bindValue(":estado_uf", "PR");
         queryCep.bindValue(":cep", cep.toInt());
-        queryCep.exec();
-    }
 
+        if(!queryCep.exec()){
+            qDebug() << queryCep.lastError().text();
+            break;
+        }else{
+            num_ceps++;
+        }
+
+    }
+    qDebug() << num_cidades << num_bairros << num_enderecos << num_ceps;
     return error;
 }
 

@@ -34,18 +34,6 @@ int Endereco::getCep()
     return cep;
 }
 
-void Endereco::setId(int id)
-{
-    this->id = id;
-}
-
-int Endereco::getId()
-{
-    return id;
-}
-
-
-
 QString Endereco::getCidade()
 {
     return cidade;

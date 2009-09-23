@@ -34,7 +34,6 @@ bool EnderecoController::add(Endereco *endereco)
         qDebug() << error;
         return false;
     }
-    endereco->setId(query.lastInsertId().toInt());
     return true;
 }
 
@@ -53,7 +52,7 @@ Endereco EnderecoController::getByCep(int cep)
     }
 
     QSqlQuery query;
-    query.prepare("select nome,id,cep,bairro,cidade from endereco where cep = :cep");
+    query.prepare("select e.nome as endereco,c.cep as cep,b.nome as bairro,ci.nome as cidade from endereco e,cep c,bairro b,cidade ci where cep = :cep and c.endereco_id=e.id and c.bairro_id=b.id and ci.id=c.cidade_id");
     query.bindValue(":cep",cep);
 
     if (!query.exec())
@@ -65,15 +64,13 @@ Endereco EnderecoController::getByCep(int cep)
 
     Endereco endereco;
 
-    int fieldNome = query.record().indexOf("nome");
-    int fieldId = query.record().indexOf("id");
+    int fieldNome = query.record().indexOf("endereco");
     int fieldCep = query.record().indexOf("cep");
     int fieldBairro = query.record().indexOf("bairro");
     int fieldCidade = query.record().indexOf("cidade");
 
     while (query.next()) {
         endereco.setNome(query.value(fieldNome).toString());
-        endereco.setId(query.value(fieldId).toInt());
         endereco.setCep(query.value(fieldCep).toInt());
         endereco.setBairro(query.value(fieldBairro).toString());
         endereco.setCidade(query.value(fieldCidade).toString());

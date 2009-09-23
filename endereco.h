@@ -11,8 +11,6 @@ public:
     void setBairro(QString bairro);
     void setCep(int cep);
     int getCep();
-    int getId();
-    void setId(int id);
     void setCidade(QString cidade);
     QString getNome();
     QString getBairro();
@@ -21,7 +19,6 @@ public:
     void setEstado(Estado estado);
 private:
     int cep;
-    int id;
     QString nome;
     QString bairro;
     QString cidade;
