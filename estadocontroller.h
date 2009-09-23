@@ -8,7 +8,7 @@ class EstadoController
 public:
     EstadoController();
     QList<Estado> getAll();
-    Estado getEstadoById(int id);
+    Estado getEstadoByUF(QString UF);
 private:
     QString error;
 };

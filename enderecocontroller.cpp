@@ -22,11 +22,11 @@ bool EnderecoController::add(Endereco *endereco)
 
     QSqlQuery query;
     query.prepare("INSERT INTO endereco (nome,cep,cidade,bairro,estado_id) VALUES (:nome,:cep,:cidade,:bairro,:estado_id)");
-    query.bindValue(":nome", endereco->getNome());
-    query.bindValue(":cep", endereco->getCep());
-    query.bindValue(":cidade", endereco->getCidade());
-    query.bindValue(":bairro", endereco->getBairro());
-    query.bindValue(":estado_id", endereco->getEstado().getId()   );
+//    query.bindValue(":nome", endereco->getNome());
+//    query.bindValue(":cep", endereco->getCep());
+//    query.bindValue(":cidade", endereco->getCidade());
+//    query.bindValue(":bairro", endereco->getBairro());
+//    query.bindValue(":estado_id", endereco->getEstado().getId()   );
 
     if (!query.exec())
     {
@@ -70,10 +70,10 @@ Endereco EnderecoController::getByCep(int cep)
     int fieldCidade = query.record().indexOf("cidade");
 
     while (query.next()) {
-        endereco.setNome(query.value(fieldNome).toString());
-        endereco.setCep(query.value(fieldCep).toInt());
-        endereco.setBairro(query.value(fieldBairro).toString());
-        endereco.setCidade(query.value(fieldCidade).toString());
+//        endereco.setNome(query.value(fieldNome).toString());
+//        endereco.setCep(query.value(fieldCep).toInt());
+//        endereco.setBairro(query.value(fieldBairro).toString());
+//        endereco.setCidade(query.value(fieldCidade).toString());
     }
 
     return endereco;

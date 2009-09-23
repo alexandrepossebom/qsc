@@ -9,6 +9,8 @@
 #include "enderecocontroller.h"
 #include "estado.h"
 #include "estadocontroller.h"
+#include "cep.h"
+#include "cepcontroller.h"
 #include <QDate>
 #include <QDebug>
 
@@ -170,7 +172,7 @@ void ClienteAddView::repaintNacionalidade()
 void ClienteAddView::repaintEstado()
 {
 
-    m_ui->estadoComboBox->clear();
+
     m_ui->naturalidadeComboBox->clear();
     EstadoController ec;
     QList<Estado> estados;
@@ -180,14 +182,13 @@ void ClienteAddView::repaintEstado()
     {
         Estado estado;
         estado = estados.takeFirst();
-        QVariant v( estado.getId() );
-        m_ui->estadoComboBox->addItem( estado.getNome() , v );
+        QVariant v( estado.getUF() );
+
         m_ui->naturalidadeComboBox->addItem( estado.getNome() , v );
     }
-    int pr = m_ui->estadoComboBox->findText("Paran.",Qt::MatchFlags(4));
+    int pr = m_ui->naturalidadeComboBox->findText("Paran.",Qt::MatchFlags(4));
     if (pr > 0)
     {
-        m_ui->estadoComboBox->setCurrentIndex(pr);
         m_ui->naturalidadeComboBox->setCurrentIndex(pr);
     }
 }
@@ -196,42 +197,48 @@ void ClienteAddView::repaintEstado()
 
 void ClienteAddView::cepEdited(QString strCep)
 {
-    if(strCep.length() == 10)
+    if(strCep.replace("-","").length() == 8)
     {
-        int cep;
-        cep = strCep.replace("-","").toInt();
-        qDebug() << cep;
+        int cepnumber;
+        cepnumber = strCep.replace("-","").toInt();
 
-        EnderecoController ec;
+        CepController cc;
 
-        Endereco endereco;
-        endereco = ec.getByCep(cep);
+        Cep cep;
+        cep = cc.getByCep(cepnumber);
 
-        if(endereco.getCidade().length() == 0)
+        if(cep.getEstado().getNome().length() != 0)
+        {
+            m_ui->estadoLineEdit->setText(cep.getEstado().getNome());
+            m_ui->estadoLineEdit->setEnabled(false);
+        }
+
+
+        if(cep.getCidade().getNome().length() == 0)
         {
             m_ui->cidadeLineEdit->setEnabled(true);
             m_ui->cidadeLineEdit->clear();
         }else{
             m_ui->cidadeLineEdit->setEnabled(false);
-            m_ui->cidadeLineEdit->setText( endereco.getCidade() );
+            m_ui->cidadeLineEdit->setText( cep.getCidade().getNome() );
         }
 
-        if(endereco.getBairro().length() == 0)
+        if(cep.getBairro().getNome().length() == 0)
         {
             m_ui->bairroLineEdit->setEnabled(true);
             m_ui->bairroLineEdit->clear();
         }else{
              m_ui->bairroLineEdit->setEnabled(false);
-             m_ui->bairroLineEdit->setText( endereco.getBairro() );
+             m_ui->bairroLineEdit->setText( cep.getBairro().getNome() );
         }
 
-        if(endereco.getNome().length() == 0)
+        if(cep.getEndereco().getNome().length() == 0)
         {
             m_ui->enderecoLineEdit->setEnabled(true);
             m_ui->enderecoLineEdit->clear();
         }else{
             m_ui->enderecoLineEdit->setEnabled(false);
-            m_ui->enderecoLineEdit->setText( endereco.getNome() );
+            m_ui->enderecoLineEdit->setText( cep.getEndereco().getNome() );
         }
     }
 }

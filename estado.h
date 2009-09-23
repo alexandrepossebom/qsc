@@ -6,12 +6,12 @@ class Estado
 {
 public:
     Estado();
-    int getId();
-    void setId(int id);
+    QString getUF();
+    void setUF(QString UF);
     QString getNome();
     void setNome(QString nome);
 private:
-    int id;
+    QString UF;
     QString nome;
 };
 

@@ -8,21 +8,13 @@ class Endereco
 public:
     Endereco();
     void setNome(QString nome);
-    void setBairro(QString bairro);
-    void setCep(int cep);
-    int getCep();
-    void setCidade(QString cidade);
+    void setId(int id);
+    int getId();
     QString getNome();
-    QString getBairro();
-    QString getCidade();
-    Estado getEstado();
-    void setEstado(Estado estado);
+
 private:
-    int cep;
+    int id;
     QString nome;
-    QString bairro;
-    QString cidade;
-    Estado estado;
 };
 
 #endif // ENDERECO_H

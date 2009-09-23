@@ -4,9 +4,9 @@ Estado::Estado()
 {
 }
 
-void Estado::setId(int id)
+void Estado::setUF(QString UF)
 {
-    this->id = id;
+    this->UF = UF;
 }
 
 void Estado::setNome(QString nome)
@@ -14,9 +14,9 @@ void Estado::setNome(QString nome)
     this->nome = nome;
 }
 
-int Estado::getId()
+QString Estado::getUF()
 {
-    return id;
+    return UF;
 }
 
 QString Estado::getNome()

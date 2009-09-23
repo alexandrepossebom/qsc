@@ -30,18 +30,18 @@ QList<Estado> EstadoController::getAll()
 
     QList<Estado> estados;
     int fieldNome = query.record().indexOf("nome");
-    int fieldId = query.record().indexOf("id");
+    int fieldUF = query.record().indexOf("uf");
     Estado estado;
     while (query.next()) {
         estado.setNome(query.value(fieldNome).toString());
-        estado.setId(query.value(fieldId).toInt());
+        estado.setUF(query.value(fieldUF).toString());
         estados.append(estado);
     }
 
     return estados;
 }
 
-Estado EstadoController::getEstadoById(int id)
+Estado EstadoController::getEstadoByUF(QString uf)
 {
      QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName("localhost");
@@ -54,11 +54,11 @@ Estado EstadoController::getEstadoById(int id)
         qDebug() << error;
     }
 
-    qDebug() << "oi" << id;
+
 
     QSqlQuery query;
-    query.prepare("select nome,id from estado where id = :id");
-    query.bindValue(":id", id);
+    query.prepare("select nome,id from estado where uf = :uf");
+    query.bindValue(":uf", uf);
 
     if (!query.exec())
     {
@@ -68,11 +68,11 @@ Estado EstadoController::getEstadoById(int id)
 
 
     int fieldNome = query.record().indexOf("nome");
-    int fieldId = query.record().indexOf("id");
+    int fieldUf = query.record().indexOf("uf");
     Estado estado;
     while (query.next()) {
         estado.setNome(query.value(fieldNome).toString());
-        estado.setId(query.value(fieldId).toInt());
+        estado.setUF(query.value(fieldUf).toString());
     }
 
     qDebug() << estado.getNome();

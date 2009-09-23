@@ -223,19 +223,16 @@
            </size>
           </property>
           <property name="inputMask">
-           <string>99-999-999; </string>
+           <string>99999-999; </string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_21">
+         <widget class="QToolButton" name="cepToolButton">
           <property name="text">
-           <string>Estado:</string>
+           <string>...</string>
           </property>
          </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="estadoComboBox"/>
         </item>
         <item>
          <spacer name="horizontalSpacer">
@@ -263,6 +260,26 @@
        <layout class="QHBoxLayout" name="horizontalLayout_7">
         <item>
          <widget class="QLineEdit" name="enderecoLineEdit"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_21">
+          <property name="text">
+           <string>Estado:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="estadoLineEdit">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>120</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_19">

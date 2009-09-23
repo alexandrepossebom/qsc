@@ -9,47 +9,18 @@ void Endereco::setNome(QString nome)
     this->nome = nome;
 }
 
-void Endereco::setCep(int cep)
-{
-    this->cep = cep;
-}
-
-void Endereco::setBairro(QString bairro)
-{
-    this->bairro = bairro;
-}
-
-QString Endereco::getBairro()
-{
-    return bairro;
-}
-
 QString Endereco::getNome()
 {
     return nome;
 }
 
-int Endereco::getCep()
+void Endereco::setId(int id)
 {
-    return cep;
+    this->id = id;
 }
 
-QString Endereco::getCidade()
+int Endereco::getId()
 {
-    return cidade;
+    return id;
 }
 
-void Endereco::setCidade(QString cidade)
-{
-    this->cidade = cidade;
-}
-
-void Endereco::setEstado(Estado estado)
-{
-    this->estado = estado;
-}
-
-Estado Endereco::getEstado()
-{
-    return estado;
-}
