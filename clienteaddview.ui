@@ -567,7 +567,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_5">
+    <widget class="QGroupBox" name="conjugeGroupBox">
      <property name="title">
       <string>Conjuge</string>
      </property>

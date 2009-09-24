@@ -13,13 +13,15 @@
 #include "cepcontroller.h"
 #include "tipotelefonecontroller.h"
 #include "tipotelefone.h"
+#include "cepaddview.h"
 #include <QDate>
 #include <QDebug>
 
 
+
 ClienteAddView::ClienteAddView(QWidget *parent) :
-    QWidget(parent),
-    m_ui(new Ui::ClienteAddView)
+        QWidget(parent),
+        m_ui(new Ui::ClienteAddView)
 {
     m_ui->setupUi(this);
 
@@ -28,9 +30,10 @@ ClienteAddView::ClienteAddView(QWidget *parent) :
     connect(m_ui->conjugeEmpresaToolButton,SIGNAL(clicked()),this,SLOT(addEmpresa()));
     connect(m_ui->cepLineEdit,SIGNAL(textChanged(QString)),this,SLOT(cepEdited(QString)));
     connect(m_ui->nacionalidadeToolButton,SIGNAL(clicked()),this,SLOT(addNacionalidade()));
+    connect(m_ui->estadocivilComboBox,SIGNAL(currentIndexChanged(QString)),this,SLOT(estadoCivilChanged(QString)));
+    connect(m_ui->cepToolButton,SIGNAL(clicked()),this,SLOT(addCep()));
 
     QDate now = QDate::currentDate();
-
     // Seta a data de nascimento para 18 anos atras e maximo para 10 anos.
     m_ui->nascimentoDateEdit->setDate(now.addYears(-18));
     m_ui->nascimentoDateEdit->setMaximumDate(now.addYears(-10));
@@ -44,8 +47,26 @@ ClienteAddView::ClienteAddView(QWidget *parent) :
     m_ui->cidadeLineEdit->setEnabled(false);
     m_ui->bairroLineEdit->setEnabled(false);
 
-repaintAll();
+    repaintAll();
 
+
+
+}
+
+bool ClienteAddView::addCep()
+{
+    CepAddView cav;
+    cav.setCep(m_ui->cepLineEdit->text());
+    qDebug() << "cliente" << m_ui->cepLineEdit->text();
+    cav.exec();
+}
+
+void ClienteAddView::estadoCivilChanged(QString estadoCivil)
+{
+    if( estadoCivil.indexOf("Casado") != 0)
+        m_ui->conjugeGroupBox->setVisible(false);
+    else
+        m_ui->conjugeGroupBox->setVisible(true);
 }
 
 bool ClienteAddView::addNacionalidade()
@@ -81,35 +102,35 @@ void ClienteAddView::accepted()
     NacionalidadeController nc;
     nc.getError();
 
-//    //cliente = new Cliente();
-//    cliente.setNome(m_ui->nomeLineEdit->text());
-//
-//    Nacionalidade nacionalidade;
-//
-//
-//    nacionalidade.setNome(m_ui->cpfLineEdit->text());
-//    cliente.setNacionalidade(nacionalidade);
-//
-//
-//    qDebug() << cliente.getNome();
-//    qDebug() << cliente.getNacionalidade().getNome();
-//
-//    Endereco endereco;
-//    endereco.setNome(m_ui->enderecoLineEdit->text());
-//    endereco.setCep( m_ui->cepLineEdit->text().replace("-","").toInt() );
-//    endereco.setBairro( m_ui->bairroLineEdit->text());
-//    endereco.setCidade( m_ui->cidadeLineEdit->text());
-//
-//    EstadoController estctrl;
-//    int estadoIndex = m_ui->estadoComboBox->currentIndex();
-//    int estadoId = m_ui->estadoComboBox->itemData( estadoIndex ).toInt();
-//
-//    endereco.setEstado(  estctrl.getEstadoById( estadoId ) );
-//
-//
-//    EnderecoController ec;
-//    ec.add(&endereco);
-// //   clienteController.addCliente(cliente);
+    //    //cliente = new Cliente();
+    //    cliente.setNome(m_ui->nomeLineEdit->text());
+    //
+    //    Nacionalidade nacionalidade;
+    //
+    //
+    //    nacionalidade.setNome(m_ui->cpfLineEdit->text());
+    //    cliente.setNacionalidade(nacionalidade);
+    //
+    //
+    //    qDebug() << cliente.getNome();
+    //    qDebug() << cliente.getNacionalidade().getNome();
+    //
+    //    Endereco endereco;
+    //    endereco.setNome(m_ui->enderecoLineEdit->text());
+    //    endereco.setCep( m_ui->cepLineEdit->text().replace("-","").toInt() );
+    //    endereco.setBairro( m_ui->bairroLineEdit->text());
+    //    endereco.setCidade( m_ui->cidadeLineEdit->text());
+    //
+    //    EstadoController estctrl;
+    //    int estadoIndex = m_ui->estadoComboBox->currentIndex();
+    //    int estadoId = m_ui->estadoComboBox->itemData( estadoIndex ).toInt();
+    //
+    //    endereco.setEstado(  estctrl.getEstadoById( estadoId ) );
+    //
+    //
+    //    EnderecoController ec;
+    //    ec.add(&endereco);
+    // //   clienteController.addCliente(cliente);
 }
 
 ClienteAddView::~ClienteAddView()
@@ -131,6 +152,7 @@ void ClienteAddView::changeEvent(QEvent *e)
 
 void ClienteAddView::repaintAll()
 {
+    m_ui->conjugeGroupBox->setVisible(false);
     repaintEmpresa();
     repaintEstado();
     repaintNacionalidade();
@@ -141,7 +163,7 @@ void ClienteAddView::repaintEmpresa()
 {
     m_ui->empresaComboBox->clear();
     m_ui->conjugeEmpresaComboBox->clear();
-   EmpresaController ec;
+    EmpresaController ec;
     QList<Empresa> empresas;
     empresas = ec.getAll();
     while (!empresas.isEmpty())
@@ -252,8 +274,8 @@ void ClienteAddView::cepEdited(QString strCep)
             m_ui->bairroLineEdit->setEnabled(true);
             m_ui->bairroLineEdit->clear();
         }else{
-             m_ui->bairroLineEdit->setEnabled(false);
-             m_ui->bairroLineEdit->setText( cep.getBairro().getNome() );
+            m_ui->bairroLineEdit->setEnabled(false);
+            m_ui->bairroLineEdit->setText( cep.getBairro().getNome() );
         }
 
         if(cep.getEndereco().getNome().length() == 0)

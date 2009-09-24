@@ -32,9 +32,11 @@ private:
 
 private slots:
     void accepted();
+    bool addCep();
     bool addEmpresa();
     bool addNacionalidade();
     void cepEdited(QString);
+    void estadoCivilChanged(QString);
 };
 
 #endif // CLIENTEADDVIEW_H

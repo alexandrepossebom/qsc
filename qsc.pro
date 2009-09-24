@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     cep.cpp \
     cepcontroller.cpp \
     tipotelefone.cpp \
-    tipotelefonecontroller.cpp
+    tipotelefonecontroller.cpp \
+    cepaddview.cpp
 HEADERS += mainwindow.h \
     clienteaddview.h \
     vendaaddview.h \
@@ -52,9 +53,11 @@ HEADERS += mainwindow.h \
     cep.h \
     cepcontroller.h \
     tipotelefone.h \
-    tipotelefonecontroller.h
+    tipotelefonecontroller.h \
+    cepaddview.h
 FORMS += mainwindow.ui \
     clienteaddview.ui \
     vendaaddview.ui \
     nacionalidadeaddview.ui \
-    empresaaddview.ui
+    empresaaddview.ui \
+    cepaddview.ui
