@@ -1,32 +1,24 @@
 #include "estadocontroller.h"
 #include <QtSql>
+#include "dbutil.h"
 EstadoController::EstadoController()
 {
 }
 
 QList<Estado> EstadoController::getAll()
 {
+    bool ok;
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("localhost");
-    db.setDatabaseName("loja");
-    db.setUserName("root");
-    db.setPassword("");
+    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlQuery query(db);
 
-    if (!db.open()) {
-        error = db.lastError().text();
-        qDebug() << error;
-    }
-
-    QSqlQuery query;
     query.prepare("select nome,uf from estado order by nome");
 
-    if (!query.exec())
+    if( ok && !query.exec() )
     {
         error = query.lastError().text();
-        qDebug() << error;
-
     }
+
 
     QList<Estado> estados;
     int fieldNome = query.record().indexOf("nome");
@@ -43,28 +35,20 @@ QList<Estado> EstadoController::getAll()
 
 Estado EstadoController::getEstadoByUF(QString uf)
 {
-     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("localhost");
-    db.setDatabaseName("loja");
-    db.setUserName("root");
-    db.setPassword("");
+    bool ok;
 
-    if (!db.open()) {
-        error = db.lastError().text();
-        qDebug() << error;
-    }
+    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlQuery query(db);
 
-
-
-    QSqlQuery query;
     query.prepare("select nome,id from estado where uf = :uf");
     query.bindValue(":uf", uf);
 
-    if (!query.exec())
+    if( ok && !query.exec() )
     {
         error = query.lastError().text();
-        qDebug() << error;
     }
+
+
 
 
     int fieldNome = query.record().indexOf("nome");

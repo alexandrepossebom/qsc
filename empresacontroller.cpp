@@ -1,6 +1,7 @@
 #include "empresacontroller.h"
 #include <QDebug>
 #include <QtSql>
+#include "dbutil.h"
 
 
 EmpresaController::EmpresaController()
@@ -14,32 +15,17 @@ QString EmpresaController::getError()
 
 QList<Empresa> EmpresaController::getAll()
 {
-
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("localhost");
-    db.setDatabaseName("loja");
-    db.setUserName("root");
-    db.setPassword("");
-
-    if (!db.open()) {
-        error = db.lastError().text();
-        qDebug() << error;
-    }
-
-    QSqlQuery query;
+    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlQuery query(db);
     query.prepare("select nome,id from empresa order by nome");
-
-    if (!query.exec())
-    {
-        error = query.lastError().text();
-        qDebug() << error;
-
-    }
-
-
 
     QList<Empresa> empresas;
 
+    if( ok && !query.exec() )
+    {
+        error = query.lastError().text();
+        return empresas;
+    }
 
     int fieldNome = query.record().indexOf("nome");
     int fieldId = query.record().indexOf("id");
@@ -56,6 +42,7 @@ QList<Empresa> EmpresaController::getAll()
 
 bool EmpresaController::addEmpresa(Empresa *empresa)
 {
+
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName("localhost");
     db.setDatabaseName("loja");

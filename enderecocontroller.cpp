@@ -1,6 +1,7 @@
 #include "enderecocontroller.h"
 #include "estado.h"
 #include <QtSql>
+#include "dbutil.h"
 
 EnderecoController::EnderecoController()
 {
@@ -13,24 +14,16 @@ QList<Endereco> EnderecoController::getAll(QString nome)
     str.append(nome);
     str.append("%");
     nome = str;
+    bool ok;
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("localhost");
-    db.setDatabaseName("loja");
-    db.setUserName("root");
-    db.setPassword("");
-
-    if (!db.open()) {
-        qDebug() << db.lastError().text();
-    }
-
-    QSqlQuery query;
+    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlQuery query(db);
     query.prepare("select nome,id from endereco where nome like :nome order by nome");
     query.bindValue(":nome",nome);
 
-    if (!query.exec())
+    if( ok && !query.exec() )
     {
-       qDebug() << db.lastError().text();
+        error = query.lastError().text();
     }
 
     QList<Endereco> enderecos;
@@ -51,23 +44,14 @@ QList<Endereco> EnderecoController::getAll(QString nome)
 
 QList<Endereco> EnderecoController::getAll()
 {
-
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("localhost");
-    db.setDatabaseName("loja");
-    db.setUserName("root");
-    db.setPassword("");
-
-    if (!db.open()) {
-        qDebug() << db.lastError().text();
-    }
-
-    QSqlQuery query;
+    bool ok;
+    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlQuery query(db);
     query.prepare("select nome,id from endereco order by nome");
 
-    if (!query.exec())
+    if( ok && !query.exec() )
     {
-       qDebug() << db.lastError().text();
+        error = query.lastError().text();
     }
 
     QList<Endereco> enderecos;

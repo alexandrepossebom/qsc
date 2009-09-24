@@ -13,6 +13,7 @@ public:
     QList<Nacionalidade> getAll();
 private:
     QString error;
+    bool ok;
 };
 
 #endif // NACIONALIDADECONTROLLER_H

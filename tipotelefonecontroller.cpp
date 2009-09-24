@@ -1,5 +1,7 @@
 #include "tipotelefonecontroller.h"
 #include <QtSql>
+#include "dbutil.h"
+
 TipoTelefoneController::TipoTelefoneController()
 {
 }
@@ -7,23 +9,19 @@ TipoTelefoneController::TipoTelefoneController()
 QList<TipoTelefone> TipoTelefoneController::getAll()
 {
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("localhost");
-    db.setDatabaseName("loja");
-    db.setUserName("root");
-    db.setPassword("");
+    bool ok;
+    QString error;
 
-    if (!db.open()) {
-        qDebug() << db.lastError().text();
-    }
+    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlQuery query(db);
 
-    QSqlQuery query;
     query.prepare("select nome,id from tipo_telefone order by nome");
 
-    if (!query.exec())
+    if( ok && !query.exec() )
     {
-       qDebug() << db.lastError().text();
+        error = query.lastError().text();
     }
+
 
     QList<TipoTelefone> tipos;
 

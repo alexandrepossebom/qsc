@@ -15,6 +15,7 @@ public:
     QList<Empresa> getAll();
 private:
     QString error;
+    bool ok;
 };
 
 #endif // EMPRESACONTROLLER_H

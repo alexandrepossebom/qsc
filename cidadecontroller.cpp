@@ -1,6 +1,7 @@
 #include "cidadecontroller.h"
 #include <QList>
 #include <QtSql>
+#include "dbutil.h"
 
 CidadeController::CidadeController()
 {
@@ -9,27 +10,21 @@ CidadeController::CidadeController()
 
 QList<Cidade> CidadeController::getAll()
 {
+ bool ok;
+    QString error;
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("localhost");
-    db.setDatabaseName("loja");
-    db.setUserName("root");
-    db.setPassword("");
+    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlQuery query(db);
 
-    if (!db.open()) {
-        qDebug() << db.lastError().text();
-    }
-
-    QSqlQuery query;
     query.prepare("select nome,id from cidade order by nome");
 
-    if (!query.exec())
+
+    if( ok && !query.exec() )
     {
-       qDebug() << db.lastError().text();
+        error = query.lastError().text();
     }
 
     QList<Cidade> cidades;
-
 
     int fieldNome = query.record().indexOf("nome");
     int fieldId = query.record().indexOf("id");

@@ -5,6 +5,7 @@
 #include "endereco.h"
 #include "estado.h"
 #include <QtSql>
+#include "dbutil.h"
 
 CepController::CepController()
 {
@@ -12,27 +13,19 @@ CepController::CepController()
 
 Cep CepController::getByCep(int cepnumber)
 {
+    bool ok;
     QString error;
- QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("localhost");
-    db.setDatabaseName("loja");
-    db.setUserName("root");
-    db.setPassword("");
 
-    if (!db.open()) {
-        error = db.lastError().text();
-        qDebug() << error;
-    }
+    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlQuery query(db);
 
-    QSqlQuery query;
     query.prepare("select es.nome as estado,es.uf as uf,e.nome as endereco,e.id as endereco_id,c.cep as cep,b.nome as bairro,b.id as bairro_id,ci.nome as cidade, ci.id as cidade_id from endereco e,cep c,bairro b,cidade ci,estado es where cep = :cep and c.endereco_id=e.id and c.bairro_id=b.id and ci.id=c.cidade_id and es.uf=c.estado_uf");
     query.bindValue(":cep",cepnumber);
 
-    if (!query.exec())
+
+    if( ok && !query.exec() )
     {
         error = query.lastError().text();
-        qDebug() << error;
-
     }
 
     Cep cep;
