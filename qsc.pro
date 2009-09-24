@@ -30,7 +30,8 @@ SOURCES += main.cpp \
     tipotelefone.cpp \
     tipotelefonecontroller.cpp \
     cepaddview.cpp \
-    dbutil.cpp
+    dbutil.cpp \
+    configuratorview.cpp
 HEADERS += mainwindow.h \
     clienteaddview.h \
     vendaaddview.h \
@@ -56,10 +57,12 @@ HEADERS += mainwindow.h \
     tipotelefone.h \
     tipotelefonecontroller.h \
     cepaddview.h \
-    dbutil.h
+    dbutil.h \
+    configuratorview.h
 FORMS += mainwindow.ui \
     clienteaddview.ui \
     vendaaddview.ui \
     nacionalidadeaddview.ui \
     empresaaddview.ui \
-    cepaddview.ui
+    cepaddview.ui \
+    configuratorview.ui

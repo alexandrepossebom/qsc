@@ -35,8 +35,15 @@
     </property>
     <addaction name="actionAdicionar"/>
    </widget>
+   <widget class="QMenu" name="menuOp_es">
+    <property name="title">
+     <string>Opções</string>
+    </property>
+    <addaction name="actionConfig"/>
+   </widget>
    <addaction name="menuA_es"/>
    <addaction name="menuCliente"/>
+   <addaction name="menuOp_es"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -55,6 +62,11 @@
   <action name="actionAdicionar">
    <property name="text">
     <string>Adicionar</string>
+   </property>
+  </action>
+  <action name="actionConfig">
+   <property name="text">
+    <string>Configurações</string>
    </property>
   </action>
  </widget>

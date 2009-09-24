@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "configuratorview.h"
 #include <QRadioButton>
 #include <QDebug>
 
@@ -11,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     connect(ui->actionVender,SIGNAL(triggered(bool)),this,SLOT(vendaAdd()));
     connect(ui->actionAdicionar,SIGNAL(triggered(bool)),this,SLOT(clienteAdd()));
+    connect(ui->actionConfig,SIGNAL(triggered(bool)),this,SLOT(configSystem()));
 
 //    QRadioButton *radio1 = new QRadioButton(tr("&Radio button 1"));
 //    QRadioButton *radio2 = new QRadioButton(tr("R&adio button 2"));
@@ -48,6 +50,13 @@ void MainWindow::clienteAdd()
     }
     m_stackedWidget->setCurrentWidget(m_clienteAdWidget);
 }
+
+void MainWindow::configSystem()
+{
+    ConfiguratorView cv;
+    cv.exec();
+}
+
 
 MainWindow::~MainWindow()
 {

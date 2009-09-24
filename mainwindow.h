@@ -29,6 +29,7 @@ private:
 private slots:
     void vendaAdd();
     void clienteAdd();
+    void configSystem();
 };
 
 #endif // MAINWINDOW_H
