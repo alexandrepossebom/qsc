@@ -7,23 +7,55 @@ EnderecoController::EnderecoController()
 {
 }
 
-
-QList<Endereco> EnderecoController::getAll(QString nome)
+QList<Endereco> EnderecoController::getAll(bool *ok,QString *error,QString nome,int limit)
 {
     QString str = "%";
     str.append(nome);
     str.append("%");
     nome = str;
-    bool ok;
 
-    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlQuery query(db);
+    query.prepare("select nome,id from endereco where nome like :nome order by nome limit :limit");
+    query.bindValue(":nome",nome);
+    query.bindValue(":limit",limit);
+
+    if( ok && !query.exec() )
+    {
+        *error = query.lastError().text();
+    }
+
+    QList<Endereco> enderecos;
+
+
+    int fieldNome = query.record().indexOf("nome");
+    int fieldId = query.record().indexOf("id");
+    Endereco endereco;
+    while (query.next()) {
+        endereco.setNome(query.value(fieldNome).toString());
+        endereco.setId(query.value(fieldId).toInt());
+        enderecos.append(endereco);
+    }
+
+    return enderecos;
+}
+
+
+QList<Endereco> EnderecoController::getAll(bool *ok,QString *error,QString nome)
+{
+    QString str = "%";
+    str.append(nome);
+    str.append("%");
+    nome = str;
+
+    QSqlDatabase db = DBUtil::getDatabase(ok, error);
     QSqlQuery query(db);
     query.prepare("select nome,id from endereco where nome like :nome order by nome");
     query.bindValue(":nome",nome);
 
     if( ok && !query.exec() )
     {
-        error = query.lastError().text();
+        *error = query.lastError().text();
     }
 
     QList<Endereco> enderecos;
@@ -42,16 +74,15 @@ QList<Endereco> EnderecoController::getAll(QString nome)
 }
 
 
-QList<Endereco> EnderecoController::getAll()
+QList<Endereco> EnderecoController::getAll(bool *ok,QString *error)
 {
-    bool ok;
-    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlDatabase db = DBUtil::getDatabase(ok, error);
     QSqlQuery query(db);
     query.prepare("select nome,id from endereco order by nome");
 
     if( ok && !query.exec() )
     {
-        error = query.lastError().text();
+        *error = query.lastError().text();
     }
 
     QList<Endereco> enderecos;
@@ -69,7 +100,7 @@ QList<Endereco> EnderecoController::getAll()
     return enderecos;
 }
 
-bool EnderecoController::add(Endereco *endereco)
+bool EnderecoController::add(bool *ok,QString *error,Endereco *endereco)
 {
    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName("localhost");
@@ -78,7 +109,7 @@ bool EnderecoController::add(Endereco *endereco)
     db.setPassword("");
 
     if (!db.open()) {
-        error = db.lastError().text();
+        *error = db.lastError().text();
         qDebug() << error;
         return false;
     }
@@ -93,14 +124,14 @@ bool EnderecoController::add(Endereco *endereco)
 
     if (!query.exec())
     {
-        error = query.lastError().text();
+        *error = query.lastError().text();
         qDebug() << error;
         return false;
     }
     return true;
 }
 
-Endereco EnderecoController::getByCep(int cep)
+Endereco EnderecoController::getByCep(bool *ok,QString *error,int cep)
 {
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
@@ -110,8 +141,7 @@ Endereco EnderecoController::getByCep(int cep)
     db.setPassword("");
 
     if (!db.open()) {
-        error = db.lastError().text();
-        qDebug() << error;
+        *error = db.lastError().text();
     }
 
     QSqlQuery query;
@@ -120,9 +150,7 @@ Endereco EnderecoController::getByCep(int cep)
 
     if (!query.exec())
     {
-        error = query.lastError().text();
-        qDebug() << error;
-
+        *error = query.lastError().text();
     }
 
     Endereco endereco;

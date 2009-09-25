@@ -3,6 +3,7 @@
 #include "cidadecontroller.h"
 #include "estadocontroller.h"
 #include "enderecocontroller.h"
+#include "bairrocontroller.h"
 #include <QDebug>
 #include <QList>
 #include <QCompleter>
@@ -13,8 +14,10 @@ CepAddView::CepAddView(QWidget *parent) :
     m_ui(new Ui::CepAddView)
 {
     m_ui->setupUi(this);
+    connect(m_ui->enderecoLineEdit,SIGNAL(textEdited(QString)),this,SLOT(enderecoChanged(QString)));
 
-    connect(m_ui->enderecoLineEdit,SIGNAL(textChanged(QString)),this,SLOT(enderecoChanged(QString)));
+    bool ok;
+    QString error;
 
     {
         CidadeController cc;
@@ -49,6 +52,19 @@ CepAddView::CepAddView(QWidget *parent) :
         m_ui->estadoComboBox->setCurrentIndex(pr);
     }
 
+    {
+        BairroController bc;
+        QList<Bairro> bairros = bc.getAll(&ok,&error);
+        while(!bairros.isEmpty())
+        {
+            Bairro bairro = bairros.takeFirst();
+            QVariant v(bairro.getId());
+            m_ui->bairroComboBox->addItem( bairro.getNome() , v );
+        }
+        int cj = m_ui->bairroComboBox->findText("Cidade.Jardim",Qt::MatchFlag(4));
+        m_ui->bairroComboBox->setCurrentIndex(cj);
+    }
+
 
 
 //    {
@@ -70,36 +86,27 @@ CepAddView::CepAddView(QWidget *parent) :
 
 void CepAddView::enderecoChanged(QString nome)
 {
-
     if (nome.length() < 3)
         return;
-
+    bool ok;
+    QString error;
     EnderecoController ec;
     QList<Endereco> enderecos;
-    enderecos = ec.getAll(nome);
-
+    enderecos = ec.getAll(&ok,&error,nome,20);
     qDebug() << enderecos.size();
 
-
-
     QStringList wordList;
-//    QList<QString> enderecosNome;
     while(!enderecos.isEmpty())
     {
         Endereco endereco;
         endereco = enderecos.takeFirst();
-//        enderecosNome.append(endereco.getNome());
-       wordList << endereco.getNome();
+        wordList << endereco.getNome();
     }
-//    wordList.append(enderecosNome);
-  QCompleter *completer = new QCompleter(wordList, this);
-completer->setCaseSensitivity(Qt::CaseInsensitive);
-//completer->setCompletionMode(QCompleter::InlineCompletion);
-completer->setModelSorting(QCompleter::UnsortedModel);
-m_ui->enderecoLineEdit->setCompleter(completer);
-
-
-
+    QCompleter *completer = new QCompleter(wordList, this);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
+    completer->setModelSorting(QCompleter::UnsortedModel);
+    m_ui->enderecoLineEdit->setCompleter(completer);
 }
 
 void CepAddView::setCep(QString cep)

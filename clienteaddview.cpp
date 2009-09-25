@@ -48,17 +48,14 @@ ClienteAddView::ClienteAddView(QWidget *parent) :
     m_ui->bairroLineEdit->setEnabled(false);
 
     repaintAll();
-
-
-
 }
 
 bool ClienteAddView::addCep()
 {
     CepAddView cav;
-    cav.setCep(m_ui->cepLineEdit->text());
-    qDebug() << "cliente" << m_ui->cepLineEdit->text();
+    cav.setCep( m_ui->cepLineEdit->text() );
     cav.exec();
+    return true;
 }
 
 void ClienteAddView::estadoCivilChanged(QString estadoCivil)
@@ -76,8 +73,8 @@ bool ClienteAddView::addNacionalidade()
     Nacionalidade nacionalidade = nv.getNew();
     if (nacionalidade.getId() > 0)
     {
-        QVariant v(nacionalidade.getId());
-        m_ui->nacionalidadeComboBox->addItem(nacionalidade.getNome(),v);
+        QVariant v( nacionalidade.getId() );
+        m_ui->nacionalidadeComboBox->addItem( nacionalidade.getNome() , v );
     }
     return true;
 }
@@ -92,15 +89,14 @@ bool ClienteAddView::addEmpresa()
         m_ui->empresaComboBox->addItem(empresa.getNome(),v);
         m_ui->conjugeEmpresaComboBox->addItem(empresa.getNome(),v);
     }
-    //repaintEmpresa();
     return true;
 }
 
 void ClienteAddView::accepted()
 {
 
-    NacionalidadeController nc;
-    nc.getError();
+    //NacionalidadeController nc;
+    //nc.getError();
 
     //    //cliente = new Cliente();
     //    cliente.setNome(m_ui->nomeLineEdit->text());
@@ -161,15 +157,11 @@ void ClienteAddView::repaintAll()
 
 void ClienteAddView::repaintEmpresa()
 {
-    m_ui->empresaComboBox->clear();
-    m_ui->conjugeEmpresaComboBox->clear();
     EmpresaController ec;
-    QList<Empresa> empresas;
-    empresas = ec.getAll();
+    QList<Empresa> empresas = ec.getAll();
     while (!empresas.isEmpty())
     {
-        Empresa empresa;
-        empresa = empresas.takeFirst();
+        Empresa empresa = empresas.takeFirst();
         QVariant v(empresa.getId());
         m_ui->empresaComboBox->addItem(empresa.getNome(),v);
         m_ui->conjugeEmpresaComboBox->addItem(empresa.getNome(),v);
@@ -178,14 +170,11 @@ void ClienteAddView::repaintEmpresa()
 
 void ClienteAddView::repaintNacionalidade()
 {
-    m_ui->nacionalidadeComboBox->clear();
     NacionalidadeController nc;
-    QList<Nacionalidade> nacionalidades;
-    nacionalidades = nc.getAll();
+    QList<Nacionalidade> nacionalidades = nc.getAll();
     while (!nacionalidades.isEmpty())
     {
-        Nacionalidade nacionalidade;
-        nacionalidade = nacionalidades.takeFirst();
+        Nacionalidade nacionalidade = nacionalidades.takeFirst();
         QVariant v(nacionalidade.getId());
         m_ui->nacionalidadeComboBox->addItem(nacionalidade.getNome(),v);
     }
@@ -197,94 +186,56 @@ void ClienteAddView::repaintNacionalidade()
 
 void ClienteAddView::repaintTipoTelefone()
 {
-    m_ui->tp1comboBox->clear();
-    m_ui->tp2comboBox->clear();
-    m_ui->tp3comboBox->clear();
     TipoTelefoneController ttc;
-    QList<TipoTelefone> tipos;
-    tipos = ttc.getAll();
+    QList<TipoTelefone> tipos = ttc.getAll();
 
     while (!tipos.isEmpty())
     {
-        TipoTelefone tipo;
-        tipo = tipos.takeFirst();
+        TipoTelefone tipo = tipos.takeFirst();
         QVariant v( tipo.getId() );
         m_ui->tp1comboBox->addItem( tipo.getNome() , v );
         m_ui->tp2comboBox->addItem( tipo.getNome() , v );
         m_ui->tp3comboBox->addItem( tipo.getNome() , v );
     }
-
 }
 void ClienteAddView::repaintEstado()
 {
-
-
-    m_ui->naturalidadeComboBox->clear();
     EstadoController ec;
-    QList<Estado> estados;
-    estados = ec.getAll();
+    QList<Estado> estados = ec.getAll();
 
-    while (!estados.isEmpty())
+    int pr = 0;
+    while(!estados.isEmpty())
     {
-        Estado estado;
-        estado = estados.takeFirst();
-        QVariant v( estado.getUF() );
-
-        m_ui->naturalidadeComboBox->addItem( estado.getNome() , v );
+        Estado estado = estados.takeFirst();
+        QVariant v(estado.getUF());
+        m_ui->naturalidadeComboBox->addItem(estado.getNome(),v);
+        if(estado.getNome().indexOf("Paran") != -1)
+            pr = m_ui->naturalidadeComboBox->count();
     }
-    int pr = m_ui->naturalidadeComboBox->findText("Paran.",Qt::MatchFlags(4));
-    if (pr > 0)
-    {
-        m_ui->naturalidadeComboBox->setCurrentIndex(pr);
-    }
+    if(pr > 0)
+        m_ui->naturalidadeComboBox->setCurrentIndex(pr-1);
 }
 
 
 
 void ClienteAddView::cepEdited(QString strCep)
 {
-    if(strCep.replace("-","").length() == 8)
+    strCep = strCep.replace("-","");
+    if(strCep.length() == 8)
     {
-        int cepnumber;
-        cepnumber = strCep.replace("-","").toInt();
-
         CepController cc;
+        Cep cep = cc.getByCep(strCep.toInt());
 
-        Cep cep;
-        cep = cc.getByCep(cepnumber);
+        m_ui->estadoLineEdit->setText( cep.getEstado().getNome() );
+        m_ui->cidadeLineEdit->setText( cep.getCidade().getNome() );
+        m_ui->bairroLineEdit->setText( cep.getBairro().getNome() );
+        m_ui->enderecoLineEdit->setText( cep.getEndereco().getNome() );
 
-        if(cep.getEstado().getNome().length() != 0)
-        {
-            m_ui->estadoLineEdit->setText(cep.getEstado().getNome());
-            m_ui->estadoLineEdit->setEnabled(false);
-        }
-
-
-        if(cep.getCidade().getNome().length() == 0)
-        {
-            m_ui->cidadeLineEdit->setEnabled(true);
-            m_ui->cidadeLineEdit->clear();
-        }else{
-            m_ui->cidadeLineEdit->setEnabled(false);
-            m_ui->cidadeLineEdit->setText( cep.getCidade().getNome() );
-        }
-
-        if(cep.getBairro().getNome().length() == 0)
-        {
-            m_ui->bairroLineEdit->setEnabled(true);
-            m_ui->bairroLineEdit->clear();
-        }else{
-            m_ui->bairroLineEdit->setEnabled(false);
-            m_ui->bairroLineEdit->setText( cep.getBairro().getNome() );
-        }
-
-        if(cep.getEndereco().getNome().length() == 0)
-        {
-            m_ui->enderecoLineEdit->setEnabled(true);
-            m_ui->enderecoLineEdit->clear();
-        }else{
-            m_ui->enderecoLineEdit->setEnabled(false);
-            m_ui->enderecoLineEdit->setText( cep.getEndereco().getNome() );
-        }
+    }else{
+        m_ui->cidadeLineEdit->clear();
+        m_ui->bairroLineEdit->clear();
+        m_ui->estadoLineEdit->clear();
+        m_ui->enderecoLineEdit->clear();
     }
+
 }

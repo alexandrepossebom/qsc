@@ -64,14 +64,14 @@
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
     <value type="QString" >BROWSER=/usr/bin/www-browser</value>
     <value type="QString" >CANBERRA_DRIVER=pulse</value>
-    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-HyqZl3OcGc,guid=f01ec8a76d0654cf2958e2c44abb564f</value>
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-hEPHYu2uL0,guid=06078808880d3ed7248e54ce4abca253</value>
     <value type="QString" >DESKTOP_SESSION=01KDE4</value>
     <value type="QString" >DESKTOP_STARTUP_ID=</value>
     <value type="QString" >DISPLAY=:0.0</value>
     <value type="QString" >DM_CONTROL=/var/run/xdmctl</value>
     <value type="QString" >EDITOR=vim</value>
     <value type="QString" >GCONF_TMPDIR=/tmp</value>
-    <value type="QString" >GPG_AGENT_INFO=/home/alexandre/.gnupg/S.gpg-agent:1240:1</value>
+    <value type="QString" >GPG_AGENT_INFO=/home/alexandre/.gnupg/S.gpg-agent:1230:1</value>
     <value type="QString" >GREP_COLOR=1;32</value>
     <value type="QString" >GREP_OPTIONS=--color=auto</value>
     <value type="QString" >GS_LIB=/home/alexandre/.fonts</value>
@@ -133,7 +133,7 @@
     <value type="QString" >QT_PLUGIN_PATH=/home/alexandre/.kde4/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
     <value type="QString" >QT_XFT=0</value>
     <value type="QString" >SCREENDIR=/home/alexandre/tmp</value>
-    <value type="QString" >SESSION_MANAGER=local/localhost:@/tmp/.ICE-unix/1943,unix/localhost:/tmp/.ICE-unix/1943</value>
+    <value type="QString" >SESSION_MANAGER=local/localhost:@/tmp/.ICE-unix/3099,unix/localhost:/tmp/.ICE-unix/3099</value>
     <value type="QString" >SHELL=/bin/bash</value>
     <value type="QString" >SHLVL=1</value>
     <value type="QString" >SSH_ASKPASS=/usr/lib/ssh/ssh-askpass</value>
@@ -145,7 +145,7 @@
     <value type="QString" >XDG_CONFIG_DIRS=/etc/xdg:/etc/xdg/kde4</value>
     <value type="QString" >XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
     <value type="QString" >XDG_MENU_PREFIX=kde-</value>
-    <value type="QString" >XDG_SESSION_COOKIE=d111056ba048c661e6ae41eb4a9565cc-1253791308.647001-973041910</value>
+    <value type="QString" >XDG_SESSION_COOKIE=d111056ba048c661e6ae41eb4a9565cc-1253876305.232204-1787850047</value>
     <value type="QString" >XDM_MANAGED=method=classic,auto</value>
     <value type="QString" >XMODIFIERS=@im=none</value>
     <value type="QString" >_=/usr/bin/kdeinit4</value>
@@ -170,14 +170,14 @@
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
     <value type="QString" >BROWSER=/usr/bin/www-browser</value>
     <value type="QString" >CANBERRA_DRIVER=pulse</value>
-    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-HyqZl3OcGc,guid=f01ec8a76d0654cf2958e2c44abb564f</value>
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-hEPHYu2uL0,guid=06078808880d3ed7248e54ce4abca253</value>
     <value type="QString" >DESKTOP_SESSION=01KDE4</value>
     <value type="QString" >DESKTOP_STARTUP_ID=</value>
     <value type="QString" >DISPLAY=:0.0</value>
     <value type="QString" >DM_CONTROL=/var/run/xdmctl</value>
     <value type="QString" >EDITOR=vim</value>
     <value type="QString" >GCONF_TMPDIR=/tmp</value>
-    <value type="QString" >GPG_AGENT_INFO=/home/alexandre/.gnupg/S.gpg-agent:1240:1</value>
+    <value type="QString" >GPG_AGENT_INFO=/home/alexandre/.gnupg/S.gpg-agent:1230:1</value>
     <value type="QString" >GREP_COLOR=1;32</value>
     <value type="QString" >GREP_OPTIONS=--color=auto</value>
     <value type="QString" >GS_LIB=/home/alexandre/.fonts</value>
@@ -239,7 +239,7 @@
     <value type="QString" >QT_PLUGIN_PATH=/home/alexandre/.kde4/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
     <value type="QString" >QT_XFT=0</value>
     <value type="QString" >SCREENDIR=/home/alexandre/tmp</value>
-    <value type="QString" >SESSION_MANAGER=local/localhost:@/tmp/.ICE-unix/1943,unix/localhost:/tmp/.ICE-unix/1943</value>
+    <value type="QString" >SESSION_MANAGER=local/localhost:@/tmp/.ICE-unix/3099,unix/localhost:/tmp/.ICE-unix/3099</value>
     <value type="QString" >SHELL=/bin/bash</value>
     <value type="QString" >SHLVL=1</value>
     <value type="QString" >SSH_ASKPASS=/usr/lib/ssh/ssh-askpass</value>
@@ -251,7 +251,7 @@
     <value type="QString" >XDG_CONFIG_DIRS=/etc/xdg:/etc/xdg/kde4</value>
     <value type="QString" >XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
     <value type="QString" >XDG_MENU_PREFIX=kde-</value>
-    <value type="QString" >XDG_SESSION_COOKIE=d111056ba048c661e6ae41eb4a9565cc-1253791308.647001-973041910</value>
+    <value type="QString" >XDG_SESSION_COOKIE=d111056ba048c661e6ae41eb4a9565cc-1253876305.232204-1787850047</value>
     <value type="QString" >XDM_MANAGED=method=classic,auto</value>
     <value type="QString" >XMODIFIERS=@im=none</value>
     <value type="QString" >_=/usr/bin/kdeinit4</value>
