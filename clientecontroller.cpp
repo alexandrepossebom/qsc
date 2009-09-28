@@ -6,8 +6,39 @@
 ClienteController::ClienteController()
 {
 
+}
 
+QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QString nome,int limit)
+{
+    QString str = "%";
+    str.append(nome);
+    str.append("%");
+    nome = str;
 
+    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlQuery query(db);
+    query.prepare("select nome,id from cliente where nome like :nome order by nome limit :limit");
+    query.bindValue(":nome",nome);
+    query.bindValue(":limit",limit);
+
+    if( ok && !query.exec() )
+    {
+        *error = query.lastError().text();
+        *ok = false;
+    }
+
+    QList<Cliente> clientes;
+
+    int fieldNome = query.record().indexOf("nome");
+    int fieldId = query.record().indexOf("id");
+    Cliente cliente;
+    while (query.next()) {
+        cliente.setNome(query.value(fieldNome).toString());
+        cliente.setId(query.value(fieldId).toInt());
+        clientes.append(cliente);
+    }
+
+    return clientes;
 }
 
 bool ClienteController::addCliente(bool *ok,QString *error,Cliente cliente)

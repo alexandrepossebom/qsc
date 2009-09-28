@@ -155,3 +155,12 @@ void Cliente::setDataNascimento(QDate dataNascimento)
 {
     this->dataNascimento = dataNascimento;
 }
+
+void Cliente::setId(int id)
+{
+    this->id = id;
+}
+int Cliente::getId()
+{
+    return id;
+}

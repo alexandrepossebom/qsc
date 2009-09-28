@@ -31,7 +31,9 @@ SOURCES += main.cpp \
     tipotelefonecontroller.cpp \
     cepaddview.cpp \
     dbutil.cpp \
-    configuratorview.cpp
+    configuratorview.cpp \
+    formapagamento.cpp \
+    formapagamentocontroller.cpp
 HEADERS += mainwindow.h \
     clienteaddview.h \
     vendaaddview.h \
@@ -58,7 +60,9 @@ HEADERS += mainwindow.h \
     tipotelefonecontroller.h \
     cepaddview.h \
     dbutil.h \
-    configuratorview.h
+    configuratorview.h \
+    formapagamento.h \
+    formapagamentocontroller.h
 FORMS += mainwindow.ui \
     clienteaddview.ui \
     vendaaddview.ui \

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>577</width>
-    <height>442</height>
+    <width>579</width>
+    <height>386</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,7 +33,7 @@
          <widget class="QLineEdit" name="nomeClienteLineEdit"/>
         </item>
         <item>
-         <widget class="QToolButton" name="toolButton">
+         <widget class="QToolButton" name="clienteToolButton">
           <property name="text">
            <string>...</string>
           </property>
@@ -71,6 +71,12 @@
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QGroupBox" name="groupBox_2">
+       <property name="minimumSize">
+        <size>
+         <width>282</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="title">
         <string>Dados da Venda</string>
        </property>
@@ -143,6 +149,18 @@
        <property name="title">
         <string>Forma de Pagamento</string>
        </property>
+       <layout class="QFormLayout" name="formLayout_3">
+        <item row="0" column="0">
+         <widget class="QComboBox" name="formadePagamentoComboBox">
+          <property name="minimumSize">
+           <size>
+            <width>261</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>

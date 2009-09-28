@@ -18,6 +18,12 @@ protected:
 
 private:
     Ui::VendaAddView *m_ui;
+    void repaintFormas();
+
+private slots:
+    void nomeChanged(QString nome);
+
+
 };
 
 #endif // VENDAADDVIEW_H

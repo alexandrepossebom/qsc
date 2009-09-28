@@ -44,6 +44,8 @@ public:
     Cep getCep();
     QDate getDataNascimento();
     void setDataNascimento(QDate dataNascimento);
+    void setId(int id);
+    int getId();
 
 
 private:
@@ -63,6 +65,7 @@ private:
     int enderecoNumero;
     Cep cep;
     QDate dataNascimento;
+    int id;
 
 };
 
