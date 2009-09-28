@@ -7,7 +7,7 @@ class ClienteController
 {
 public:
     ClienteController();
-    bool addCliente(Cliente cliente);
+    bool addCliente(bool *ok,QString *error,Cliente cliente);
 };
 
 #endif // CLIENTECONTROLLER_H

@@ -15,6 +15,7 @@ QList<Bairro> BairroController::getAll(bool *ok,QString *error)
     if( ok && !query.exec() )
     {
         *error = query.lastError().text();
+        ok = false;
     }
 
     QList<Bairro> bairros;

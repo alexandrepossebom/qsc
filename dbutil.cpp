@@ -11,15 +11,10 @@ DBUtil::DBUtil()
 
 QSqlDatabase DBUtil::getDatabase (bool  *ok, QString *error) {
     QSqlDatabase db;
+    ok = true;
     if (!QSqlDatabase::contains(DBUtil::DATABASE_CONNECT_NAME)) {
 
         QSettings settings("Possebom", "Qsc");
-
-//        settings.setValue("Database/UserName", "root");
-//        settings.setValue("Database/Password", "");
-//        settings.setValue("Database/HostName", "localhost");
-//        settings.setValue("Database/DatabaseName", "loja");
-
         QString hostname = settings.value("Database/HostName").toString();
         QString password = settings.value("Database/Password").toString();
         QString username = settings.value("Database/UserName").toString();

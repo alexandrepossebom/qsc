@@ -7,12 +7,12 @@ class Naturalidade
 public:
     Naturalidade();
     QString getNome();
-    int getId();
-    void setId(int id);
+    QString getUF();
+    void setUF(QString UF);
     void setNome(QString nome);
 private:
     QString nome;
-    int id;
+    QString UF;
 
 };
 

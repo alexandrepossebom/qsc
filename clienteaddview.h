@@ -21,7 +21,6 @@ protected:
 
 private:
     Ui::ClienteAddView *m_ui;
-    Cliente cliente;
     ClienteController clienteController;
     void repaintEmpresa();
     void repaintAll();

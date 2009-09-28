@@ -5,9 +5,9 @@ Naturalidade::Naturalidade()
 
 }
 
-void Naturalidade::setId(int id)
+void Naturalidade::setUF(QString UF)
 {
-    this->id = id;
+    this->UF = UF;
 }
 
 void Naturalidade::setNome(QString nome)
@@ -20,7 +20,7 @@ QString Naturalidade::getNome()
     return nome;
 }
 
-int Naturalidade::getId()
+QString Naturalidade::getUF()
 {
-    return id;
+    return UF;
 }

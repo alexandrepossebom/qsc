@@ -95,38 +95,55 @@ bool ClienteAddView::addEmpresa()
 void ClienteAddView::accepted()
 {
 
-    //NacionalidadeController nc;
-    //nc.getError();
 
-    //    //cliente = new Cliente();
-    //    cliente.setNome(m_ui->nomeLineEdit->text());
-    //
-    //    Nacionalidade nacionalidade;
-    //
-    //
-    //    nacionalidade.setNome(m_ui->cpfLineEdit->text());
-    //    cliente.setNacionalidade(nacionalidade);
-    //
-    //
-    //    qDebug() << cliente.getNome();
-    //    qDebug() << cliente.getNacionalidade().getNome();
-    //
-    //    Endereco endereco;
-    //    endereco.setNome(m_ui->enderecoLineEdit->text());
-    //    endereco.setCep( m_ui->cepLineEdit->text().replace("-","").toInt() );
-    //    endereco.setBairro( m_ui->bairroLineEdit->text());
-    //    endereco.setCidade( m_ui->cidadeLineEdit->text());
-    //
-    //    EstadoController estctrl;
-    //    int estadoIndex = m_ui->estadoComboBox->currentIndex();
-    //    int estadoId = m_ui->estadoComboBox->itemData( estadoIndex ).toInt();
-    //
-    //    endereco.setEstado(  estctrl.getEstadoById( estadoId ) );
-    //
-    //
-    //    EnderecoController ec;
-    //    ec.add(&endereco);
-    // //   clienteController.addCliente(cliente);
+    int i = 0;
+    Cliente cliente;
+    cliente.setNome( m_ui->nomeLineEdit->text() );
+    cliente.setCpf( m_ui->cpfLineEdit->text().toInt() );
+    cliente.setEstadoCivil( m_ui->estadocivilComboBox->currentText() );
+
+    Nacionalidade nacionalidade;
+
+    nacionalidade.setNome( m_ui->nacionalidadeComboBox->currentText() );
+    i = m_ui->nacionalidadeComboBox->currentIndex();
+    nacionalidade.setId( m_ui->nacionalidadeComboBox->itemData(i).toInt() );
+
+    cliente.setNacionalidade(nacionalidade);
+
+    Naturalidade naturalidade;
+    naturalidade.setNome( m_ui->naturalidadeComboBox->currentText());
+    i = m_ui->naturalidadeComboBox->currentIndex();
+    naturalidade.setUF( m_ui->naturalidadeComboBox->itemData( i ).toString() );
+    cliente.setNaturalidade(naturalidade);
+
+    cliente.setNomeMae( m_ui->nomeMaeLineEdit->text() );
+    cliente.setNomePai( m_ui->nomePaiLineEdit->text() );
+
+    cliente.setRg( m_ui->rgLineEdit->text() );
+    cliente.setRgOrgaoEmissor( m_ui->rgEmissorLineEdit->text() );
+    cliente.setRgDataEmissao( m_ui->rgEmissaoDateEdit->date() );
+
+    Empresa empresa;
+    i = m_ui->empresaComboBox->currentIndex();
+    empresa.setId( m_ui->empresaComboBox->itemData( i ).toInt() );
+    empresa.setNome( m_ui->empresaComboBox->currentText() );
+
+    cliente.setEmpresa(empresa);
+    cliente.setCargo( m_ui->cargoLineEdit->text() );
+    cliente.setRenda( m_ui->rendaDoubleSpinBox->text().toDouble() );
+
+    cliente.setEndercoNumero( m_ui->enderecoNumeroSpinBox->text().toInt() );
+
+    Cep cep;
+    cep.setCep( m_ui->cepLineEdit->text().replace(".","").replace("-","").toInt() );
+    cliente.setCep( cep );
+
+
+    ClienteController cc;
+    bool ok;
+    QString error;
+    cc.addCliente(&ok,&error,cliente);
+    qDebug() << ok << error;
 }
 
 ClienteAddView::~ClienteAddView()
