@@ -11,7 +11,7 @@ DBUtil::DBUtil()
 
 QSqlDatabase DBUtil::getDatabase (bool  *ok, QString *error) {
     QSqlDatabase db;
-    ok = true;
+    *ok = true;
     if (!QSqlDatabase::contains(DBUtil::DATABASE_CONNECT_NAME)) {
 
         QSettings settings("Possebom", "Qsc");

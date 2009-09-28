@@ -101,6 +101,7 @@ void ClienteAddView::accepted()
     cliente.setNome( m_ui->nomeLineEdit->text() );
     cliente.setCpf( m_ui->cpfLineEdit->text().toInt() );
     cliente.setEstadoCivil( m_ui->estadocivilComboBox->currentText() );
+    cliente.setDataNascimento( m_ui->nascimentoDateEdit->date() );
 
     Nacionalidade nacionalidade;
 

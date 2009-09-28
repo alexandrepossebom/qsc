@@ -42,6 +42,8 @@ public:
     int getEnderecoNumero();
     void setCep(Cep cep);
     Cep getCep();
+    QDate getDataNascimento();
+    void setDataNascimento(QDate dataNascimento);
 
 
 private:
@@ -60,6 +62,7 @@ private:
     double renda;
     int enderecoNumero;
     Cep cep;
+    QDate dataNascimento;
 
 };
 

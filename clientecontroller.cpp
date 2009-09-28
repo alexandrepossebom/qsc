@@ -19,9 +19,9 @@ bool ClienteController::addCliente(bool *ok,QString *error,Cliente cliente)
 
     QString sql;
     sql.append("INSERT INTO cliente ");
-    sql.append("( nome, nacionalidade_id, empresa_id, estado_uf, cep_cep)");
+    sql.append("( nome, nacionalidade_id, empresa_id, estado_uf, cep_cep, data_nascimento)");
     sql.append(" VALUES ");
-    sql.append("(:nome,:nacionalidade_id,:empresa_id,:estado_uf, :cep_cep)");
+    sql.append("(:nome,:nacionalidade_id,:empresa_id,:estado_uf,:cep_cep,:data_nascimento)");
 
     query.prepare(sql);
     query.bindValue(":nome", cliente.getNome());
@@ -29,6 +29,7 @@ bool ClienteController::addCliente(bool *ok,QString *error,Cliente cliente)
     query.bindValue(":estado_uf", cliente.getNaturalidade().getUF());
     query.bindValue(":nacionalidade_id", cliente.getNacionalidade().getId());
     query.bindValue(":cep_cep", cliente.getCep().getCep());
+    query.bindValue(":data_nascimento", cliente.getDataNascimento() );
 
     if( ok && !query.exec() )
     {
@@ -36,4 +37,5 @@ bool ClienteController::addCliente(bool *ok,QString *error,Cliente cliente)
         *error = query.lastError().text();
         ok = false;
     }
+
 }

@@ -147,3 +147,11 @@ Cep Cliente::getCep()
 {
     return cep;
 }
+QDate Cliente::getDataNascimento()
+{
+    return dataNascimento;
+}
+void Cliente::setDataNascimento(QDate dataNascimento)
+{
+    this->dataNascimento = dataNascimento;
+}
