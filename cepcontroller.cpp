@@ -71,3 +71,69 @@ Cep CepController::getByCep(int cepnumber)
 
     return cep;
 }
+
+void CepController::add(bool *ok,QString *error,Cep cep)
+{
+    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlQuery query(db);
+
+    QString cidade = cep.getCidade().getNome();
+    QString bairro = cep.getBairro().getNome();
+    QString endereco = cep.getEndereco().getNome();
+    QString estado = cep.getEstado().getUF();
+    int cepint = cep.getCep();
+
+    query.prepare("insert into cidade (nome) VALUES (:nome)");
+    query.bindValue(":nome", cidade);
+    int cidade_id = 0;
+    if(!query.exec()){
+        query.prepare("select id from cidade where nome = :nome");
+        query.bindValue(":nome", cidade);
+        query.exec();
+        query.next();
+        cidade_id = query.value(0).toInt();
+    }else{
+        cidade_id = query.lastInsertId().toInt();
+    }
+
+    int bairro_id = 0;
+    query.prepare("insert into bairro (nome) VALUES (:nome)");
+    query.bindValue(":nome", bairro);
+    if(!query.exec()){
+        query.prepare("select id from bairro where nome = :nome");
+        query.bindValue(":nome", bairro);
+        query.exec();
+        query.next();
+        bairro_id = query.value(0).toInt();
+        qDebug() << "new" << bairro_id;
+    }else{
+        bairro_id = query.lastInsertId().toInt();
+    }
+
+    int endereco_id = 0;
+    query.prepare("insert into endereco (nome) VALUES (:nome)");
+    query.bindValue(":nome", endereco);
+    if(!query.exec()){
+        query.prepare("select id from endereco where nome = :nome");
+        query.bindValue(":nome", endereco);
+        query.exec();
+        query.next();
+        endereco_id = query.value(0).toInt();
+    }else{
+        endereco_id = query.lastInsertId().toInt();
+    }
+
+    query.prepare("insert into cep (endereco_id,bairro_id,cidade_id,estado_uf,cep) VALUES (:endereco_id,:bairro_id,:cidade_id,:estado_uf,:cep)");
+    query.bindValue(":endereco_id", endereco_id);
+    query.bindValue(":bairro_id", bairro_id);
+    query.bindValue(":cidade_id", cidade_id);
+    query.bindValue(":estado_uf", estado);
+    query.bindValue(":cep", cepint);
+
+    if( ok && !query.exec() )
+    {
+        *error = query.lastError().text();
+        ok = false;
+    }
+
+}

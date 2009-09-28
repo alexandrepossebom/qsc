@@ -36,10 +36,10 @@
       </size>
      </property>
      <property name="inputMask">
-      <string>99999-999; </string>
+      <string>99.999-999; </string>
      </property>
      <property name="text">
-      <string notr="true">-</string>
+      <string notr="true">.-</string>
      </property>
     </widget>
    </item>
@@ -91,6 +91,9 @@
        <width>151</width>
        <height>26</height>
       </size>
+     </property>
+     <property name="editable">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

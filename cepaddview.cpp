@@ -4,6 +4,8 @@
 #include "estadocontroller.h"
 #include "enderecocontroller.h"
 #include "bairrocontroller.h"
+#include "cep.h"
+#include "cepcontroller.h"
 #include <QDebug>
 #include <QList>
 #include <QCompleter>
@@ -15,6 +17,7 @@ CepAddView::CepAddView(QWidget *parent) :
 {
     m_ui->setupUi(this);
     connect(m_ui->enderecoLineEdit,SIGNAL(textEdited(QString)),this,SLOT(enderecoChanged(QString)));
+    connect(m_ui->buttonBox,SIGNAL(accepted()),this,SLOT(addCep()));
 
     bool ok;
     QString error;
@@ -64,23 +67,39 @@ CepAddView::CepAddView(QWidget *parent) :
         int cj = m_ui->bairroComboBox->findText("Cidade.Jardim",Qt::MatchFlag(4));
         m_ui->bairroComboBox->setCurrentIndex(cj);
     }
+}
+
+void CepAddView::addCep()
+{
+    Bairro bairro;
+    bairro.setNome(m_ui->bairroComboBox->currentText());
+
+    Cidade cidade;
+    cidade.setNome(m_ui->cidadeComboBox->currentText());
+
+    Endereco endereco;
+    endereco.setNome(m_ui->enderecoLineEdit->text());
+
+    Estado estado;
+    estado.setNome(m_ui->estadoComboBox->currentText());
+    estado.setUF(m_ui->estadoComboBox->itemData(m_ui->estadoComboBox->currentIndex()).toString());
 
 
+    Cep cep;
+    cep.setBairro(bairro);
+    cep.setCidade(cidade);
+    cep.setEndereco(endereco);
+    cep.setEstado(estado);
+    int cepint = m_ui->cepLineEdit->text().replace(".","").replace("-","").toInt();
+    cep.setCep(cepint);
 
-//    {
-//        EnderecoController ec;
-//        QList<Endereco> enderecos;
-//        enderecos = ec.getAll();
-//
-//        while(!enderecos.isEmpty())
-//        {
-//            Endereco endereco;
-//            endereco = enderecos.takeFirst();
-//            QVariant v(endereco.getId());
-//            m_ui->enderecoComboBox->addItem(endereco.getNome(),v);
-//        }
-//    }
+    CepController cc;
+    bool ok;
+    QString error;
 
+    cc.add(&ok,&error,cep);
+    if(!ok)
+        qDebug() << error;
 
 }
 
@@ -93,7 +112,6 @@ void CepAddView::enderecoChanged(QString nome)
     EnderecoController ec;
     QList<Endereco> enderecos;
     enderecos = ec.getAll(&ok,&error,nome,20);
-    qDebug() << enderecos.size();
 
     QStringList wordList;
     while(!enderecos.isEmpty())

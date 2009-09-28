@@ -28,6 +28,7 @@ private:
 
 private slots:
     void enderecoChanged(QString nome);
+    void addCep();
 };
 
 #endif // CEPADDVIEW_H

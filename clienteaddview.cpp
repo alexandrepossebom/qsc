@@ -220,7 +220,7 @@ void ClienteAddView::repaintEstado()
 
 void ClienteAddView::cepEdited(QString strCep)
 {
-    strCep = strCep.replace("-","");
+    strCep = strCep.replace("-","").replace(".","");
     if(strCep.length() == 8)
     {
         CepController cc;

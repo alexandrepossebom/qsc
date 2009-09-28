@@ -12,6 +12,7 @@ class CepController
 public:
     CepController();
     Cep getByCep(int cep);
+    void add(bool *ok,QString *error,Cep cep);
 };
 
 #endif // CEPCONTROLLER_H
