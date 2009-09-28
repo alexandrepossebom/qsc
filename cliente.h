@@ -18,8 +18,8 @@ public:
     QString getNome();
     Naturalidade getNaturalidade();
     void setNaturalidade(Naturalidade naturalidade);
-    void setCpf(int cpf);
-    int getCpf();
+    void setCpf(long long int cpf);
+    long long int getCpf();
     void setEstadoCivil(QString estadoCivil);
     QString getEstadoCivil();
     QString getNomePai();
@@ -51,7 +51,7 @@ private:
     Empresa empresa;
     Naturalidade naturalidade;
     QString nome;
-    int cpf;
+    long long int cpf;
     QString estadoCivil;
     QString nomePai;
     QString nomeMae;

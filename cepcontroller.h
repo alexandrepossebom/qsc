@@ -11,7 +11,7 @@ class CepController
 {
 public:
     CepController();
-    Cep getByCep(int cep);
+    Cep getByCep(bool *ok,QString *error,int cep);
     void add(bool *ok,QString *error,Cep cep);
 };
 

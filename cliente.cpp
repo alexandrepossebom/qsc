@@ -34,12 +34,12 @@ Naturalidade Cliente::getNaturalidade()
     return naturalidade;
 }
 
-void Cliente::setCpf(int cpf)
+void Cliente::setCpf(long long int cpf)
 {
     this->cpf = cpf;
 }
 
-int Cliente::getCpf()
+long long int Cliente::getCpf()
 {
     return cpf;
 }

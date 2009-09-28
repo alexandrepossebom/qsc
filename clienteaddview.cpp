@@ -99,7 +99,8 @@ void ClienteAddView::accepted()
     int i = 0;
     Cliente cliente;
     cliente.setNome( m_ui->nomeLineEdit->text() );
-    cliente.setCpf( m_ui->cpfLineEdit->text().toInt() );
+
+    cliente.setCpf( m_ui->cpfLineEdit->text().replace(".","").replace("-","").toLongLong() );
     cliente.setEstadoCivil( m_ui->estadocivilComboBox->currentText() );
     cliente.setDataNascimento( m_ui->nascimentoDateEdit->date() );
 
@@ -131,9 +132,9 @@ void ClienteAddView::accepted()
 
     cliente.setEmpresa(empresa);
     cliente.setCargo( m_ui->cargoLineEdit->text() );
-    cliente.setRenda( m_ui->rendaDoubleSpinBox->text().toDouble() );
+    cliente.setRenda( m_ui->rendaDoubleSpinBox->value() );
 
-    cliente.setEndercoNumero( m_ui->enderecoNumeroSpinBox->text().toInt() );
+    cliente.setEndercoNumero( m_ui->enderecoNumeroSpinBox->value() );
 
     Cep cep;
     cep.setCep( m_ui->cepLineEdit->text().replace(".","").replace("-","").toInt() );
@@ -144,7 +145,15 @@ void ClienteAddView::accepted()
     bool ok;
     QString error;
     cc.addCliente(&ok,&error,cliente);
-    qDebug() << ok << error;
+    if(!ok)
+    {
+        QMessageBox *msgBox;
+        msgBox = new QMessageBox;
+        msgBox->setIcon(QMessageBox::Warning);
+        msgBox->setText(error);
+        msgBox->setStandardButtons(QMessageBox::Ok);
+        msgBox->exec();
+    }
 }
 
 ClienteAddView::~ClienteAddView()
@@ -239,15 +248,19 @@ void ClienteAddView::repaintEstado()
 void ClienteAddView::cepEdited(QString strCep)
 {
     strCep = strCep.replace("-","").replace(".","");
+    bool ok;
+    QString error;
     if(strCep.length() == 8)
     {
         CepController cc;
-        Cep cep = cc.getByCep(strCep.toInt());
-
-        m_ui->estadoLineEdit->setText( cep.getEstado().getNome() );
-        m_ui->cidadeLineEdit->setText( cep.getCidade().getNome() );
-        m_ui->bairroLineEdit->setText( cep.getBairro().getNome() );
-        m_ui->enderecoLineEdit->setText( cep.getEndereco().getNome() );
+        Cep cep = cc.getByCep(&ok,&error,strCep.toInt());
+        if(ok)
+        {
+            m_ui->estadoLineEdit->setText( cep.getEstado().getNome() );
+            m_ui->cidadeLineEdit->setText( cep.getCidade().getNome() );
+            m_ui->bairroLineEdit->setText( cep.getBairro().getNome() );
+            m_ui->enderecoLineEdit->setText( cep.getEndereco().getNome() );
+        }
 
     }else{
         m_ui->cidadeLineEdit->clear();
