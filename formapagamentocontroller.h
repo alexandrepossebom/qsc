@@ -10,6 +10,7 @@ class FormaPagamentoController
 public:
     FormaPagamentoController();
     QList<FormaPagamento> getAll(bool *ok,QString *error);
+    FormaPagamento getById(bool *ok,QString *error,int id);
 };
 
 #endif // FORMAPAGAMENTOCONTROLLER_H

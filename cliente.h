@@ -46,7 +46,7 @@ public:
     void setDataNascimento(QDate dataNascimento);
     void setId(int id);
     int getId();
-
+    QString getCpfFormated();
 
 private:
     Nacionalidade nacionalidade;

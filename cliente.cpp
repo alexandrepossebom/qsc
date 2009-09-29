@@ -164,3 +164,20 @@ int Cliente::getId()
 {
     return id;
 }
+
+QString Cliente::getCpfFormated()
+{
+    QString str = QString::number(cpf);
+    str = str.rightJustified(11,'0');
+    QString c = str.left(3);
+    c.append(".");
+    str = str.right(8);
+    c.append(str.left(3));
+    c.append(".");
+    str = str.right(5);
+    c.append(str.left(3));
+    c.append("-");
+    str = str.right(2);
+    c.append(str);
+    return c;
+}
