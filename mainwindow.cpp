@@ -7,28 +7,27 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow),
-    m_compraAddWidget(NULL), m_clienteAdWidget(NULL)
+    m_compraAddWidget(NULL), m_clienteAdWidget(NULL), m_pagarAddWidget(NULL)
 {
     ui->setupUi(this);
     connect(ui->actionComprar,SIGNAL(triggered(bool)),this,SLOT(compraAdd()));
     connect(ui->actionAdicionar,SIGNAL(triggered(bool)),this,SLOT(clienteAdd()));
     connect(ui->actionConfig,SIGNAL(triggered(bool)),this,SLOT(configSystem()));
+    connect(ui->actionPagar,SIGNAL(triggered(bool)),this,SLOT(slotPagar()));
 
-//    QRadioButton *radio1 = new QRadioButton(tr("&Radio button 1"));
-//    QRadioButton *radio2 = new QRadioButton(tr("R&adio button 2"));
-//    QRadioButton *radio3 = new QRadioButton(tr("Ra&dio button 3"));
-//
-//    radio1->setChecked(true);
-//
-//    QVBoxLayout *vbox = new QVBoxLayout;
-//    vbox->addWidget(radio1);
-//    vbox->addWidget(radio2);
-//    vbox->addWidget(radio3);
-//    vbox->addStretch(1);
-//    ui->groupBox_2->setLayout(vbox);
 
     m_stackedWidget = new QStackedWidget(this);
     setCentralWidget(m_stackedWidget);
+}
+
+void MainWindow::slotPagar()
+{
+    if (m_pagarAddWidget == NULL)
+    {
+        m_pagarAddWidget = new PagarAddView();
+        m_stackedWidget->addWidget(m_pagarAddWidget);
+    }
+    m_stackedWidget->setCurrentWidget(m_pagarAddWidget);
 }
 
 void MainWindow::compraAdd()

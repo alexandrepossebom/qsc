@@ -45,7 +45,7 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
 
     QSqlDatabase db = DBUtil::getDatabase(ok, error);
     QSqlQuery query(db);
-    query.prepare("select nome,id from cliente where nome like :nome order by nome limit :limit");
+    query.prepare("select nome,id,cpf,data_nascimento from cliente where nome like :nome order by nome limit :limit");
     query.bindValue(":nome",nome);
     query.bindValue(":limit",limit);
 
@@ -59,10 +59,16 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
 
     int fieldNome = query.record().indexOf("nome");
     int fieldId = query.record().indexOf("id");
+    int fieldCpf = query.record().indexOf("cpf");
+    int fieldNascimento = query.record().indexOf("cpf");
+    int fieldDataNascimento = query.record().indexOf("data_nascimento");
+
     Cliente cliente;
     while (query.next()) {
         cliente.setNome(query.value(fieldNome).toString());
         cliente.setId(query.value(fieldId).toInt());
+        cliente.cpf = query.value(fieldCpf).toLongLong();
+        cliente.dataNascimento = query.value(fieldDataNascimento).toDate();
         clientes.append(cliente);
     }
 

@@ -48,7 +48,6 @@ public:
     int getId();
     QString getCpfFormated();
 
-private:
     Nacionalidade nacionalidade;
     Empresa empresa;
     Naturalidade naturalidade;

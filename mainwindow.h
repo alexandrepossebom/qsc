@@ -6,6 +6,7 @@
 #include <QWidget>
 #include "compraaddview.h"
 #include "clienteaddview.h"
+#include "pagaraddview.h"
 
 namespace Ui
 {
@@ -23,13 +24,15 @@ public:
 private:
     Ui::MainWindow *ui;
     QStackedWidget *m_stackedWidget;
-    CompraAddView *m_compraAddWidget;
+    CompraAddView  *m_compraAddWidget;
+    PagarAddView   *m_pagarAddWidget;
     ClienteAddView *m_clienteAdWidget;
 
 private slots:
     void compraAdd();
     void clienteAdd();
     void configSystem();
+    void slotPagar();
 };
 
 #endif // MAINWINDOW_H

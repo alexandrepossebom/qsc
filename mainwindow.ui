@@ -28,6 +28,7 @@
      <string>Compra</string>
     </property>
     <addaction name="actionComprar"/>
+    <addaction name="actionPagar"/>
    </widget>
    <widget class="QMenu" name="menuCliente">
     <property name="title">
@@ -67,6 +68,11 @@
   <action name="actionConfig">
    <property name="text">
     <string>Configurações</string>
+   </property>
+  </action>
+  <action name="actionPagar">
+   <property name="text">
+    <string>Pagar</string>
    </property>
   </action>
  </widget>
