@@ -31,9 +31,18 @@ CompraAddView::CompraAddView(QWidget *parent) :
 
 void CompraAddView::addCompra()
 {
-    FormaPagamento fp;
+
+    //  Forma Pagamento
     int fpIndex = m_ui->formadePagamentoComboBox->currentIndex();
-    fp.setId( m_ui->formadePagamentoComboBox->itemData( fpIndex ).toInt() );
+    int fpId = m_ui->formadePagamentoComboBox->itemData( fpIndex ).toInt();
+
+    FormaPagamentoController fpc;
+    bool ok;
+    QString error;
+    FormaPagamento fp;
+    fp = fpc.getById(&ok,&error,fpId);
+
+
     Vendedor vendedor;
     int vendedorIndex = m_ui->vendedorComboBox->currentIndex();
     vendedor.setId( m_ui->vendedorComboBox->itemData( vendedorIndex ).toInt() );
@@ -50,10 +59,7 @@ void CompraAddView::addCompra()
     compra.dataCompra = m_ui->dataDateEdit->date();
 
     CompraController cc;
-    QString error;
-    bool ok;
     cc.Add(&ok,&error,compra);
-    qDebug() << ok << error;
 }
 
 CompraAddView::~CompraAddView()
@@ -129,23 +135,22 @@ void CompraAddView::refresh()
     else
         m_ui->juroLabel->setText("0 %");
 
-    int valor = m_ui->valorDoubleSpinBox->value();
-    valor = valor / fp.getParcelas();
+    double valor = m_ui->valorDoubleSpinBox->value();
 
-    QString valorString = "R$ ";
-    if (fp.getDesconto() != 0 )
-        valorString.append( QString::number(valor * ( 1 - fp.getDesconto()),'f',2) );
-    else if ( fp.getJuro() != 0 )
-        valorString.append( QString::number(valor * fp.getJuro(),'f',2) );
-    else
-        valorString.append( QString::number(valor,'f',2) );
+    double parcela_valor = valor / fp.parcelas ;
+    if (fp.desconto != 0)
+        parcela_valor = parcela_valor * (1 - fp.desconto);
+    else if ( fp.juro != 0)
+         parcela_valor = parcela_valor * fp.juro;
+
+    QString valorString = QString("R$ %1").arg(parcela_valor, 0, 'F', 2);
 
     m_ui->valorLabel->setText(valorString);
 
     if(fp.isEntrada())
         m_ui->entradaLabel->setText("Sim");
     else
-        m_ui->entradaLabel->setText(QString("Não").toAscii());
+        m_ui->entradaLabel->setText("Nao");
 }
 
 void CompraAddView::formaChanged(int index)

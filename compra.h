@@ -16,6 +16,7 @@ public:
     QDate dataCompra;
     int itens;
     bool paga;
+    int id;
 };
 
 #endif // COMPRA_H

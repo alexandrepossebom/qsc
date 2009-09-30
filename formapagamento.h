@@ -18,8 +18,6 @@ public:
     void setDesconto(double desconto);
     QString getNome();
     void setNome(QString nome);
-
-private:
     QString nome;
     int id;
     int parcelas;
