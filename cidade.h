@@ -10,7 +10,7 @@ public:
     void setNome(QString nome);
     QString getNome();
     int getId();
-private:
+
     int id;
     QString nome;
 };

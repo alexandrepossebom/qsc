@@ -21,7 +21,6 @@ public:
     Estado getEstado();
     Cidade getCidade();
 
-private:
     int cep;
     Bairro bairro;
     Cidade cidade;

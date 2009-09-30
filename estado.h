@@ -10,7 +10,7 @@ public:
     void setUF(QString UF);
     QString getNome();
     void setNome(QString nome);
-private:
+
     QString UF;
     QString nome;
 };

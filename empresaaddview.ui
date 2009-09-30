@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>608</width>
-    <height>308</height>
+    <height>325</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -134,6 +134,9 @@
             <width>148</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="inputMask">
+           <string>99.999-999; </string>
           </property>
          </widget>
         </item>

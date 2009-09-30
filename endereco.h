@@ -12,7 +12,6 @@ public:
     int getId();
     QString getNome();
 
-private:
     int id;
     QString nome;
 };

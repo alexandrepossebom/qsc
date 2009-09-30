@@ -22,8 +22,10 @@ protected:
 private:
     Ui::EmpresaAddView *m_ui;
     Empresa empresa;
+    void repaintTipoTelefone();
 private slots:
     void add();
+    void cepChanged(QString);
 };
 
 #endif // EMPRESAADDVIEW_H
