@@ -4,7 +4,7 @@
 #include <QtGui/QMainWindow>
 #include <QStackedWidget>
 #include <QWidget>
-#include "vendaaddview.h"
+#include "compraaddview.h"
 #include "clienteaddview.h"
 
 namespace Ui
@@ -23,11 +23,11 @@ public:
 private:
     Ui::MainWindow *ui;
     QStackedWidget *m_stackedWidget;
-    VendaAddView *m_vendaAddWidget;
+    CompraAddView *m_compraAddWidget;
     ClienteAddView *m_clienteAdWidget;
 
 private slots:
-    void vendaAdd();
+    void compraAdd();
     void clienteAdd();
     void configSystem();
 };

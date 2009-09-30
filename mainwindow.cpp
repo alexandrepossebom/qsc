@@ -7,10 +7,10 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow),
-    m_vendaAddWidget(NULL), m_clienteAdWidget(NULL)
+    m_compraAddWidget(NULL), m_clienteAdWidget(NULL)
 {
     ui->setupUi(this);
-    connect(ui->actionVender,SIGNAL(triggered(bool)),this,SLOT(vendaAdd()));
+    connect(ui->actionComprar,SIGNAL(triggered(bool)),this,SLOT(compraAdd()));
     connect(ui->actionAdicionar,SIGNAL(triggered(bool)),this,SLOT(clienteAdd()));
     connect(ui->actionConfig,SIGNAL(triggered(bool)),this,SLOT(configSystem()));
 
@@ -31,14 +31,14 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(m_stackedWidget);
 }
 
-void MainWindow::vendaAdd()
+void MainWindow::compraAdd()
 {
-    if (m_vendaAddWidget == NULL)
+    if (m_compraAddWidget == NULL)
     {
-        m_vendaAddWidget = new VendaAddView();
-        m_stackedWidget->addWidget(m_vendaAddWidget);
+        m_compraAddWidget = new CompraAddView();
+        m_stackedWidget->addWidget(m_compraAddWidget);
     }
-    m_stackedWidget->setCurrentWidget(m_vendaAddWidget);
+    m_stackedWidget->setCurrentWidget(m_compraAddWidget);
 }
 
 void MainWindow::clienteAdd()

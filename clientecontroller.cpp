@@ -69,7 +69,7 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
     return clientes;
 }
 
-bool ClienteController::addCliente(bool *ok,QString *error,Cliente cliente)
+void ClienteController::addCliente(bool *ok,QString *error,Cliente cliente)
 {
 
     if( cliente.getNome().length() == 0)
@@ -89,8 +89,8 @@ bool ClienteController::addCliente(bool *ok,QString *error,Cliente cliente)
         string.append(error);
         *error = string;
         *ok = false;
-        return false;
     }
+    return;
 
 
 

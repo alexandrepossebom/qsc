@@ -100,65 +100,40 @@ QList<Endereco> EnderecoController::getAll(bool *ok,QString *error)
     return enderecos;
 }
 
-bool EnderecoController::add(bool *ok,QString *error,Endereco *endereco)
+void EnderecoController::add(bool *ok,QString *error,Endereco *endereco)
 {
-   QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("localhost");
-    db.setDatabaseName("loja");
-    db.setUserName("root");
-    db.setPassword("");
-
-    if (!db.open()) {
-        *error = db.lastError().text();
-        qDebug() << error;
-        return false;
-    }
-
-    QSqlQuery query;
+    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlQuery query(db);
     query.prepare("INSERT INTO endereco (nome,cep,cidade,bairro,estado_id) VALUES (:nome,:cep,:cidade,:bairro,:estado_id)");
-//    query.bindValue(":nome", endereco->getNome());
-//    query.bindValue(":cep", endereco->getCep());
-//    query.bindValue(":cidade", endereco->getCidade());
-//    query.bindValue(":bairro", endereco->getBairro());
-//    query.bindValue(":estado_id", endereco->getEstado().getId()   );
 
-    if (!query.exec())
+    if( ok && !query.exec() )
     {
         *error = query.lastError().text();
-        qDebug() << error;
-        return false;
+        *ok = false;
     }
-    return true;
 }
 
 Endereco EnderecoController::getByCep(bool *ok,QString *error,int cep)
 {
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("localhost");
-    db.setDatabaseName("loja");
-    db.setUserName("root");
-    db.setPassword("");
+     QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlQuery query(db);
 
-    if (!db.open()) {
-        *error = db.lastError().text();
-    }
-
-    QSqlQuery query;
     query.prepare("select e.nome as endereco,c.cep as cep,b.nome as bairro,ci.nome as cidade from endereco e,cep c,bairro b,cidade ci where cep = :cep and c.endereco_id=e.id and c.bairro_id=b.id and ci.id=c.cidade_id");
     query.bindValue(":cep",cep);
 
-    if (!query.exec())
+    if( ok && !query.exec() )
     {
         *error = query.lastError().text();
+        *ok = false;
     }
 
     Endereco endereco;
 
-    int fieldNome = query.record().indexOf("endereco");
-    int fieldCep = query.record().indexOf("cep");
-    int fieldBairro = query.record().indexOf("bairro");
-    int fieldCidade = query.record().indexOf("cidade");
+//    int fieldNome = query.record().indexOf("endereco");
+//    int fieldCep = query.record().indexOf("cep");
+//    int fieldBairro = query.record().indexOf("bairro");
+//    int fieldCidade = query.record().indexOf("cidade");
 
     while (query.next()) {
 //        endereco.setNome(query.value(fieldNome).toString());

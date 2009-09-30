@@ -25,9 +25,9 @@
    </property>
    <widget class="QMenu" name="menuA_es">
     <property name="title">
-     <string>Venda</string>
+     <string>Compra</string>
     </property>
-    <addaction name="actionVender"/>
+    <addaction name="actionComprar"/>
    </widget>
    <widget class="QMenu" name="menuCliente">
     <property name="title">
@@ -54,9 +54,9 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionVender">
+  <action name="actionComprar">
    <property name="text">
-    <string>Vender</string>
+    <string>Comprar</string>
    </property>
   </action>
   <action name="actionAdicionar">

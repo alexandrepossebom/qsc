@@ -7,7 +7,7 @@ class EnderecoController
 {
 public:
     EnderecoController();
-    bool add(bool *ok,QString *error,Endereco *endereco);
+    void add(bool *ok,QString *error,Endereco *endereco);
     QString getError();
     Endereco getByCep(bool *ok,QString *error,int cep);
     QList<Endereco> getAll(bool *ok,QString *error);

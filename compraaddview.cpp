@@ -1,16 +1,17 @@
-#include "vendaaddview.h"
-#include "ui_vendaaddview.h"
+#include "compraaddview.h"
+#include "ui_compraaddview.h"
 #include "clientecontroller.h"
 #include <QDate>
 #include <QCompleter>
 #include "formapagamentocontroller.h"
+#include "vendedorcontroller.h"
 
-VendaAddView::VendaAddView(QWidget *parent) :
-    QWidget(parent),
-    m_ui(new Ui::VendaAddView)
+CompraAddView::CompraAddView(QWidget *parent) :
+    QDialog(parent),
+    m_ui(new Ui::CompraAddView)
 {
     m_ui->setupUi(this);
-    QDate now = QDate::currentDate();
+        QDate now = QDate::currentDate();
     m_ui->dataDateEdit->setDate(now);
     m_ui->dataDateEdit->setMaximumDate(now);
 
@@ -20,16 +21,31 @@ VendaAddView::VendaAddView(QWidget *parent) :
     connect(m_ui->valorDoubleSpinBox,SIGNAL(valueChanged(double)),this,SLOT(valorChanged(double)));
     connect(m_ui->clienteToolButton,SIGNAL(clicked()),this,SLOT(selectCliente()));
 
-
-
-
-    changeWidgets(true);
+       changeWidgets(true);
     repaintFormas();
-
-
+    repaintVendedores();
 }
 
-void VendaAddView::changeWidgets(bool visible)
+CompraAddView::~CompraAddView()
+{
+    delete m_ui;
+}
+
+void CompraAddView::changeEvent(QEvent *e)
+{
+    QDialog::changeEvent(e);
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        m_ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}
+
+
+
+void CompraAddView::changeWidgets(bool visible)
 {
     m_ui->labelCpf->setHidden( visible );
     m_ui->labelObs->setHidden( visible );
@@ -39,7 +55,7 @@ void VendaAddView::changeWidgets(bool visible)
     m_ui->nascimentoLabel->setHidden( visible );
 }
 
-void VendaAddView::selectCliente()
+void CompraAddView::selectCliente()
 {
     if(m_ui->nomeClienteLineEdit->isEnabled())
     {
@@ -54,13 +70,11 @@ void VendaAddView::selectCliente()
     }else{
         m_ui->nomeClienteLineEdit->setEnabled(true);
         changeWidgets(true);
-//        delete cliente;
-//        cliente = new Cliente();
         cliente.setId(0);
     }
 }
 
-void VendaAddView::refreshCliente()
+void CompraAddView::refreshCliente()
 {
     if(cliente.getId() > 0)
     {
@@ -71,11 +85,11 @@ void VendaAddView::refreshCliente()
     }
 }
 
-void VendaAddView::valorChanged(double valor)
+void CompraAddView::valorChanged(double valor)
 {
     refresh();
 }
-void VendaAddView::refresh()
+void CompraAddView::refresh()
 {
     m_ui->parcelasLabel->setText(QString::number(fp.getParcelas()));
     m_ui->descontoLabel->setText(QString::number(fp.getDesconto()*100).append(" %"));
@@ -104,7 +118,7 @@ void VendaAddView::refresh()
         m_ui->entradaLabel->setText(QString("Não").toAscii());
 }
 
-void VendaAddView::formaChanged(int index)
+void CompraAddView::formaChanged(int index)
 {
     int id = m_ui->formadePagamentoComboBox->itemData( index ).toInt();
     FormaPagamentoController fpc;
@@ -114,7 +128,7 @@ void VendaAddView::formaChanged(int index)
     refresh();
 }
 
-void VendaAddView::nomeChanged(QString nome)
+void CompraAddView::nomeChanged(QString nome)
 {
     if (nome.length() < 3)
         return;
@@ -138,25 +152,7 @@ void VendaAddView::nomeChanged(QString nome)
 
 }
 
-
-VendaAddView::~VendaAddView()
-{
-    delete m_ui;
-}
-
-void VendaAddView::changeEvent(QEvent *e)
-{
-    QWidget::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        m_ui->retranslateUi(this);
-        break;
-    default:
-        break;
-    }
-}
-
-void VendaAddView::repaintFormas()
+void CompraAddView::repaintFormas()
 {
   FormaPagamentoController fpc;
   bool ok;
@@ -173,3 +169,23 @@ void VendaAddView::repaintFormas()
     }
     m_ui->formadePagamentoComboBox->setCurrentIndex( index );
 }
+
+void CompraAddView::repaintVendedores()
+{
+  VendedorController vc;
+  bool ok;
+  QString error;
+    QList<Vendedor> *vendedores = vc.getAll(&ok,&error);
+    int index = 0;
+    while (!vendedores->isEmpty())
+    {
+        Vendedor vendedor;
+        vendedor = vendedores->takeFirst();
+        QVariant v(vendedor.getId());
+        m_ui->vendedorComboBox->addItem(vendedor.getNome(),v);
+        if (vendedor.getNome().indexOf("Arlete") != -1)
+            index = m_ui->vendedorComboBox->count() -1;
+    }
+    m_ui->vendedorComboBox->setCurrentIndex( index );
+}
+

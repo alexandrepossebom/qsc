@@ -7,7 +7,6 @@ TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
     clienteaddview.cpp \
-    vendaaddview.cpp \
     cliente.cpp \
     nacionalidade.cpp \
     clientecontroller.cpp \
@@ -33,10 +32,14 @@ SOURCES += main.cpp \
     dbutil.cpp \
     configuratorview.cpp \
     formapagamento.cpp \
-    formapagamentocontroller.cpp
+    formapagamentocontroller.cpp \
+    vendedor.cpp \
+    vendedorcontroller.cpp \
+    compraaddview.cpp \
+    compracontroller.cpp \
+    compra.cpp
 HEADERS += mainwindow.h \
     clienteaddview.h \
-    vendaaddview.h \
     cliente.h \
     nacionalidade.h \
     clientecontroller.h \
@@ -62,11 +65,16 @@ HEADERS += mainwindow.h \
     dbutil.h \
     configuratorview.h \
     formapagamento.h \
-    formapagamentocontroller.h
+    formapagamentocontroller.h \
+    vendedor.h \
+    vendedorcontroller.h \
+    compraaddview.h \
+    compracontroller.h \
+    compra.h
 FORMS += mainwindow.ui \
     clienteaddview.ui \
-    vendaaddview.ui \
     nacionalidadeaddview.ui \
     empresaaddview.ui \
     cepaddview.ui \
-    configuratorview.ui
+    configuratorview.ui \
+    compraaddview.ui

@@ -1,26 +1,27 @@
-#ifndef VENDAADDVIEW_H
-#define VENDAADDVIEW_H
+#ifndef COMPRAADDVIEW_H
+#define COMPRAADDVIEW_H
 #include "formapagamento.h"
 #include "cliente.h"
 
-#include <QtGui/QWidget>
+#include <QtGui/QDialog>
 
 namespace Ui {
-    class VendaAddView;
+    class CompraAddView;
 }
 
-class VendaAddView : public QWidget {
+class CompraAddView : public QDialog {
     Q_OBJECT
 public:
-    VendaAddView(QWidget *parent = 0);
-    ~VendaAddView();
+    CompraAddView(QWidget *parent = 0);
+    ~CompraAddView();
 
 protected:
     void changeEvent(QEvent *e);
 
 private:
-    Ui::VendaAddView *m_ui;
+    Ui::CompraAddView *m_ui;
     void repaintFormas();
+    void repaintVendedores();
     FormaPagamento fp;
     Cliente cliente;
     void refresh();
@@ -32,8 +33,6 @@ private slots:
     void formaChanged(int index);
     void valorChanged(double valor);
     void selectCliente();
-
-
 };
 
-#endif // VENDAADDVIEW_H
+#endif // COMPRAADDVIEW_H
