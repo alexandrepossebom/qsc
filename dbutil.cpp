@@ -11,7 +11,8 @@ DBUtil::DBUtil()
 
 QSqlDatabase DBUtil::getDatabase (bool  *ok, QString *error) {
     QSqlDatabase db;
-    *ok = true;
+    bool a = true;
+    ok = &a;
     if (!QSqlDatabase::contains(DBUtil::DATABASE_CONNECT_NAME)) {
 
         QSettings settings("Possebom", "Qsc");
@@ -32,10 +33,10 @@ QSqlDatabase DBUtil::getDatabase (bool  *ok, QString *error) {
     if (!db.isOpen()) {
         bool result = db.open();
         if (0 != ok) {
-            *ok = result;
+            ok = &result;
         }
         if ((false == result) && (0 != error)) {
-            *error = db.lastError().text();
+            error = &db.lastError().text();
         }
     }
     return db;

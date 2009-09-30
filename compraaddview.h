@@ -33,6 +33,7 @@ private slots:
     void formaChanged(int index);
     void valorChanged(double valor);
     void selectCliente();
+    void addCompra();
 };
 
 #endif // COMPRAADDVIEW_H

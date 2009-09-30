@@ -5,13 +5,15 @@
 #include <QCompleter>
 #include "formapagamentocontroller.h"
 #include "vendedorcontroller.h"
+#include "compracontroller.h"
+
 
 CompraAddView::CompraAddView(QWidget *parent) :
     QDialog(parent),
     m_ui(new Ui::CompraAddView)
 {
     m_ui->setupUi(this);
-        QDate now = QDate::currentDate();
+    QDate now = QDate::currentDate();
     m_ui->dataDateEdit->setDate(now);
     m_ui->dataDateEdit->setMaximumDate(now);
 
@@ -20,10 +22,38 @@ CompraAddView::CompraAddView(QWidget *parent) :
     connect(m_ui->formadePagamentoComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(formaChanged(int)));
     connect(m_ui->valorDoubleSpinBox,SIGNAL(valueChanged(double)),this,SLOT(valorChanged(double)));
     connect(m_ui->clienteToolButton,SIGNAL(clicked()),this,SLOT(selectCliente()));
+    connect(m_ui->buttonBox,SIGNAL(accepted()),this,SLOT(addCompra()));
 
-       changeWidgets(true);
+    changeWidgets(true);
     repaintFormas();
     repaintVendedores();
+}
+
+void CompraAddView::addCompra()
+{
+    FormaPagamento fp;
+    int fpIndex = m_ui->formadePagamentoComboBox->currentIndex();
+    fp.setId( m_ui->formadePagamentoComboBox->itemData( fpIndex ).toInt() );
+    Vendedor vendedor;
+    int vendedorIndex = m_ui->vendedorComboBox->currentIndex();
+    vendedor.setId( m_ui->vendedorComboBox->itemData( vendedorIndex ).toInt() );
+
+    Compra compra;
+    compra.cliente = cliente;
+    compra.formaPagamento = fp;
+    compra.vendedor = vendedor;
+
+    compra.itens = m_ui->itensSpinBox->value();
+    compra.paga = false;
+    compra.valor = m_ui->valorDoubleSpinBox->value();
+
+    compra.dataCompra = m_ui->dataDateEdit->date();
+
+    CompraController cc;
+    QString error;
+    bool ok;
+    cc.Add(&ok,&error,compra);
+    qDebug() << ok << error;
 }
 
 CompraAddView::~CompraAddView()
