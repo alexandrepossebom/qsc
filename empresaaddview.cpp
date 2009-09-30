@@ -30,8 +30,6 @@ void EmpresaAddView::cepChanged(QString cepString)
     m_ui->enderecoLineEdit->setText(cep.endereco.nome);
     m_ui->estadoLineEdit->setText(cep.estado.nome);
     m_ui->cidadeLineEdit->setText(cep.cidade.nome);
-
-
 }
 
 void EmpresaAddView::repaintTipoTelefone()
@@ -53,10 +51,9 @@ EmpresaAddView::~EmpresaAddView()
 
 void EmpresaAddView::add()
 {
-    qDebug() << "oi";
     EmpresaController ec;
     empresa.setNome(m_ui->nomeLineEdit->text());
-     if(!ec.addEmpresa(&empresa))
+    if(!ec.addEmpresa(&empresa))
     {
         QMessageBox *msgBox;
         msgBox = new QMessageBox;
