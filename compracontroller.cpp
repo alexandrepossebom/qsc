@@ -5,6 +5,40 @@ CompraController::CompraController()
 {
 }
 
+ QList<Compra> CompraController::getNaoPagasByCliente(bool *ok,QString *error,Cliente cliente)
+ {
+    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlQuery query(db);
+
+    QString sql;
+    sql.append("SELECT valor,data_compra,id FROM compra WHERE cliente_id = :cliente_id and paga = 0");
+    query.prepare(sql);
+    query.bindValue(":cliente_id",cliente.id);
+
+
+    if( ok && !query.exec() )
+    {
+        qDebug() << query.executedQuery();
+        *error = query.lastError().text();
+        ok = false;
+    }
+
+    int fieldValor = query.record().indexOf("valor");
+    int fieldDataCompra = query.record().indexOf("data_compra");
+    int fieldId = query.record().indexOf("id");
+
+    QList<Compra> compras;
+    Compra compra;
+    while (query.next()) {
+        compra.id = query.value(fieldId).toInt();
+        compra.valor = query.value(fieldValor).toDouble();
+        compra.paga = false;
+        compra.dataCompra = query.value(fieldDataCompra).toDate();
+        compras.append(compra);
+    }
+    return compras;
+ }
+
 void CompraController::Add(bool *ok,QString *error,Compra compra)
 {
     QSqlDatabase db = DBUtil::getDatabase(ok, error);

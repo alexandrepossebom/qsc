@@ -8,6 +8,32 @@ ClienteController::ClienteController()
 
 }
 
+Cliente ClienteController::getClienteByCpf(bool *ok,QString *error,long long int cpf)
+{
+    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlQuery query(db);
+    query.prepare("select nome,id,cpf,data_nascimento from cliente where cpf = :cpf order by nome limit 1");
+    query.bindValue(":cpf",cpf);
+
+    if( ok && !query.exec() )
+    {
+        *error = query.lastError().text();
+        *ok = false;
+    }
+
+    int fieldNome = query.record().indexOf("nome");
+    int fieldId = query.record().indexOf("id");
+    int fieldCpf = query.record().indexOf("cpf");
+    int fieldDataNascimento = query.record().indexOf("data_nascimento");
+    Cliente cliente;
+    query.next();
+    cliente.setNome(query.value(fieldNome).toString());
+    cliente.setId(query.value(fieldId).toInt());
+    cliente.setCpf(query.value(fieldCpf).toInt());
+    cliente.setDataNascimento(query.value(fieldDataNascimento).toDate());
+
+    return cliente;
+}
 Cliente ClienteController::getClienteByName(bool *ok,QString *error,QString nome)
 {
     QSqlDatabase db = DBUtil::getDatabase(ok, error);

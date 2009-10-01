@@ -3,6 +3,7 @@
 #include <QTableWidgetItem>
 #include <QtGui/QDialog>
 #include <QDebug>
+#include "cliente.h"
 
 namespace Ui {
     class PagarAddView;
@@ -19,6 +20,8 @@ protected:
 
 private:
     Ui::PagarAddView *m_ui;
+    Cliente cliente;
+    void repaintCompras();
 
 private slots:
     void slotNomeChanged(QString nome);

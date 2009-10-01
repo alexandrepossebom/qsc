@@ -1,6 +1,9 @@
 #include "pagaraddview.h"
 #include "ui_pagaraddview.h"
 #include "clientecontroller.h"
+#include "compracontroller.h"
+#include <QList>
+#include "compra.h"
 #include <QStringListModel>
 #include <QCompleter>
 #include <QStandardItemModel>
@@ -22,16 +25,57 @@ PagarAddView::PagarAddView(QWidget *parent) :
 
 }
 
+void PagarAddView::repaintCompras()
+{
+    CompraController cc;
+    QString error;
+    bool ok;
+    QList<Compra> compras = cc.getNaoPagasByCliente(&ok,&error,cliente);
+
+    QStringList header;
+    header << "Valor" << "Data da Compra";
+
+    m_ui->compraTableWidget->setRowCount( compras.size() );
+    m_ui->compraTableWidget->setColumnCount(2);
+    m_ui->compraTableWidget->setHorizontalHeaderLabels(header);
+    m_ui->compraTableWidget->verticalHeader()->hide();
+    m_ui->compraTableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+    m_ui->compraTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_ui->compraTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    int i = 0;
+    while(!compras.isEmpty())
+    {
+        Compra compra = compras.takeFirst();
+        QTableWidgetItem *itemValor = new QTableWidgetItem(QString::number(compra.valor));
+        QTableWidgetItem *itemData = new QTableWidgetItem(compra.dataCompra.toString("dd/MM/yyyy"));
+        m_ui->compraTableWidget->setItem(i,0,itemValor);
+        m_ui->compraTableWidget->setItem(i,1,itemData);
+        i++;
+    }
+    m_ui->compraTableWidget->adjustSize();
+}
+
 void PagarAddView::slotClienteSelected()
 {
-    QRegExp rx("(\\d{3}\.\\d{3}\.\\d{3}-\\d{2})");
+    QRegExp rx("(\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2})");
 
     long long int cpf = 0;
     int pos = rx.indexIn( m_ui->nomeLineEdit->text() );
-    if (pos > -1) {
+    if (pos > -1)
+    {
         cpf = rx.cap(1).replace(".","").replace("-","").toLongLong();
+    }else{
+        return;
     }
-    qDebug() << cpf;
+    ClienteController cc;
+    bool ok;
+    QString error;
+    cliente = cc.getClienteByCpf(&ok,&error,cpf);
+
+
+repaintCompras();
+    qDebug() << cliente.dataNascimento;
 
 }
 
