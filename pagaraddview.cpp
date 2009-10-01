@@ -22,7 +22,13 @@ PagarAddView::PagarAddView(QWidget *parent) :
 
     connect(m_ui->nomeLineEdit,SIGNAL(textEdited(QString)),this,SLOT(slotNomeChanged(QString)));
     connect(m_ui->nomeLineEdit,SIGNAL(returnPressed()),this,SLOT(slotClienteSelected()));
+    connect(m_ui->compraTableWidget,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(slotCompraSelected()));
 
+}
+void PagarAddView::slotCompraSelected()
+{
+    int row = m_ui->compraTableWidget->currentRow();
+    qDebug() << m_ui->compraTableWidget->item(row-1,2)->text();
 }
 
 void PagarAddView::repaintCompras()
@@ -36,7 +42,7 @@ void PagarAddView::repaintCompras()
     header << "Valor" << "Data da Compra";
 
     m_ui->compraTableWidget->setRowCount( compras.size() );
-    m_ui->compraTableWidget->setColumnCount(2);
+    m_ui->compraTableWidget->setColumnCount(3);
     m_ui->compraTableWidget->setHorizontalHeaderLabels(header);
     m_ui->compraTableWidget->verticalHeader()->hide();
     m_ui->compraTableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -48,11 +54,14 @@ void PagarAddView::repaintCompras()
     {
         Compra compra = compras.takeFirst();
         QTableWidgetItem *itemValor = new QTableWidgetItem(QString::number(compra.valor));
+        QTableWidgetItem *itemId = new QTableWidgetItem(QString::number(compra.id));
         QTableWidgetItem *itemData = new QTableWidgetItem(compra.dataCompra.toString("dd/MM/yyyy"));
         m_ui->compraTableWidget->setItem(i,0,itemValor);
         m_ui->compraTableWidget->setItem(i,1,itemData);
+        m_ui->compraTableWidget->setItem(i,2,itemId);
         i++;
     }
+    m_ui->compraTableWidget->hideColumn(2);
     m_ui->compraTableWidget->adjustSize();
 }
 

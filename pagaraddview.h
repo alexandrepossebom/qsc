@@ -26,6 +26,7 @@ private:
 private slots:
     void slotNomeChanged(QString nome);
     void slotClienteSelected();
+    void slotCompraSelected();
 };
 
 #endif // PAGARADDVIEW_H
