@@ -12,7 +12,7 @@ public:
     CompraController();
     void Add(bool *ok,QString *error,Compra compra);
     QList<Compra> getNaoPagasByCliente(bool *ok,QString *error,Cliente cliente);
-
+    void setPaga(bool *ok,QString *error,Compra compra);
 
 };
 

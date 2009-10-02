@@ -4,6 +4,8 @@
 #include <QtGui/QDialog>
 #include <QDebug>
 #include "cliente.h"
+#include "compra.h"
+#include "parcela.h"
 
 namespace Ui {
     class PagarAddView;
@@ -21,12 +23,20 @@ protected:
 private:
     Ui::PagarAddView *m_ui;
     Cliente cliente;
+    Compra compra;
+    Parcela parcela;
+    int numParcelas;
     void repaintCompras();
+    void repaintParcelas();
+    void repaintPagamento();
 
 private slots:
     void slotNomeChanged(QString nome);
     void slotClienteSelected();
-    void slotCompraSelected();
+    void slotCompraSelected(QModelIndex);
+    void slotParcelaSelected(QModelIndex);
+    void slotValorChanged(double);
+    void slotOk();
 };
 
 #endif // PAGARADDVIEW_H

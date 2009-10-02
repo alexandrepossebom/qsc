@@ -6,8 +6,8 @@
 
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow),
-    m_compraAddWidget(NULL), m_clienteAdWidget(NULL), m_pagarAddWidget(NULL)
+        : QMainWindow(parent), ui(new Ui::MainWindow),
+        m_compraAddWidget(NULL), m_clienteAdWidget(NULL), m_pagarAddWidget(NULL)
 {
     ui->setupUi(this);
     connect(ui->actionComprar,SIGNAL(triggered(bool)),this,SLOT(compraAdd()));
@@ -22,31 +22,25 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::slotPagar()
 {
-    if (m_pagarAddWidget == NULL)
-    {
-        m_pagarAddWidget = new PagarAddView();
-        m_stackedWidget->addWidget(m_pagarAddWidget);
-    }
+    delete m_pagarAddWidget;
+    m_pagarAddWidget = new PagarAddView();
+    m_stackedWidget->addWidget(m_pagarAddWidget);
     m_stackedWidget->setCurrentWidget(m_pagarAddWidget);
 }
 
 void MainWindow::compraAdd()
 {
-    if (m_compraAddWidget == NULL)
-    {
-        m_compraAddWidget = new CompraAddView();
-        m_stackedWidget->addWidget(m_compraAddWidget);
-    }
+    delete m_compraAddWidget;
+    m_compraAddWidget = new CompraAddView();
+    m_stackedWidget->addWidget(m_compraAddWidget);
     m_stackedWidget->setCurrentWidget(m_compraAddWidget);
 }
 
 void MainWindow::clienteAdd()
 {
-    if (m_clienteAdWidget == NULL)
-    {
-        m_clienteAdWidget = new ClienteAddView();
-        m_stackedWidget->addWidget(m_clienteAdWidget);
-    }
+    delete m_clienteAdWidget;
+    m_clienteAdWidget = new ClienteAddView();
+    m_stackedWidget->addWidget(m_clienteAdWidget);
     m_stackedWidget->setCurrentWidget(m_clienteAdWidget);
 }
 

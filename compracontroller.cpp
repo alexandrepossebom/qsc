@@ -5,13 +5,31 @@ CompraController::CompraController()
 {
 }
 
+void CompraController::setPaga(bool *ok,QString *error,Compra compra)
+{
+    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlQuery query(db);
+
+    QString sql;
+    sql.append("UPDATE compra SET paga = 1 WHERE id = :id");
+    query.prepare(sql);
+    query.bindValue(":id",compra.id);
+
+    if( ok && !query.exec() )
+    {
+        qDebug() << query.executedQuery();
+        *error = query.lastError().text();
+        *ok = false;
+    }
+}
+
  QList<Compra> CompraController::getNaoPagasByCliente(bool *ok,QString *error,Cliente cliente)
  {
     QSqlDatabase db = DBUtil::getDatabase(ok, error);
     QSqlQuery query(db);
 
     QString sql;
-    sql.append("SELECT valor,data_compra,id FROM compra WHERE cliente_id = :cliente_id and paga = 0");
+    sql.append("SELECT valor,data_compra,id,itens FROM compra WHERE cliente_id = :cliente_id and paga = 0 order by data_compra");
     query.prepare(sql);
     query.bindValue(":cliente_id",cliente.id);
 
@@ -26,6 +44,7 @@ CompraController::CompraController()
     int fieldValor = query.record().indexOf("valor");
     int fieldDataCompra = query.record().indexOf("data_compra");
     int fieldId = query.record().indexOf("id");
+    int fieldItens = query.record().indexOf("itens");
 
     QList<Compra> compras;
     Compra compra;
@@ -34,8 +53,10 @@ CompraController::CompraController()
         compra.valor = query.value(fieldValor).toDouble();
         compra.paga = false;
         compra.dataCompra = query.value(fieldDataCompra).toDate();
+        compra.itens = query.value(fieldItens).toInt();
         compras.append(compra);
     }
+
     return compras;
  }
 

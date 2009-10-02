@@ -38,7 +38,11 @@ SOURCES += main.cpp \
     compraaddview.cpp \
     compracontroller.cpp \
     compra.cpp \
-    pagaraddview.cpp
+    pagaraddview.cpp \
+    parcela.cpp \
+    parcelacontroller.cpp \
+    pagarcontroller.cpp \
+    pagamento.cpp
 HEADERS += mainwindow.h \
     clienteaddview.h \
     cliente.h \
@@ -72,7 +76,11 @@ HEADERS += mainwindow.h \
     compraaddview.h \
     compracontroller.h \
     compra.h \
-    pagaraddview.h
+    pagaraddview.h \
+    parcela.h \
+    parcelacontroller.h \
+    pagarcontroller.h \
+    pagamento.h
 FORMS += mainwindow.ui \
     clienteaddview.ui \
     nacionalidadeaddview.ui \

@@ -4,6 +4,7 @@
 #include "formapagamento.h"
 #include "cliente.h"
 #include <QDate>
+#include <QString>
 
 class Compra
 {
@@ -17,6 +18,7 @@ public:
     int itens;
     bool paga;
     int id;
+    QString getValorFormatado();
 };
 
 #endif // COMPRA_H
