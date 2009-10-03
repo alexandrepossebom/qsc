@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QtSql>
 #include "dbutil.h"
+#include "telefonecontroller.h"
 
 
 EmpresaController::EmpresaController()
@@ -56,8 +57,10 @@ bool EmpresaController::addEmpresa(Empresa *empresa)
     }
 
     QSqlQuery query;
-    query.prepare("INSERT INTO empresa (nome) VALUES (:nome)");
+    query.prepare("INSERT INTO empresa (nome,numero,cep_cep) VALUES (:nome,:numero,:cep)");
     query.bindValue(":nome", empresa->getNome());
+    query.bindValue(":numero",empresa->numero);
+    query.bindValue(":cep",empresa->cep.cep);
 
     if (!query.exec())
     {
@@ -66,5 +69,27 @@ bool EmpresaController::addEmpresa(Empresa *empresa)
         return false;
     }
     empresa->setId(query.lastInsertId().toInt());
+
+    if(empresa->id > 0 && empresa->telefones.size() > 0)
+    {
+        TelefoneController tc;
+        while(!empresa->telefones.isEmpty())
+        {
+
+            Telefone telefone = empresa->telefones.takeFirst();
+            telefone.id = 0;
+            qDebug() << telefone.id;
+            tc.Add(&telefone);
+            qDebug() << telefone.id;
+            if (telefone.id > 0)
+            {
+                query.prepare("insert into empresa_has_telefone (empresa_id,telefone_id) values (:empresa_id,:telefone_id)");
+                query.bindValue(":empresa_id",empresa->id);
+                query.bindValue(":telefone_id",telefone.id);
+                query.exec();
+                qDebug() << empresa->id << telefone.id << query.lastError().text();
+            }
+        }
+    }
     return true;
 }

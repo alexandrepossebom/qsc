@@ -2,21 +2,24 @@
 #define EMPRESA_H
 
 #include <QString>
+#include <QList>
+#include "telefone.h"
+#include "cep.h"
 
 class Empresa
 {
 public:
     Empresa();
     void setNome(QString nome);
-    void setTelefone(QString telefone);
     QString getNome();
-    QString getTelefone();
     void setId(int id);
     int getId();
-private:
+
     QString nome;
-    QString telefone;
     int id;
+    QList<Telefone> telefones;
+    Cep cep;
+    int numero;
 };
 
 #endif // EMPRESA_H

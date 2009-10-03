@@ -42,7 +42,9 @@ SOURCES += main.cpp \
     parcela.cpp \
     parcelacontroller.cpp \
     pagarcontroller.cpp \
-    pagamento.cpp
+    pagamento.cpp \
+    telefone.cpp \
+    telefonecontroller.cpp
 HEADERS += mainwindow.h \
     clienteaddview.h \
     cliente.h \
@@ -80,7 +82,9 @@ HEADERS += mainwindow.h \
     parcela.h \
     parcelacontroller.h \
     pagarcontroller.h \
-    pagamento.h
+    pagamento.h \
+    telefone.h \
+    telefonecontroller.h
 FORMS += mainwindow.ui \
     clienteaddview.ui \
     nacionalidadeaddview.ui \

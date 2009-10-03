@@ -25,12 +25,3 @@ int Empresa::getId()
     return id;
 }
 
-QString Empresa::getTelefone()
-{
-    return telefone;
-}
-
-void Empresa::setTelefone(QString telefone)
-{
-    this->telefone = telefone;
-}

@@ -252,8 +252,9 @@ void ClienteAddView::cepEdited(QString strCep)
     QString error;
     if(strCep.length() == 8)
     {
+        int cepInt = strCep.toInt();
         CepController cc;
-        Cep cep = cc.getByCep(&ok,&error,strCep.toInt());
+        Cep cep = cc.getByCep(&ok,&error,cepInt);
         if(ok)
         {
             m_ui->estadoLineEdit->setText( cep.getEstado().getNome() );
