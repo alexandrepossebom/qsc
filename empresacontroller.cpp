@@ -32,8 +32,8 @@ QList<Empresa> EmpresaController::getAll()
     int fieldId = query.record().indexOf("id");
     Empresa a;
     while (query.next()) {
-        a.setNome(query.value(fieldNome).toString());
-        a.setId(query.value(fieldId).toInt());
+        a.nome = query.value(fieldNome).toString();
+        a.id = query.value(fieldId).toInt();
         empresas.append(a);
     }
 
@@ -58,7 +58,7 @@ bool EmpresaController::addEmpresa(Empresa *empresa)
 
     QSqlQuery query;
     query.prepare("INSERT INTO empresa (nome,numero,cep_cep) VALUES (:nome,:numero,:cep)");
-    query.bindValue(":nome", empresa->getNome());
+    query.bindValue(":nome", empresa->nome);
     query.bindValue(":numero",empresa->numero);
     query.bindValue(":cep",empresa->cep.cep);
 
@@ -68,7 +68,7 @@ bool EmpresaController::addEmpresa(Empresa *empresa)
         qDebug() << error;
         return false;
     }
-    empresa->setId(query.lastInsertId().toInt());
+    empresa->id = query.lastInsertId().toInt();
 
     if(empresa->id > 0 && empresa->telefones.size() > 0)
     {

@@ -53,7 +53,7 @@ EmpresaAddView::~EmpresaAddView()
 void EmpresaAddView::add()
 {
     EmpresaController ec;
-    empresa.setNome(m_ui->nomeLineEdit->text());
+    empresa.nome = m_ui->nomeLineEdit->text();
     empresa.cep.cep = m_ui->cepLineEdit->text().replace(".","").replace("-","").toInt();
     empresa.numero = m_ui->numeroSpinBox->value();
 

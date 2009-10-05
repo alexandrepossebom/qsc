@@ -10,11 +10,6 @@ class Empresa
 {
 public:
     Empresa();
-    void setNome(QString nome);
-    QString getNome();
-    void setId(int id);
-    int getId();
-
     QString nome;
     int id;
     QList<Telefone> telefones;

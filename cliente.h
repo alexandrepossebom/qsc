@@ -7,6 +7,8 @@
 #include "naturalidade.h"
 #include "empresa.h"
 #include "cep.h"
+#include "telefone.h"
+#include <QList>
 
 class Cliente
 {
@@ -65,6 +67,7 @@ public:
     Cep cep;
     QDate dataNascimento;
     int id;
+    QList<Telefone> telefones;
     
 
 };

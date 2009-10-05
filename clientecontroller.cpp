@@ -139,7 +139,7 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
 
     query.prepare(sql);
     query.bindValue(":nome", cliente->getNome());
-    query.bindValue(":empresa_id", cliente->getEmpresa().getId());
+    query.bindValue(":empresa_id", cliente->empresa.id);
     query.bindValue(":estado_uf", cliente->getNaturalidade().getUF());
     query.bindValue(":nacionalidade_id", cliente->getNacionalidade().getId());
     query.bindValue(":cep_cep", cliente->getCep().getCep());

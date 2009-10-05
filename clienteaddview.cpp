@@ -85,10 +85,10 @@ bool ClienteAddView::addEmpresa()
     EmpresaAddView empresaaddview;
     empresaaddview.exec();
     Empresa empresa = empresaaddview.getNew();
-    if (empresa.getId() > 0){
-        QVariant v(empresa.getId());
-        m_ui->empresaComboBox->addItem(empresa.getNome(),v);
-        m_ui->conjugeEmpresaComboBox->addItem(empresa.getNome(),v);
+    if (empresa.id > 0){
+        QVariant v(empresa.id);
+        m_ui->empresaComboBox->addItem(empresa.nome,v);
+        m_ui->conjugeEmpresaComboBox->addItem(empresa.nome,v);
     }
     return true;
 }
@@ -128,8 +128,8 @@ void ClienteAddView::accepted()
 
     Empresa empresa;
     i = m_ui->empresaComboBox->currentIndex();
-    empresa.setId( m_ui->empresaComboBox->itemData( i ).toInt() );
-    empresa.setNome( m_ui->empresaComboBox->currentText() );
+    empresa.id =  m_ui->empresaComboBox->itemData( i ).toInt() ;
+    empresa.nome =  m_ui->empresaComboBox->currentText() ;
 
     cliente.setEmpresa(empresa);
     cliente.setCargo( m_ui->cargoLineEdit->text() );
@@ -159,8 +159,8 @@ void ClienteAddView::accepted()
         conjuge.nome = m_ui->conjugeNomeLineEdit->text();
         conjuge.renda = m_ui->rendaDoubleSpinBox_2->value();
         i = m_ui->conjugeEmpresaComboBox->currentIndex();
-        empresa.setId( m_ui->conjugeEmpresaComboBox->itemData( i ).toInt() );
-        empresa.setNome( m_ui->conjugeEmpresaComboBox->currentText() );
+        empresa.id =  m_ui->conjugeEmpresaComboBox->itemData( i ).toInt();
+        empresa.nome =  m_ui->conjugeEmpresaComboBox->currentText();
         conjuge.empresa = empresa;
         conjuge.cliente = cliente;
         ConjugeController conjugeController;
@@ -202,9 +202,9 @@ void ClienteAddView::repaintEmpresa()
     while (!empresas.isEmpty())
     {
         Empresa empresa = empresas.takeFirst();
-        QVariant v(empresa.getId());
-        m_ui->empresaComboBox->addItem(empresa.getNome(),v);
-        m_ui->conjugeEmpresaComboBox->addItem(empresa.getNome(),v);
+        QVariant v(empresa.id);
+        m_ui->empresaComboBox->addItem(empresa.nome,v);
+        m_ui->conjugeEmpresaComboBox->addItem(empresa.nome,v);
     }
 }
 
