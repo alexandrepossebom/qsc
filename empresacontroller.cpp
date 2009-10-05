@@ -78,16 +78,13 @@ bool EmpresaController::addEmpresa(Empresa *empresa)
 
             Telefone telefone = empresa->telefones.takeFirst();
             telefone.id = 0;
-            qDebug() << telefone.id;
             tc.Add(&telefone);
-            qDebug() << telefone.id;
             if (telefone.id > 0)
             {
                 query.prepare("insert into empresa_has_telefone (empresa_id,telefone_id) values (:empresa_id,:telefone_id)");
                 query.bindValue(":empresa_id",empresa->id);
                 query.bindValue(":telefone_id",telefone.id);
                 query.exec();
-                qDebug() << empresa->id << telefone.id << query.lastError().text();
             }
         }
     }
