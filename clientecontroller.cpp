@@ -1,6 +1,7 @@
 #include "clientecontroller.h"
 #include <QtSql>
 #include <QDebug>
+#include "telefonecontroller.h"
 #include "dbutil.h"
 
 ClienteController::ClienteController()
@@ -163,6 +164,21 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
         error->append(query.lastError().text());
         qDebug() << error;
         ok = false;
+    }else{
+        cliente->id = query.lastInsertId().toInt();
+        while(!cliente->telefones.isEmpty())
+        {
+            Telefone telefone = cliente->telefones.takeFirst();
+            TelefoneController tc;
+            tc.Add(&telefone);
+            if (telefone.id > 0)
+            {
+                query.prepare("insert into cliente_has_telefone (cliente_id,telefone_id) values (:cliente_id,:telefone_id)");
+                query.bindValue(":cliente_id",cliente->id);
+                query.bindValue(":telefone_id",telefone.id);
+                query.exec();
+                qDebug() << cliente->id << telefone.id << query.lastError().text();
+            }
+        }
     }
-
 }

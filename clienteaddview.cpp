@@ -95,8 +95,6 @@ bool ClienteAddView::addEmpresa()
 
 void ClienteAddView::accepted()
 {
-
-
     int i = 0;
     Cliente cliente;
     cliente.setNome( m_ui->nomeLineEdit->text() );
@@ -141,6 +139,27 @@ void ClienteAddView::accepted()
     cep.setCep( m_ui->cepLineEdit->text().replace(".","").replace("-","").toInt() );
     cliente.setCep( cep );
 
+    Telefone telefone;
+    TipoTelefone tipoTelefone;
+    int id = 0;
+    if ( m_ui->fone1LineEdit->text().length() > 8)
+    {
+        id = m_ui->tp1comboBox->currentIndex();
+        tipoTelefone.id = m_ui->tp1comboBox->itemData(id).toInt();
+
+        telefone.tipoTelefone = tipoTelefone;
+        telefone.numero = m_ui->fone1LineEdit->text().replace("(","").replace(") ","").replace("-","").toLongLong();
+        cliente.telefones.append(telefone);
+    }
+    if ( m_ui->fone2LineEdit->text().length() > 8)
+    {
+        id = m_ui->tp2comboBox->currentIndex();
+        tipoTelefone.id = m_ui->tp2comboBox->itemData(id).toInt();
+
+        telefone.tipoTelefone = tipoTelefone;
+        telefone.numero = m_ui->fone2LineEdit->text().replace("(","").replace(") ","").replace("-","").toLongLong();
+        cliente.telefones.append(telefone);
+    }
 
     ClienteController cc;
     bool ok = true;

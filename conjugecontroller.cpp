@@ -10,11 +10,12 @@ void ConjugeController::Add(bool *ok,QString *error,Conjuge *conjuge)
     QSqlQuery query(db);
 
     QString sql;
-    sql.append("insert into conjuge (nome,renda,cliente_id) VALUES (:nome,:renda,:cliente_id)");
+    sql.append("insert into conjuge (nome,renda,cliente_id,empresa_id) VALUES (:nome,:renda,:cliente_id,:empresa_id)");
     query.prepare(sql);
     query.bindValue(":nome",conjuge->nome);
     query.bindValue(":renda",conjuge->renda);
     query.bindValue(":cliente_id",conjuge->cliente.id);
+    query.bindValue(":empresa_id",conjuge->empresa.id);
 
     if( ok && !query.exec() )
     {

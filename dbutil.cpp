@@ -36,7 +36,8 @@ QSqlDatabase DBUtil::getDatabase (bool  *ok, QString *error) {
             ok = &result;
         }
         if ((false == result) && (0 != error)) {
-            error = &db.lastError().text();
+            error->clear();
+            error->append(db.lastError().text());
         }
     }
     return db;
