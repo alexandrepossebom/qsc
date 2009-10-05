@@ -6,18 +6,16 @@
 
 
 MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent), ui(new Ui::MainWindow),
-        m_compraAddWidget(NULL), m_clienteAdWidget(NULL), m_pagarAddWidget(NULL)
+        : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     connect(ui->actionComprar,SIGNAL(triggered(bool)),this,SLOT(compraAdd()));
     connect(ui->actionAdicionar,SIGNAL(triggered(bool)),this,SLOT(clienteAdd()));
     connect(ui->actionConfig,SIGNAL(triggered(bool)),this,SLOT(configSystem()));
     connect(ui->actionPagar,SIGNAL(triggered(bool)),this,SLOT(slotPagar()));
-
-
     m_stackedWidget = new QStackedWidget(this);
     setCentralWidget(m_stackedWidget);
+    m_clienteAdWidget = NULL;
 }
 
 void MainWindow::slotPagar()

@@ -246,6 +246,9 @@
         <string>Telefones</string>
        </property>
        <layout class="QFormLayout" name="formLayout_2">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::ExpandingFieldsGrow</enum>
+        </property>
         <item row="0" column="0">
          <widget class="QLineEdit" name="fone1LineEdit">
           <property name="inputMask">
@@ -272,23 +275,6 @@
         </item>
         <item row="1" column="1">
          <widget class="QComboBox" name="tp2comboBox">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLineEdit" name="fone3LineEdit">
-          <property name="inputMask">
-           <string>(99) 9999-9999; </string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QComboBox" name="tp3comboBox">
           <property name="minimumSize">
            <size>
             <width>120</width>

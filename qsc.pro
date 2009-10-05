@@ -44,7 +44,9 @@ SOURCES += main.cpp \
     pagarcontroller.cpp \
     pagamento.cpp \
     telefone.cpp \
-    telefonecontroller.cpp
+    telefonecontroller.cpp \
+    conjuge.cpp \
+    conjugecontroller.cpp
 HEADERS += mainwindow.h \
     clienteaddview.h \
     cliente.h \
@@ -84,7 +86,9 @@ HEADERS += mainwindow.h \
     pagarcontroller.h \
     pagamento.h \
     telefone.h \
-    telefonecontroller.h
+    telefonecontroller.h \
+    conjuge.h \
+    conjugecontroller.h
 FORMS += mainwindow.ui \
     clienteaddview.ui \
     nacionalidadeaddview.ui \

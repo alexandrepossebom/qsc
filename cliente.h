@@ -65,6 +65,7 @@ public:
     Cep cep;
     QDate dataNascimento;
     int id;
+    
 
 };
 

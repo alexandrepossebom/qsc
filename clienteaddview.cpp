@@ -14,6 +14,7 @@
 #include "tipotelefonecontroller.h"
 #include "tipotelefone.h"
 #include "cepaddview.h"
+#include "conjugecontroller.h"
 #include <QDate>
 #include <QDebug>
 
@@ -142,9 +143,9 @@ void ClienteAddView::accepted()
 
 
     ClienteController cc;
-    bool ok;
+    bool ok = true;
     QString error;
-    cc.addCliente(&ok,&error,cliente);
+    cc.addCliente(&ok,&error,&cliente);
     if(!ok)
     {
         QMessageBox *msgBox;
@@ -153,7 +154,19 @@ void ClienteAddView::accepted()
         msgBox->setText(error);
         msgBox->setStandardButtons(QMessageBox::Ok);
         msgBox->exec();
+    }else if (cliente.estadoCivil.indexOf("Casado") == 0){
+        Conjuge conjuge;
+        conjuge.nome = m_ui->conjugeNomeLineEdit->text();
+        conjuge.renda = m_ui->rendaDoubleSpinBox_2->value();
+        i = m_ui->conjugeEmpresaComboBox->currentIndex();
+        empresa.setId( m_ui->conjugeEmpresaComboBox->itemData( i ).toInt() );
+        empresa.setNome( m_ui->conjugeEmpresaComboBox->currentText() );
+        conjuge.empresa = empresa;
+        conjuge.cliente = cliente;
+        ConjugeController conjugeController;
+        conjugeController.Add(&ok,&error,&conjuge);
     }
+    this->close();
 }
 
 ClienteAddView::~ClienteAddView()
@@ -222,7 +235,6 @@ void ClienteAddView::repaintTipoTelefone()
         QVariant v( tipo.getId() );
         m_ui->tp1comboBox->addItem( tipo.getNome() , v );
         m_ui->tp2comboBox->addItem( tipo.getNome() , v );
-        m_ui->tp3comboBox->addItem( tipo.getNome() , v );
     }
 }
 void ClienteAddView::repaintEstado()

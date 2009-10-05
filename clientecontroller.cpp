@@ -101,30 +101,26 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
     return clientes;
 }
 
-void ClienteController::addCliente(bool *ok,QString *error,Cliente cliente)
+void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
 {
 
-    if( cliente.getNome().length() == 0)
+    if( cliente->getNome().length() == 0)
         error->append("\n- Nome do cliente");
-    if( cliente.getCpf() == 0 )
+    if( cliente->getCpf() == 0 )
         error->append("\n- Cpf");
-    if( cliente.getRenda() == 0 )
-        error->append("\n- Renda");
-    if( cliente.getCargo().length() == 0 )
+    if( cliente->getCargo().length() == 0 )
         error->append("\n- Cargo");
-    if( cliente.getEnderecoNumero() == 0 )
+    if( cliente->getEnderecoNumero() == 0 )
         error->append("\n- Endereço Número");
-
     if( error->length() > 0 )
     {
         QString string = "Verifique os seguintes dados:";
         string.append(error);
-        *error = string;
+        error->clear();
+        error->append(string);
         *ok = false;
+        return;
     }
-    return;
-
-
 
     QSqlDatabase db = DBUtil::getDatabase(ok, error);
     QSqlQuery query(db);
@@ -142,28 +138,30 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente cliente)
 
 
     query.prepare(sql);
-    query.bindValue(":nome", cliente.getNome());
-    query.bindValue(":empresa_id", cliente.getEmpresa().getId());
-    query.bindValue(":estado_uf", cliente.getNaturalidade().getUF());
-    query.bindValue(":nacionalidade_id", cliente.getNacionalidade().getId());
-    query.bindValue(":cep_cep", cliente.getCep().getCep());
-    query.bindValue(":data_nascimento", cliente.getDataNascimento() );
+    query.bindValue(":nome", cliente->getNome());
+    query.bindValue(":empresa_id", cliente->getEmpresa().getId());
+    query.bindValue(":estado_uf", cliente->getNaturalidade().getUF());
+    query.bindValue(":nacionalidade_id", cliente->getNacionalidade().getId());
+    query.bindValue(":cep_cep", cliente->getCep().getCep());
+    query.bindValue(":data_nascimento", cliente->getDataNascimento() );
     query.bindValue(":data_cadastro", QDate::currentDate() );
-    query.bindValue(":cpf", cliente.getCpf() );
-    query.bindValue(":estado_civil", cliente.getEstadoCivil());
-    query.bindValue(":rg", cliente.getRg() );
-    query.bindValue("rg_data_emissao", cliente.getRgDataEmissao() );
-    query.bindValue(":nome_pai", cliente.getNomePai() );
-    query.bindValue(":nome_mae", cliente.getNomeMae() );
-    query.bindValue(":renda", cliente.getRenda());
-    query.bindValue(":cargo", cliente.getCargo() );
-    query.bindValue(":rg_orgao_emissor", cliente.getRgOrgaoEmissor());
-    query.bindValue(":endereco_numero", cliente.getEnderecoNumero());
+    query.bindValue(":cpf", cliente->getCpf() );
+    query.bindValue(":estado_civil", cliente->getEstadoCivil());
+    query.bindValue(":rg", cliente->getRg() );
+    query.bindValue("rg_data_emissao", cliente->getRgDataEmissao() );
+    query.bindValue(":nome_pai", cliente->getNomePai() );
+    query.bindValue(":nome_mae", cliente->getNomeMae() );
+    query.bindValue(":renda", cliente->getRenda());
+    query.bindValue(":cargo", cliente->getCargo() );
+    query.bindValue(":rg_orgao_emissor", cliente->getRgOrgaoEmissor());
+    query.bindValue(":endereco_numero", cliente->getEnderecoNumero());
 
     if( ok && !query.exec() )
     {
         qDebug() << query.executedQuery();
-        *error = query.lastError().text();
+        error->clear();
+        error->append(query.lastError().text());
+        qDebug() << error;
         ok = false;
     }
 
