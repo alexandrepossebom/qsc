@@ -25,6 +25,9 @@ PagarAddView::PagarAddView(QWidget *parent) :
     connect(m_ui->doubleSpinBox,SIGNAL(valueChanged(double)),this,SLOT(slotValorChanged(double)));
     connect(m_ui->buttonBox,SIGNAL(accepted()),this,SLOT(slotOk()));
 
+    m_ui->checkBox->setEnabled(false);
+    m_ui->doubleSpinBox->setEnabled(false);
+
 }
 void PagarAddView::slotOk()
 {
@@ -76,6 +79,7 @@ void PagarAddView::slotParcelaSelected(QModelIndex modelIndex)
     parcela.id = m_ui->parcelaTableWidget->item(row,0)->text().toInt();
     parcela.valor = m_ui->parcelaTableWidget->item(row,3)->text().replace("R$ ","").toDouble();
     repaintPagamento();
+    m_ui->doubleSpinBox->setEnabled(true);
 }
 void PagarAddView::repaintParcelas()
 {
@@ -128,6 +132,8 @@ void PagarAddView::slotCompraSelected(QModelIndex modelIndex)
     m_ui->checkBox->setEnabled(false);
     m_ui->checkBox->setChecked(false);
     repaintParcelas();
+    m_ui->checkBox->setEnabled(false);
+    m_ui->doubleSpinBox->setEnabled(false);
 }
 
 void PagarAddView::repaintCompras()
