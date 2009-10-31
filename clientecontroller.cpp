@@ -30,7 +30,7 @@ Cliente ClienteController::getClienteByCpf(bool *ok,QString *error,long long int
     query.next();
     cliente.setNome(query.value(fieldNome).toString());
     cliente.setId(query.value(fieldId).toInt());
-    cliente.setCpf(query.value(fieldCpf).toInt());
+    cliente.setCpf(query.value(fieldCpf).toLongLong());
     cliente.setDataNascimento(query.value(fieldDataNascimento).toDate());
 
     return cliente;
