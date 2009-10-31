@@ -20,8 +20,8 @@ PagarAddView::PagarAddView(QWidget *parent) :
 
     connect(m_ui->nomeLineEdit,SIGNAL(textEdited(QString)),this,SLOT(slotNomeChanged(QString)));
     connect(m_ui->nomeLineEdit,SIGNAL(returnPressed()),this,SLOT(slotClienteSelected()));
-    connect(m_ui->compraTableWidget,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(slotCompraSelected(QModelIndex)));
-    connect(m_ui->parcelaTableWidget,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(slotParcelaSelected(QModelIndex)));
+    connect(m_ui->compraTableWidget,SIGNAL(pressed(QModelIndex)),this,SLOT(slotCompraSelected(QModelIndex)));
+    connect(m_ui->parcelaTableWidget,SIGNAL(pressed(QModelIndex)),this,SLOT(slotParcelaSelected(QModelIndex)));
     connect(m_ui->doubleSpinBox,SIGNAL(valueChanged(double)),this,SLOT(slotValorChanged(double)));
     connect(m_ui->buttonBox,SIGNAL(accepted()),this,SLOT(slotOk()));
 
@@ -118,6 +118,9 @@ void PagarAddView::slotCompraSelected(QModelIndex modelIndex)
 {
     int row = modelIndex.row();
     compra.id = m_ui->compraTableWidget->item(row,0)->text().toInt();
+    m_ui->doubleSpinBox->setValue(0);
+    m_ui->checkBox->setEnabled(false);
+    m_ui->checkBox->setChecked(false);
     repaintParcelas();
 }
 

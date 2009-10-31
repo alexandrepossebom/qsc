@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_stackedWidget = new QStackedWidget(this);
     setCentralWidget(m_stackedWidget);
     m_clienteAdWidget = NULL;
+    m_compraAddWidget = NULL;
+    m_pagarAddWidget = NULL;
 }
 
 void MainWindow::slotPagar()

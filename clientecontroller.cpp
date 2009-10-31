@@ -35,12 +35,16 @@ Cliente ClienteController::getClienteByCpf(bool *ok,QString *error,long long int
 
     return cliente;
 }
-Cliente ClienteController::getClienteByName(bool *ok,QString *error,QString nome)
+
+
+QList<Cliente> ClienteController::getClientesAtrasados(bool *ok,QString *error,QString nome)
 {
+
     QSqlDatabase db = DBUtil::getDatabase(ok, error);
     QSqlQuery query(db);
-    query.prepare("select nome,id,cpf,data_nascimento from cliente where nome like :nome order by nome limit 1");
-    query.bindValue(":nome",nome);
+    query.prepare("select c.nome,c.id,c.cpf,c.data_nascimento,p.data_vencimento from cliente c, compra co, parcela p WHERE co.cliente_id = c.id AND p.compra_id = co.id AND p.paga = 0 AND p.data_vencimento < :now ");
+
+    query.bindValue(":now",QDate::currentDate());
 
     if( ok && !query.exec() )
     {
@@ -48,18 +52,25 @@ Cliente ClienteController::getClienteByName(bool *ok,QString *error,QString nome
         *ok = false;
     }
 
-    int fieldNome = query.record().indexOf("nome");
-    int fieldId = query.record().indexOf("id");
-    int fieldCpf = query.record().indexOf("cpf");
-    int fieldDataNascimento = query.record().indexOf("data_nascimento");
-    Cliente cliente;
-    query.next();
-    cliente.setNome(query.value(fieldNome).toString());
-    cliente.setId(query.value(fieldId).toInt());
-    cliente.setCpf(query.value(fieldCpf).toInt());
-    cliente.setDataNascimento(query.value(fieldDataNascimento).toDate());
+    QList<Cliente> clientes;
 
-    return cliente;
+    int fieldNome = query.record().indexOf("c.nome");
+    int fieldId = query.record().indexOf("c.id");
+    int fieldCpf = query.record().indexOf("c.cpf");
+    int fieldDataNascimento = query.record().indexOf("c.data_nascimento");
+    int fieldDataVencimento = query.record().indexOf("p.data_vencimento");
+
+    Cliente cliente;
+    while (query.next()) {
+        cliente.setNome(query.value(fieldNome).toString());
+        cliente.setId(query.value(fieldId).toInt());
+        cliente.cpf = query.value(fieldCpf).toLongLong();
+        cliente.dataNascimento = query.value(fieldDataNascimento).toDate();
+        clientes.append(cliente);
+    }
+
+    return clientes;
+
 
 }
 

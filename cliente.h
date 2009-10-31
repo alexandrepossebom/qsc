@@ -68,6 +68,8 @@ public:
     QDate dataNascimento;
     int id;
     QList<Telefone> telefones;
+    int diasAtrasado;
+    double valorAtraso;
     
 
 };

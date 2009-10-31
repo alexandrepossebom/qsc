@@ -6,11 +6,12 @@
 #include "formapagamentocontroller.h"
 #include "vendedorcontroller.h"
 #include "compracontroller.h"
+#include <QStringListModel>
 
 
 CompraAddView::CompraAddView(QWidget *parent) :
-    QDialog(parent),
-    m_ui(new Ui::CompraAddView)
+        QDialog(parent),
+        m_ui(new Ui::CompraAddView)
 {
     m_ui->setupUi(this);
     QDate now = QDate::currentDate();
@@ -79,8 +80,6 @@ void CompraAddView::changeEvent(QEvent *e)
     }
 }
 
-
-
 void CompraAddView::changeWidgets(bool visible)
 {
     m_ui->labelCpf->setHidden( visible );
@@ -95,11 +94,23 @@ void CompraAddView::selectCliente()
 {
     if(m_ui->nomeClienteLineEdit->isEnabled())
     {
+        QRegExp rx("(\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2})");
+
+        long long int cpf = 0;
+        int pos = rx.indexIn( m_ui->nomeClienteLineEdit->text() );
+        if (pos > -1)
+        {
+            cpf = rx.cap(1).replace(".","").replace("-","").toLongLong();
+        }else{
+            return;
+        }
         ClienteController cc;
         bool ok;
         QString error;
-        cliente = cc.getClienteByName(&ok,&error,m_ui->nomeClienteLineEdit->text());
-        if(ok)
+        cliente = cc.getClienteByCpf(&ok,&error,cpf);
+
+
+        if(ok && cliente.id > 0)
         {
             refreshCliente();
         }
@@ -141,7 +152,7 @@ void CompraAddView::refresh()
     if (fp.desconto != 0)
         parcela_valor = parcela_valor * (1 - fp.desconto);
     else if ( fp.juro != 0)
-         parcela_valor = parcela_valor * fp.juro;
+        parcela_valor = parcela_valor * fp.juro;
 
     QString valorString = QString("R$ %1").arg(parcela_valor, 0, 'F', 2);
 
@@ -167,31 +178,50 @@ void CompraAddView::nomeChanged(QString nome)
 {
     if (nome.length() < 3)
         return;
-    bool ok;
-    QString error;
 
     ClienteController cc;
+    bool ok;
+    QString error;
     QList<Cliente> clientes = cc.getClientesByName(&ok,&error,nome,20);
 
-    QStringList wordList;
+    QStringListModel *model = new QStringListModel();
 
+    QStringList list;
     while(!clientes.isEmpty())
     {
-        wordList.append(clientes.takeFirst().getNome());
+        Cliente cliente = clientes.takeFirst();
+
+        QString string;
+        string.append(cliente.nome);
+        string.append(" - ");
+        string.append(cliente.getCpfFormated());
+        string.append(" - ");
+        string.append(cliente.dataNascimento.toString("dd/MM/yyyy"));
+
+        list.append(string);
+
     }
-    QCompleter *completer = new QCompleter(wordList, this);
+
+    model->setStringList(list);
+
+    QCompleter *completer = new QCompleter;
+    completer->setModel(model);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
     completer->setModelSorting(QCompleter::UnsortedModel);
+
+
     m_ui->nomeClienteLineEdit->setCompleter(completer);
+
+
 
 }
 
 void CompraAddView::repaintFormas()
 {
-  FormaPagamentoController fpc;
-  bool ok;
-  QString error;
+    FormaPagamentoController fpc;
+    bool ok;
+    QString error;
     QList<FormaPagamento> formas = fpc.getAll(&ok,&error);
     int index = 0;
     while (!formas.isEmpty())
@@ -207,9 +237,9 @@ void CompraAddView::repaintFormas()
 
 void CompraAddView::repaintVendedores()
 {
-  VendedorController vc;
-  bool ok;
-  QString error;
+    VendedorController vc;
+    bool ok;
+    QString error;
     QList<Vendedor> *vendedores = vc.getAll(&ok,&error);
     int index = 0;
     while (!vendedores->isEmpty())
