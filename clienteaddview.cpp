@@ -242,7 +242,6 @@ void ClienteAddView::repaintNacionalidade()
         m_ui->nacionalidadeComboBox->setCurrentIndex(br);
 }
 
-
 void ClienteAddView::repaintTipoTelefone()
 {
     TipoTelefoneController ttc;
@@ -256,6 +255,7 @@ void ClienteAddView::repaintTipoTelefone()
         m_ui->tp2comboBox->addItem( tipo.getNome() , v );
     }
 }
+
 void ClienteAddView::repaintEstado()
 {
     EstadoController ec;
@@ -274,26 +274,23 @@ void ClienteAddView::repaintEstado()
         m_ui->naturalidadeComboBox->setCurrentIndex(pr-1);
 }
 
-
-
-void ClienteAddView::cepEdited(QString strCep)
+void ClienteAddView::cepEdited(QString cepString)
 {
-    strCep = strCep.replace("-","").replace(".","");
+    cepString = cepString.replace(".","").replace("-","");
+    int cepNumber = cepString.toInt();
+    if(cepString.length() < 8)
+        return;
+    CepController cc;
     bool ok;
     QString error;
-    if(strCep.length() == 8)
-    {
-        int cepInt = strCep.toInt();
-        CepController cc;
-        Cep cep = cc.getByCep(&ok,&error,cepInt);
-        if(ok)
-        {
-            m_ui->estadoLineEdit->setText( cep.getEstado().getNome() );
-            m_ui->cidadeLineEdit->setText( cep.getCidade().getNome() );
-            m_ui->bairroLineEdit->setText( cep.getBairro().getNome() );
-            m_ui->enderecoLineEdit->setText( cep.getEndereco().getNome() );
-        }
+    Cep cep = cc.getByCep(&ok,&error,cepNumber);
 
+    if(ok)
+    {
+        m_ui->estadoLineEdit->setText( cep.estado.nome );
+        m_ui->cidadeLineEdit->setText( cep.cidade.nome );
+        m_ui->bairroLineEdit->setText( cep.bairro.nome );
+        m_ui->enderecoLineEdit->setText( cep.endereco.nome );
     }else{
         m_ui->cidadeLineEdit->clear();
         m_ui->bairroLineEdit->clear();
