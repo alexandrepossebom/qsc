@@ -32,7 +32,6 @@ CompraAddView::CompraAddView(QWidget *parent) :
 
 void CompraAddView::addCompra()
 {
-
     //  Forma Pagamento
     int fpIndex = m_ui->formadePagamentoComboBox->currentIndex();
     int fpId = m_ui->formadePagamentoComboBox->itemData( fpIndex ).toInt();
@@ -51,6 +50,7 @@ void CompraAddView::addCompra()
     Compra compra;
     compra.cliente = cliente;
     compra.formaPagamento = fp;
+    compra.formaPagamento.id = fpId;
     compra.vendedor = vendedor;
 
     compra.itens = m_ui->itensSpinBox->value();
@@ -61,6 +61,8 @@ void CompraAddView::addCompra()
 
     CompraController cc;
     cc.Add(&ok,&error,compra);
+    if(ok)
+        this->close();
 }
 
 CompraAddView::~CompraAddView()

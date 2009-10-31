@@ -46,6 +46,12 @@ void PagarAddView::slotOk()
             cc.setPaga(&ok,&error,compra);
         }
     }
+    if(ok)
+    {
+        repaintPagamento();
+        repaintParcelas();
+        repaintCompras();
+    }
 }
 
 void PagarAddView::slotValorChanged(double valor)

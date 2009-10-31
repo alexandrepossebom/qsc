@@ -23,8 +23,8 @@ void CompraController::setPaga(bool *ok,QString *error,Compra compra)
     }
 }
 
- QList<Compra> CompraController::getNaoPagasByCliente(bool *ok,QString *error,Cliente cliente)
- {
+QList<Compra> CompraController::getNaoPagasByCliente(bool *ok,QString *error,Cliente cliente)
+{
     QSqlDatabase db = DBUtil::getDatabase(ok, error);
     QSqlQuery query(db);
 
@@ -58,7 +58,7 @@ void CompraController::setPaga(bool *ok,QString *error,Compra compra)
     }
 
     return compras;
- }
+}
 
 void CompraController::Add(bool *ok,QString *error,Compra compra)
 {
@@ -79,20 +79,21 @@ void CompraController::Add(bool *ok,QString *error,Compra compra)
         compra.paga = false;
 
     query.prepare(sql);
-    query.bindValue(":vendedor_id", compra.vendedor.getId());
-    query.bindValue(":forma_pagamento_id", compra.formaPagamento.getId());
-    query.bindValue(":cliente_id", compra.cliente.getId());
+    query.bindValue(":vendedor_id", compra.vendedor.id);
+    query.bindValue(":forma_pagamento_id", compra.formaPagamento.id);
+    query.bindValue(":cliente_id", compra.cliente.id);
     query.bindValue(":valor", compra.valor);
     query.bindValue(":data_compra", compra.dataCompra);
     query.bindValue(":itens", compra.itens );
     query.bindValue(":paga", compra.paga );
 
-    if( ok && !query.exec() )
+    if(ok && !query.exec() )
     {
         qDebug() << query.executedQuery();
-        *error = query.lastError().text();
+        error->append(query.lastError().text());
         ok = false;
         return;
+
     }
     compra.id = query.lastInsertId().toInt();
 
@@ -126,14 +127,15 @@ void CompraController::Add(bool *ok,QString *error,Compra compra)
         query.bindValue(":paga", compra.paga);
         query.bindValue(":valor", parcela_valor);
 
-        if( ok && !query.exec() )
+        if(ok && !query.exec() )
         {
             qDebug() << query.executedQuery();
-            *error = query.lastError().text();
+            error->append(query.lastError().text());
             qDebug() << error;
             ok = false;
             return;
         }
+
 
         int parcela_id = query.lastInsertId().toInt();
 
@@ -153,7 +155,7 @@ void CompraController::Add(bool *ok,QString *error,Compra compra)
             if( ok && !query.exec() )
             {
                 qDebug() << query.executedQuery();
-                *error = query.lastError().text();
+                error->append( query.lastError().text() );
                 qDebug() << error;
                 ok = false;
                 return;
