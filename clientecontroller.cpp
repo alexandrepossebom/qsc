@@ -192,4 +192,5 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
             }
         }
     }
+    DBUtil::log("cliente","Novo cliente adicionado" + cliente->nome);
 }
