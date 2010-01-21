@@ -1,6 +1,6 @@
 #ifndef PAGARADDVIEW_H
 #define PAGARADDVIEW_H
-#include <QTableWidgetItem>
+#include <QTreeWidgetItem>
 #include <QtGui/QDialog>
 #include <QDebug>
 #include "cliente.h"
@@ -25,16 +25,15 @@ private:
     Cliente cliente;
     Compra compra;
     Parcela parcela;
+    QList<Parcela> parcelas;
     int numParcelas;
     void repaintCompras();
-    void repaintParcelas();
     void repaintPagamento();
 
 private slots:
     void slotNomeChanged(QString nome);
     void slotClienteSelected();
-    void slotCompraSelected(QModelIndex);
-    void slotParcelaSelected(QModelIndex);
+    void slotParcelaSelected(QTreeWidgetItem* item,int id);
     void slotValorChanged(double);
     void slotOk();
 };

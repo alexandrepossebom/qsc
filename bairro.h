@@ -10,7 +10,6 @@ public:
     void setNome(QString nome);
     QString getNome();
     int getId();
-
     int id;
     QString nome;
 };

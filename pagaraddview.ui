@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>647</width>
+    <width>670</width>
     <height>510</height>
    </rect>
   </property>
@@ -43,40 +43,13 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QTableWidget" name="compraTableWidget">
-          <property name="minimumSize">
-           <size>
-            <width>308</width>
-            <height>204</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>204</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QTableWidget" name="parcelaTableWidget">
-          <property name="minimumSize">
-           <size>
-            <width>330</width>
-            <height>204</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>204</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QTreeWidget" name="treeWidget">
+        <column>
+         <property name="text">
+          <string notr="true">1</string>
+         </property>
+        </column>
+       </widget>
       </item>
      </layout>
     </widget>

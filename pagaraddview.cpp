@@ -20,14 +20,18 @@ PagarAddView::PagarAddView(QWidget *parent) :
 
     connect(m_ui->nomeLineEdit,SIGNAL(textEdited(QString)),this,SLOT(slotNomeChanged(QString)));
     connect(m_ui->nomeLineEdit,SIGNAL(returnPressed()),this,SLOT(slotClienteSelected()));
-    connect(m_ui->compraTableWidget,SIGNAL(pressed(QModelIndex)),this,SLOT(slotCompraSelected(QModelIndex)));
-    connect(m_ui->parcelaTableWidget,SIGNAL(pressed(QModelIndex)),this,SLOT(slotParcelaSelected(QModelIndex)));
+    connect(m_ui->treeWidget,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(slotParcelaSelected(QTreeWidgetItem*,int)));
     connect(m_ui->doubleSpinBox,SIGNAL(valueChanged(double)),this,SLOT(slotValorChanged(double)));
     connect(m_ui->buttonBox,SIGNAL(accepted()),this,SLOT(slotOk()));
 
     m_ui->checkBox->setEnabled(false);
     m_ui->doubleSpinBox->setEnabled(false);
 
+
+    QStringList labels;
+    labels << tr("Data") << tr("Valor Total") << tr("Valor Aberto") << tr("Id") ;
+    m_ui->treeWidget->header()->setResizeMode(QHeaderView::Stretch);
+    m_ui->treeWidget->setHeaderLabels(labels);
 }
 void PagarAddView::slotOk()
 {
@@ -43,7 +47,7 @@ void PagarAddView::slotOk()
         bool ok;
         QString error;
         pc.setPaga(&ok,&error,parcela);
-        if (numParcelas == 1)
+        if (parcelas.size() == 1)
         {
             CompraController cc;
             cc.setPaga(&ok,&error,compra);
@@ -52,14 +56,13 @@ void PagarAddView::slotOk()
     if(ok)
     {
         repaintPagamento();
-        repaintParcelas();
         repaintCompras();
     }
 }
 
 void PagarAddView::slotValorChanged(double valor)
 {
-    if(valor < parcela.valor)
+    if(valor < parcela.getValorAberto())
     {
         m_ui->checkBox->setEnabled(false);
         m_ui->checkBox->setChecked(false);
@@ -73,67 +76,19 @@ void PagarAddView::repaintPagamento()
     m_ui->doubleSpinBox->setValue(parcela.getValorAberto());
 }
 
-void PagarAddView::slotParcelaSelected(QModelIndex modelIndex)
+void PagarAddView::slotParcelaSelected(QTreeWidgetItem* item,int id)
 {
-    int row = modelIndex.row();
-    parcela.id = m_ui->parcelaTableWidget->item(row,0)->text().toInt();
-    parcela.valor = m_ui->parcelaTableWidget->item(row,3)->text().replace("R$ ","").toDouble();
+    parcela.id = item->data(3,Qt::UserRole).toInt();
+    foreach(Parcela p,parcelas)
+    {
+        if(p.id == parcela.id)
+        {
+            parcela = p;
+            break;
+        }
+    }
     repaintPagamento();
     m_ui->doubleSpinBox->setEnabled(true);
-}
-void PagarAddView::repaintParcelas()
-{
-    ParcelaController pc;
-    QString error;
-    bool ok;
-    QList<Parcela> parcelas = pc.getNaoPagasByCompra(&ok,&error,compra);
-    numParcelas = parcelas.size();
-
-    QStringList header;
-    header << "id" <<  "Data da Compra" << "Valor Parcela" << "Valor Aberto";
-
-    m_ui->parcelaTableWidget->setRowCount( parcelas.size() );
-    m_ui->parcelaTableWidget->setColumnCount(4);
-    m_ui->parcelaTableWidget->setHorizontalHeaderLabels(header);
-    m_ui->parcelaTableWidget->verticalHeader()->hide();
-    m_ui->parcelaTableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
-    m_ui->parcelaTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-    m_ui->parcelaTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-
-    int i = 0;
-    while(!parcelas.isEmpty())
-    {
-        Parcela parcela = parcelas.takeFirst();
-        QTableWidgetItem *itemValor = new QTableWidgetItem(parcela.getValorFormatado());
-        QTableWidgetItem *itemId = new QTableWidgetItem(QString::number(parcela.id));
-        QTableWidgetItem *itemData = new QTableWidgetItem(parcela.dataVencimento.toString("dd/MM/yyyy"));
-        QString valor;
-        valor.append("R$ ");
-        valor.append(QString::number(parcela.getValorAberto(),'F',2));
-        QTableWidgetItem *itemAberto = new QTableWidgetItem(valor);
-        m_ui->parcelaTableWidget->setItem(i,0,itemId);
-        m_ui->parcelaTableWidget->setItem(i,2,itemValor);
-        m_ui->parcelaTableWidget->setItem(i,1,itemData);
-        m_ui->parcelaTableWidget->setItem(i,3,itemAberto);
-
-        i++;
-    }
-    m_ui->parcelaTableWidget->hideColumn(0);
-    m_ui->parcelaTableWidget->resizeColumnsToContents();
-    m_ui->parcelaTableWidget->horizontalHeader()->setStretchLastSection( true );
-}
-
-void PagarAddView::slotCompraSelected(QModelIndex modelIndex)
-{
-    int row = modelIndex.row();
-    compra.id = m_ui->compraTableWidget->item(row,0)->text().toInt();
-    m_ui->doubleSpinBox->setValue(0);
-    m_ui->checkBox->setEnabled(false);
-    m_ui->checkBox->setChecked(false);
-    repaintParcelas();
-    m_ui->checkBox->setEnabled(false);
-    m_ui->doubleSpinBox->setEnabled(false);
 }
 
 void PagarAddView::repaintCompras()
@@ -143,34 +98,31 @@ void PagarAddView::repaintCompras()
     bool ok;
     QList<Compra> compras = cc.getNaoPagasByCliente(&ok,&error,cliente);
 
-    QStringList header;
-    header << "id"  << "Data da Compra" << "Valor" << "itens";
-
-    m_ui->compraTableWidget->setRowCount( compras.size() );
-    m_ui->compraTableWidget->setColumnCount(4);
-    m_ui->compraTableWidget->setHorizontalHeaderLabels(header);
-    m_ui->compraTableWidget->verticalHeader()->hide();
-    m_ui->compraTableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
-    m_ui->compraTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-    m_ui->compraTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
     int i = 0;
     while(!compras.isEmpty())
     {
         Compra compra = compras.takeFirst();
-        QTableWidgetItem *itemValor = new QTableWidgetItem(compra.getValorFormatado());
-        QTableWidgetItem *itemId = new QTableWidgetItem(QString::number(compra.id));
-        QTableWidgetItem *itemData = new QTableWidgetItem(compra.dataCompra.toString("dd/MM/yyyy"));
-        QTableWidgetItem *itemItens = new QTableWidgetItem(QString::number(compra.itens));
-        m_ui->compraTableWidget->setItem(i,0,itemId);
-        m_ui->compraTableWidget->setItem(i,2,itemValor);
-        m_ui->compraTableWidget->setItem(i,1,itemData);
-        m_ui->compraTableWidget->setItem(i,3,itemItens);
+
+        QTreeWidgetItem *compraItem = new QTreeWidgetItem(m_ui->treeWidget);
+        compraItem->setText(i, compra.dataCompra.toString("dd/MM/yyyy") );
+
+        ParcelaController pc;
+        parcelas = pc.getNaoPagasByCompra(&ok,&error,compra);
+
+        foreach(Parcela parcela,parcelas)
+        {
+            QString valor;
+            valor.append("R$ ");
+            valor.append(QString::number(parcela.getValorAberto(),'F',2));
+
+            QTreeWidgetItem *parcelaItem = new QTreeWidgetItem(compraItem);
+            parcelaItem->setText(0,parcela.dataVencimento.toString("dd/MM/yyyy"));
+            parcelaItem->setText(1,parcela.getValorFormatado());
+            parcelaItem->setText(2,valor);
+            parcelaItem->setData(3,Qt::UserRole,QVariant(parcela.id));
+        }
         i++;
     }
-    m_ui->compraTableWidget->hideColumn(0);
-    m_ui->compraTableWidget->resizeColumnsToContents();
-    m_ui->compraTableWidget->horizontalHeader()->setStretchLastSection( true );
 }
 
 void PagarAddView::slotClienteSelected()
@@ -215,7 +167,6 @@ void PagarAddView::slotNomeChanged(QString nome)
         string.append(cliente.dataNascimento.toString("dd/MM/yyyy"));
 
         list.append(string);
-
     }
 
     model->setStringList(list);

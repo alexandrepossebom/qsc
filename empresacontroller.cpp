@@ -66,6 +66,7 @@ bool EmpresaController::addEmpresa(Empresa *empresa)
     {
         error = query.lastError().text();
         qDebug() << error;
+        qDebug() << query.executedQuery();
         return false;
     }
     empresa->id = query.lastInsertId().toInt();
