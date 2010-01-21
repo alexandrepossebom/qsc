@@ -5,6 +5,7 @@
 #include "cliente.h"
 #include <QDate>
 #include <QString>
+#include "parcela.h"
 
 class Compra
 {
@@ -19,6 +20,7 @@ public:
     bool paga;
     int id;
     QString getValorFormatado();
+    QList<Parcela> parcelas;
 };
 
 #endif // COMPRA_H

@@ -25,7 +25,7 @@ private:
     Cliente cliente;
     Compra compra;
     Parcela parcela;
-    QList<Parcela> parcelas;
+    QList<Compra> compras;
     int numParcelas;
     void repaintCompras();
     void repaintPagamento();

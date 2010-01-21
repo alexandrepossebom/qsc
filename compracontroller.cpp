@@ -1,4 +1,5 @@
 #include "compracontroller.h"
+#include "parcelacontroller.h"
 
 
 CompraController::CompraController()
@@ -54,6 +55,10 @@ QList<Compra> CompraController::getNaoPagasByCliente(bool *ok,QString *error,Cli
         compra.paga = false;
         compra.dataCompra = query.value(fieldDataCompra).toDate();
         compra.itens = query.value(fieldItens).toInt();
+
+        ParcelaController pc;
+        compra.parcelas = pc.getNaoPagasByCompra(ok,error,compra);
+
         compras.append(compra);
     }
 

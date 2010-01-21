@@ -2,6 +2,7 @@
 #define PARCELACONTROLLER_H
 #include "parcela.h"
 #include "dbutil.h"
+#include "compra.h"
 #include <QList>
 
 class ParcelaController

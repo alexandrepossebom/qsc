@@ -29,9 +29,10 @@ PagarAddView::PagarAddView(QWidget *parent) :
 
 
     QStringList labels;
-    labels << tr("Data") << tr("Valor Total") << tr("Valor Aberto") << tr("Id") ;
+    labels << tr("Data") << tr("Valor Total") << tr("Valor Aberto");
     m_ui->treeWidget->header()->setResizeMode(QHeaderView::Stretch);
     m_ui->treeWidget->setHeaderLabels(labels);
+    m_ui->treeWidget->setColumnCount(4);
 }
 void PagarAddView::slotOk()
 {
@@ -47,7 +48,7 @@ void PagarAddView::slotOk()
         bool ok;
         QString error;
         pc.setPaga(&ok,&error,parcela);
-        if (parcelas.size() == 1)
+        if (compra.parcelas.size() == 1)
         {
             CompraController cc;
             cc.setPaga(&ok,&error,compra);
@@ -71,6 +72,7 @@ void PagarAddView::slotValorChanged(double valor)
         m_ui->checkBox->setChecked(true);
     }
 }
+
 void PagarAddView::repaintPagamento()
 {
     m_ui->doubleSpinBox->setValue(parcela.getValorAberto());
@@ -78,10 +80,23 @@ void PagarAddView::repaintPagamento()
 
 void PagarAddView::slotParcelaSelected(QTreeWidgetItem* item,int id)
 {
-    parcela.id = item->data(3,Qt::UserRole).toInt();
-    foreach(Parcela p,parcelas)
+    if(!item->parent())
+        return;
+
+    id = item->parent()->data(3,Qt::UserRole).toInt();
+    foreach(Compra c, compras)
     {
-        if(p.id == parcela.id)
+        if(id == c.id)
+        {
+            compra = c;
+            break;
+        }
+    }
+
+    id = item->data(3,Qt::UserRole).toInt();
+    foreach(Parcela p,compra.parcelas)
+    {
+        if(id == p.id)
         {
             parcela = p;
             break;
@@ -93,23 +108,22 @@ void PagarAddView::slotParcelaSelected(QTreeWidgetItem* item,int id)
 
 void PagarAddView::repaintCompras()
 {
+    compras.clear();
+
     CompraController cc;
     QString error;
     bool ok;
-    QList<Compra> compras = cc.getNaoPagasByCliente(&ok,&error,cliente);
+    compras = cc.getNaoPagasByCliente(&ok,&error,cliente);
 
-    int i = 0;
-    while(!compras.isEmpty())
+    foreach(Compra compra, compras)
     {
-        Compra compra = compras.takeFirst();
-
         QTreeWidgetItem *compraItem = new QTreeWidgetItem(m_ui->treeWidget);
-        compraItem->setText(i, compra.dataCompra.toString("dd/MM/yyyy") );
+        compraItem->setText(0, compra.dataCompra.toString("dd/MM/yyyy") );
+        compraItem->setText(1, compra.getValorFormatado() );
+        compraItem->setData(3,Qt::UserRole,QVariant(compra.id));
+        compraItem->setText(3,QString::number(compra.id));
 
-        ParcelaController pc;
-        parcelas = pc.getNaoPagasByCompra(&ok,&error,compra);
-
-        foreach(Parcela parcela,parcelas)
+        foreach(Parcela parcela,compra.parcelas)
         {
             QString valor;
             valor.append("R$ ");
@@ -120,8 +134,8 @@ void PagarAddView::repaintCompras()
             parcelaItem->setText(1,parcela.getValorFormatado());
             parcelaItem->setText(2,valor);
             parcelaItem->setData(3,Qt::UserRole,QVariant(parcela.id));
+            parcelaItem->setText(3,QString::number(parcela.id));
         }
-        i++;
     }
 }
 
