@@ -45,6 +45,8 @@ QList<Cliente> ClienteController::getClientesAtrasados(bool *ok,QString *error,Q
     query.prepare("select c.nome,c.id,c.cpf,c.data_nascimento,p.data_vencimento from cliente c, compra co, parcela p WHERE co.cliente_id = c.id AND p.compra_id = co.id AND p.paga = 0 AND p.data_vencimento < :now ");
 
     query.bindValue(":now",QDate::currentDate());
+    //TODO add nome to query.
+    query.bindValue(":nome",nome);
 
     if( ok && !query.exec() )
     {
@@ -58,7 +60,7 @@ QList<Cliente> ClienteController::getClientesAtrasados(bool *ok,QString *error,Q
     int fieldId = query.record().indexOf("c.id");
     int fieldCpf = query.record().indexOf("c.cpf");
     int fieldDataNascimento = query.record().indexOf("c.data_nascimento");
-    int fieldDataVencimento = query.record().indexOf("p.data_vencimento");
+//    int fieldDataVencimento = query.record().indexOf("p.data_vencimento");
 
     Cliente cliente;
     while (query.next()) {
@@ -70,8 +72,6 @@ QList<Cliente> ClienteController::getClientesAtrasados(bool *ok,QString *error,Q
     }
 
     return clientes;
-
-
 }
 
 QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QString nome,int limit)
@@ -98,7 +98,6 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
     int fieldNome = query.record().indexOf("nome");
     int fieldId = query.record().indexOf("id");
     int fieldCpf = query.record().indexOf("cpf");
-    int fieldNascimento = query.record().indexOf("cpf");
     int fieldDataNascimento = query.record().indexOf("data_nascimento");
 
     Cliente cliente;
@@ -123,7 +122,7 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
     if( cliente->getCargo().length() == 0 )
         error->append("\n- Cargo");
     if( cliente->getEnderecoNumero() == 0 )
-        error->append("\n- Endereço Número");
+        error->append(QString::fromUtf8("\n- Endereço Número"));
     if( error->length() > 0 )
     {
         QString string = "Verifique os seguintes dados:";
@@ -188,7 +187,6 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
                 query.bindValue(":cliente_id",cliente->id);
                 query.bindValue(":telefone_id",telefone.id);
                 query.exec();
-                qDebug() << cliente->id << telefone.id << query.lastError().text();
             }
         }
     }

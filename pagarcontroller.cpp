@@ -15,7 +15,7 @@ void PagarController::add(bool *ok,QString *error,Parcela parcela,double valor)
     query.prepare(sql);
     query.bindValue(":parcela_id",parcela.id);
     query.bindValue(":valor",valor);
-    query.bindValue(":data",QDate::currentDate());
+    query.bindValue(":data",QDateTime::currentDateTime());
 
     if( ok && !query.exec() )
     {

@@ -44,19 +44,10 @@ QList<Empresa> EmpresaController::getAll()
 bool EmpresaController::addEmpresa(Empresa *empresa)
 {
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("localhost");
-    db.setDatabaseName("loja");
-    db.setUserName("root");
-    db.setPassword("");
+    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlQuery query(db);
 
-    if (!db.open()) {
-        error = db.lastError().text();
-        qDebug() << error;
-        return false;
-    }
 
-    QSqlQuery query;
     query.prepare("INSERT INTO empresa (nome,numero,cep_cep) VALUES (:nome,:numero,:cep)");
     query.bindValue(":nome", empresa->nome);
     query.bindValue(":numero",empresa->numero);
@@ -65,8 +56,7 @@ bool EmpresaController::addEmpresa(Empresa *empresa)
     if (!query.exec())
     {
         error = query.lastError().text();
-        qDebug() << error;
-        qDebug() << query.executedQuery();
+        qDebug() << error;       
         return false;
     }
     empresa->id = query.lastInsertId().toInt();
@@ -76,7 +66,6 @@ bool EmpresaController::addEmpresa(Empresa *empresa)
         TelefoneController tc;
         while(!empresa->telefones.isEmpty())
         {
-
             Telefone telefone = empresa->telefones.takeFirst();
             telefone.id = 0;
             tc.Add(&telefone);

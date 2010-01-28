@@ -4,9 +4,8 @@
 #include <QRadioButton>
 #include <QDebug>
 
-
 MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent), ui(new Ui::MainWindow)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     connect(ui->actionComprar,SIGNAL(triggered(bool)),this,SLOT(compraAdd()));
@@ -18,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_clienteAdWidget = NULL;
     m_compraAddWidget = NULL;
     m_pagarAddWidget = NULL;
+
+    setWindowState(Qt::WindowMaximized);     
 }
 
 void MainWindow::slotPagar()

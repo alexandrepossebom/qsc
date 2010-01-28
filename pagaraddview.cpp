@@ -137,6 +137,8 @@ void PagarAddView::repaintCompras()
             parcelaItem->setText(3,QString::number(parcela.id));
         }
     }
+
+    m_ui->treeWidget->expandAll();
 }
 
 void PagarAddView::slotClienteSelected()

@@ -12,7 +12,7 @@ DBUtil::DBUtil()
 void DBUtil::log(QString tag,QString texto)
 {
     bool ok = true;
-    QString *error;
+    QString *error = new QString();
 
     QSqlDatabase db = DBUtil::getDatabase(&ok, error);
     QSqlQuery query(db);

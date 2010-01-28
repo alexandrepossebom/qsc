@@ -105,6 +105,8 @@ void EnderecoController::add(bool *ok,QString *error,Endereco *endereco)
     QSqlDatabase db = DBUtil::getDatabase(ok, error);
     QSqlQuery query(db);
     query.prepare("INSERT INTO endereco (nome,cep,cidade,bairro,estado_id) VALUES (:nome,:cep,:cidade,:bairro,:estado_id)");
+    //TODO incomplete add.
+    query.bindValue(":nome",endereco->nome);
 
     if( ok && !query.exec() )
     {

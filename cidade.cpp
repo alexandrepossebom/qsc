@@ -18,5 +18,5 @@ QString Cidade::getNome()
 }
 int Cidade::getId()
 {
-    this->id = id;
+    return id;
 }

@@ -60,7 +60,8 @@
    <value key="ToolChain" type="int">0</value>
    <value key="addQDumper" type=""></value>
    <value key="buildConfiguration" type="int">2</value>
-   <value key="buildDirectory" type="QString">/home/alexandre/Qt/qsc</value>
+   <value key="buildDirectory" type="QString"></value>
+   <value key="useShadowBuild" type="bool">false</value>
   </valuemap>
  </data>
  <data>
@@ -79,13 +80,13 @@
    <valuelist key="abstractProcess.Environment" type="QVariantList">
     <value type="QString">BROWSER=/usr/bin/www-browser</value>
     <value type="QString">CANBERRA_DRIVER=alsa</value>
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-5Kppp4jZ84,guid=2ad9d335bdd545c1ba5ea5f24b58292f</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-8fIUaiWHyh,guid=9f87a56e9042bf4f91793b614b60843c</value>
     <value type="QString">DESKTOP_SESSION=default</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
     <value type="QString">EDITOR=vim</value>
     <value type="QString">GCONF_TMPDIR=/tmp</value>
-    <value type="QString">GPG_AGENT_INFO=/home/alexandre/.gnupg/S.gpg-agent:1085:1</value>
+    <value type="QString">GPG_AGENT_INFO=/home/alexandre/.gnupg/S.gpg-agent:30081:1</value>
     <value type="QString">GREP_COLOR=1;32</value>
     <value type="QString">GREP_OPTIONS=--color=auto</value>
     <value type="QString">GS_LIB=/home/alexandre/.fonts</value>
@@ -139,7 +140,7 @@
     <value type="QString">NLSPATH=/usr/share/locale/%l/%N</value>
     <value type="QString">PATH=/usr/lib/qt4/bin:/usr/lib/icecc/bin:/usr/bin:/bin:/usr/local/bin:/usr/X11R6/bin/:/usr/games:/usr/lib/qt4/bin:/home/alexandre/bin</value>
     <value type="QString">PULSE_PROP_media.role=none</value>
-    <value type="QString">PULSE_PROP_phonon.streamid={af1f65ea-cec4-400a-b73f-81526ad4c449}</value>
+    <value type="QString">PULSE_PROP_phonon.streamid={c7adf33d-74eb-446a-8d7b-ce765b74b074}</value>
     <value type="QString">PWD=/home/alexandre</value>
     <value type="QString">PYTHONDONTWRITEBYTECODE=1</value>
     <value type="QString">PYTHONPATH=/usr/lib/ooo/basis-link/program</value>
@@ -151,7 +152,7 @@
     <value type="QString">QT_PLUGIN_PATH=/home/alexandre/.kde4/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
     <value type="QString">QT_XFT=0</value>
     <value type="QString">SCREENDIR=/home/alexandre/tmp</value>
-    <value type="QString">SESSION_MANAGER=local/owl:@/tmp/.ICE-unix/8814,unix/owl:/tmp/.ICE-unix/8814</value>
+    <value type="QString">SESSION_MANAGER=local/owl:@/tmp/.ICE-unix/6501,unix/owl:/tmp/.ICE-unix/6501</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=1</value>
     <value type="QString">SSH_ASKPASS=/usr/lib/ssh/ssh-askpass</value>
@@ -163,7 +164,7 @@
     <value type="QString">XDG_CONFIG_DIRS=/etc/xdg:/etc/xdg/kde4</value>
     <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
     <value type="QString">XDG_MENU_PREFIX=kde-</value>
-    <value type="QString">XDG_SESSION_COOKIE=5e9af0093ee79a03542124024b2a6de7-1264068908.230516-1861948540</value>
+    <value type="QString">XDG_SESSION_COOKIE=5e9af0093ee79a03542124024b2a6de7-1264616508.485631-1843491453</value>
     <value type="QString">XDM_MANAGED=method=classic</value>
     <value type="QString">XMODIFIERS=@im=none</value>
     <value type="QString">ZZPATH=/usr/local/bin/funcoeszz</value>
@@ -188,13 +189,13 @@
    <valuelist key="abstractProcess.Environment" type="QVariantList">
     <value type="QString">BROWSER=/usr/bin/www-browser</value>
     <value type="QString">CANBERRA_DRIVER=alsa</value>
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-5Kppp4jZ84,guid=2ad9d335bdd545c1ba5ea5f24b58292f</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-8fIUaiWHyh,guid=9f87a56e9042bf4f91793b614b60843c</value>
     <value type="QString">DESKTOP_SESSION=default</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
     <value type="QString">EDITOR=vim</value>
     <value type="QString">GCONF_TMPDIR=/tmp</value>
-    <value type="QString">GPG_AGENT_INFO=/home/alexandre/.gnupg/S.gpg-agent:1085:1</value>
+    <value type="QString">GPG_AGENT_INFO=/home/alexandre/.gnupg/S.gpg-agent:30081:1</value>
     <value type="QString">GREP_COLOR=1;32</value>
     <value type="QString">GREP_OPTIONS=--color=auto</value>
     <value type="QString">GS_LIB=/home/alexandre/.fonts</value>
@@ -248,7 +249,7 @@
     <value type="QString">NLSPATH=/usr/share/locale/%l/%N</value>
     <value type="QString">PATH=/usr/lib/qt4/bin:/usr/lib/icecc/bin:/usr/bin:/bin:/usr/local/bin:/usr/X11R6/bin/:/usr/games:/usr/lib/qt4/bin:/home/alexandre/bin</value>
     <value type="QString">PULSE_PROP_media.role=none</value>
-    <value type="QString">PULSE_PROP_phonon.streamid={af1f65ea-cec4-400a-b73f-81526ad4c449}</value>
+    <value type="QString">PULSE_PROP_phonon.streamid={c7adf33d-74eb-446a-8d7b-ce765b74b074}</value>
     <value type="QString">PWD=/home/alexandre</value>
     <value type="QString">PYTHONDONTWRITEBYTECODE=1</value>
     <value type="QString">PYTHONPATH=/usr/lib/ooo/basis-link/program</value>
@@ -260,7 +261,7 @@
     <value type="QString">QT_PLUGIN_PATH=/home/alexandre/.kde4/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
     <value type="QString">QT_XFT=0</value>
     <value type="QString">SCREENDIR=/home/alexandre/tmp</value>
-    <value type="QString">SESSION_MANAGER=local/owl:@/tmp/.ICE-unix/8814,unix/owl:/tmp/.ICE-unix/8814</value>
+    <value type="QString">SESSION_MANAGER=local/owl:@/tmp/.ICE-unix/6501,unix/owl:/tmp/.ICE-unix/6501</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=1</value>
     <value type="QString">SSH_ASKPASS=/usr/lib/ssh/ssh-askpass</value>
@@ -272,24 +273,128 @@
     <value type="QString">XDG_CONFIG_DIRS=/etc/xdg:/etc/xdg/kde4</value>
     <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
     <value type="QString">XDG_MENU_PREFIX=kde-</value>
-    <value type="QString">XDG_SESSION_COOKIE=5e9af0093ee79a03542124024b2a6de7-1264068908.230516-1861948540</value>
+    <value type="QString">XDG_SESSION_COOKIE=5e9af0093ee79a03542124024b2a6de7-1264616508.485631-1843491453</value>
     <value type="QString">XDM_MANAGED=method=classic</value>
     <value type="QString">XMODIFIERS=@im=none</value>
     <value type="QString">ZZPATH=/usr/local/bin/funcoeszz</value>
    </valuelist>
    <value key="abstractProcess.IgnoreReturnValue" type="bool">false</value>
    <valuelist key="abstractProcess.arguments" type="QVariantList">
+    <value type="QString">-j</value>
+    <value type="QString">20</value>
     <value type="QString">-w</value>
    </valuelist>
    <value key="abstractProcess.command" type="QString">/usr/bin/make</value>
    <value key="abstractProcess.enabled" type="bool">true</value>
    <value key="abstractProcess.workingDirectory" type="QString">/home/alexandre/Qt/qsc</value>
+   <valuelist key="makeargs" type="QVariantList">
+    <value type="QString">-j</value>
+    <value type="QString">20</value>
+   </valuelist>
   </valuemap>
  </data>
  <data>
   <variable>buildconfiguration-Debug-cleanstep0</variable>
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList">
+    <value type="QString">BROWSER=/usr/bin/www-browser</value>
+    <value type="QString">CANBERRA_DRIVER=alsa</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-8fIUaiWHyh,guid=9f87a56e9042bf4f91793b614b60843c</value>
+    <value type="QString">DESKTOP_SESSION=default</value>
+    <value type="QString">DISPLAY=:0.0</value>
+    <value type="QString">DM_CONTROL=/var/run/xdmctl</value>
+    <value type="QString">EDITOR=vim</value>
+    <value type="QString">GCONF_TMPDIR=/tmp</value>
+    <value type="QString">GPG_AGENT_INFO=/home/alexandre/.gnupg/S.gpg-agent:30081:1</value>
+    <value type="QString">GREP_COLOR=1;32</value>
+    <value type="QString">GREP_OPTIONS=--color=auto</value>
+    <value type="QString">GS_LIB=/home/alexandre/.fonts</value>
+    <value type="QString">GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/alexandre/.gtkrc-2.0::/home/alexandre/.kde4/share/config/gtkrc-2.0</value>
+    <value type="QString">GTK_MODULES=canberra-gtk-module</value>
+    <value type="QString">GTK_RC_FILES=/etc/gtk/gtkrc:/home/alexandre/.gtkrc::/home/alexandre/.kde4/share/config/gtkrc</value>
+    <value type="QString">G_FILENAME_ENCODING=@locale</value>
+    <value type="QString">HISTCONTROL=ignoredups</value>
+    <value type="QString">HISTSIZE=500000</value>
+    <value type="QString">HOME=/home/alexandre</value>
+    <value type="QString">HOSTNAME=owl</value>
+    <value type="QString">ICECREAMDIR=/usr/lib/icecc</value>
+    <value type="QString">INPUTRC=/etc/inputrc</value>
+    <value type="QString">KDE_FULL_SESSION=true</value>
+    <value type="QString">KDE_MULTIHEAD=false</value>
+    <value type="QString">KDE_SESSION_UID=10001</value>
+    <value type="QString">KDE_SESSION_VERSION=4</value>
+    <value type="QString">LANG=pt_BR.UTF-8</value>
+    <value type="QString">LANGUAGE=pt_BR:pt_PT:pt</value>
+    <value type="QString">LC_ADDRESS=pt_BR.UTF-8</value>
+    <value type="QString">LC_COLLATE=pt_BR.UTF-8</value>
+    <value type="QString">LC_CTYPE=pt_BR.UTF-8</value>
+    <value type="QString">LC_IDENTIFICATION=pt_BR.UTF-8</value>
+    <value type="QString">LC_MEASUREMENT=pt_BR.UTF-8</value>
+    <value type="QString">LC_MESSAGES=pt_BR.UTF-8</value>
+    <value type="QString">LC_MONETARY=pt_BR.UTF-8</value>
+    <value type="QString">LC_NAME=pt_BR.UTF-8</value>
+    <value type="QString">LC_NUMERIC=pt_BR.UTF-8</value>
+    <value type="QString">LC_PAPER=pt_BR.UTF-8</value>
+    <value type="QString">LC_SOURCED=1</value>
+    <value type="QString">LC_TELEPHONE=pt_BR.UTF-8</value>
+    <value type="QString">LC_TIME=pt_BR.UTF-8</value>
+    <value type="QString">LD_LIBRARY_PATH=/usr/lib/qtcreator/lib/qtcreator:</value>
+    <value type="QString">LESS=-MM</value>
+    <value type="QString">LESSCHARSET=utf-8</value>
+    <value type="QString">LESSKEY=/etc/.less</value>
+    <value type="QString">LESSOPEN=|/usr/bin/lesspipe.sh %s</value>
+    <value type="QString">LESS_TERMCAP_mb=[01;31m</value>
+    <value type="QString">LESS_TERMCAP_md=[01;33m</value>
+    <value type="QString">LESS_TERMCAP_me=[0m</value>
+    <value type="QString">LESS_TERMCAP_se=[0m</value>
+    <value type="QString">LESS_TERMCAP_so=[01;41;37m</value>
+    <value type="QString">LESS_TERMCAP_ue=[0m</value>
+    <value type="QString">LESS_TERMCAP_us=[01;32m</value>
+    <value type="QString">LOGNAME=alexandre</value>
+    <value type="QString">LS_COLORS=</value>
+    <value type="QString">MAIL=/var/spool/mail/alexandre</value>
+    <value type="QString">MALLOC_CHECK_=2</value>
+    <value type="QString">MDV_MENU_STYLE=mandriva</value>
+    <value type="QString">META_CLASS=powerpack</value>
+    <value type="QString">NLSPATH=/usr/share/locale/%l/%N</value>
+    <value type="QString">PATH=/usr/lib/qt4/bin:/usr/lib/icecc/bin:/usr/bin:/bin:/usr/local/bin:/usr/X11R6/bin/:/usr/games:/usr/lib/qt4/bin:/home/alexandre/bin</value>
+    <value type="QString">PWD=/home/alexandre</value>
+    <value type="QString">PYTHONDONTWRITEBYTECODE=1</value>
+    <value type="QString">PYTHONPATH=/usr/lib/ooo/basis-link/program</value>
+    <value type="QString">PYTHONSTARTUP=/etc/pythonrc.py</value>
+    <value type="QString">QT4DOCDIR=/usr/share/doc/qt4/doc</value>
+    <value type="QString">QTDIR=/usr/lib/qt4</value>
+    <value type="QString">QTINC=/usr/lib/qt3/include</value>
+    <value type="QString">QTLIB=/usr/lib</value>
+    <value type="QString">QT_PLUGIN_PATH=/home/alexandre/.kde4/lib/kde4/plugins/:/usr/lib/kde4/plugins/</value>
+    <value type="QString">QT_XFT=0</value>
+    <value type="QString">SCREENDIR=/home/alexandre/tmp</value>
+    <value type="QString">SESSION_MANAGER=local/owl:@/tmp/.ICE-unix/6501,unix/owl:/tmp/.ICE-unix/6501</value>
+    <value type="QString">SHELL=/bin/bash</value>
+    <value type="QString">SHLVL=1</value>
+    <value type="QString">SSH_ASKPASS=/usr/lib/ssh/ssh-askpass</value>
+    <value type="QString">TMP=/tmp/</value>
+    <value type="QString">TMPDIR=/tmp/</value>
+    <value type="QString">USER=alexandre</value>
+    <value type="QString">WINDOWPATH=7</value>
+    <value type="QString">XCURSOR_THEME=default</value>
+    <value type="QString">XDG_CONFIG_DIRS=/etc/xdg:/etc/xdg/kde4</value>
+    <value type="QString">XDG_DATA_DIRS=/usr/share:/usr/share:/usr/local/share</value>
+    <value type="QString">XDG_MENU_PREFIX=kde-</value>
+    <value type="QString">XDG_SESSION_COOKIE=5e9af0093ee79a03542124024b2a6de7-1264616508.485631-1843491453</value>
+    <value type="QString">XDM_MANAGED=method=classic</value>
+    <value type="QString">XMODIFIERS=@im=none</value>
+    <value type="QString">ZZPATH=/usr/local/bin/funcoeszz</value>
+   </valuelist>
+   <value key="abstractProcess.IgnoreReturnValue" type="bool">true</value>
+   <valuelist key="abstractProcess.arguments" type="QVariantList">
+    <value type="QString">clean</value>
+    <value type="QString">-w</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString">/usr/bin/make</value>
+   <value key="abstractProcess.enabled" type="bool">true</value>
+   <value key="abstractProcess.workingDirectory" type="QString">/home/alexandre/Qt/qsc</value>
    <value key="cleanConfig" type="bool">true</value>
    <valuelist key="makeargs" type="QVariantList">
     <value type="QString">clean</value>

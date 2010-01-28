@@ -184,8 +184,11 @@ void ClienteAddView::accepted()
         conjuge.cliente = cliente;
         ConjugeController conjugeController;
         conjugeController.Add(&ok,&error,&conjuge);
+        if(ok)
+            this->close();
+    } else {
+         this->close();
     }
-    this->close();
 }
 
 ClienteAddView::~ClienteAddView()
