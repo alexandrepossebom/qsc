@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/qsc.png</file>
+        <file>images/Shopping-Cart-Add.png</file>
+        <file>images/Credit-card-Visa.png</file>
+        <file>images/User-add.png</file>
+        <file>images/Tools.png</file>
+    </qresource>
+</RCC>

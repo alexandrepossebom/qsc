@@ -97,3 +97,4 @@ FORMS += mainwindow.ui \
     configuratorview.ui \
     compraaddview.ui \
     pagaraddview.ui
+RESOURCES += qsc.qrc

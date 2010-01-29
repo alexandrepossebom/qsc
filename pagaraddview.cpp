@@ -61,9 +61,12 @@ void PagarAddView::slotOk()
     }
 }
 
-void PagarAddView::slotValorChanged(double valor)
+void PagarAddView::slotValorChanged(double valorDouble)
 {
-    if(valor < parcela.getValorAberto())
+    float valor = (float)valorDouble;
+
+    float valorAberto = parcela.getValorAberto();
+    if(valor < valorAberto)
     {
         m_ui->checkBox->setEnabled(false);
         m_ui->checkBox->setChecked(false);
@@ -162,6 +165,8 @@ void PagarAddView::slotClienteSelected()
 
 void PagarAddView::slotNomeChanged(QString nome)
 {
+    if (nome.length() < 3)
+        return;
 
     ClienteController cc;
     bool ok;

@@ -12,9 +12,10 @@ void CompraController::setPaga(bool *ok,QString *error,Compra compra)
     QSqlQuery query(db);
 
     QString sql;
-    sql.append("UPDATE compra SET paga = 1 WHERE id = :id");
+    sql.append("UPDATE compra SET paga = :paga WHERE id = :id");
     query.prepare(sql);
     query.bindValue(":id",compra.id);
+    query.bindValue(":paga",true);
 
     if( ok && !query.exec() )
     {
@@ -30,9 +31,10 @@ QList<Compra> CompraController::getNaoPagasByCliente(bool *ok,QString *error,Cli
     QSqlQuery query(db);
 
     QString sql;
-    sql.append("SELECT valor,data_compra,id,itens FROM compra WHERE cliente_id = :cliente_id and paga = 0 order by data_compra");
+    sql.append("SELECT valor,data_compra,id,itens FROM compra WHERE cliente_id = :cliente_id and paga = :paga order by data_compra");
     query.prepare(sql);
     query.bindValue(":cliente_id",cliente.id);
+    query.bindValue(":paga",false);
 
 
     if( ok && !query.exec() )

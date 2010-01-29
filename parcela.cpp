@@ -11,11 +11,11 @@ QString Parcela::getValorFormatado()
     return string;
 }
 
-double Parcela::getValorAberto()
+float Parcela::getValorAberto()
 {
     return valor - valorPago;
 }
-double Parcela::getValorPago()
+float Parcela::getValorPago()
 {
     return valorPago;
 }

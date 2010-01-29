@@ -38,11 +38,8 @@ QSqlDatabase DBUtil::getDatabase (bool  *ok, QString *error) {
         QString username = settings.value("Database/UserName").toString();
         QString databasename = settings.value("Database/DatabaseName").toString();
 
-        db = QSqlDatabase::addDatabase("QMYSQL" , DBUtil ::DATABASE_CONNECT_NAME );
-        db.setHostName(hostname);
+        db = QSqlDatabase::addDatabase("QSQLITE" , DBUtil ::DATABASE_CONNECT_NAME );
         db.setDatabaseName(databasename);
-        db.setUserName(username);
-        db.setPassword(password);
     } else {
         db = QSqlDatabase::database(DBUtil ::DATABASE_CONNECT_NAME , true );
     }

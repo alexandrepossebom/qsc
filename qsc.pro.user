@@ -140,8 +140,8 @@
     <value type="QString">NLSPATH=/usr/share/locale/%l/%N</value>
     <value type="QString">PATH=/usr/lib/qt4/bin:/usr/lib/icecc/bin:/usr/bin:/bin:/usr/local/bin:/usr/X11R6/bin/:/usr/games:/usr/lib/qt4/bin:/home/alexandre/bin</value>
     <value type="QString">PULSE_PROP_media.role=none</value>
-    <value type="QString">PULSE_PROP_phonon.streamid={c7adf33d-74eb-446a-8d7b-ce765b74b074}</value>
-    <value type="QString">PWD=/home/alexandre</value>
+    <value type="QString">PULSE_PROP_phonon.streamid={bda40a79-bf37-4550-a115-261dea66cdf3}</value>
+    <value type="QString">PWD=/usr/lib/qtcreator</value>
     <value type="QString">PYTHONDONTWRITEBYTECODE=1</value>
     <value type="QString">PYTHONPATH=/usr/lib/ooo/basis-link/program</value>
     <value type="QString">PYTHONSTARTUP=/etc/pythonrc.py</value>
@@ -249,8 +249,8 @@
     <value type="QString">NLSPATH=/usr/share/locale/%l/%N</value>
     <value type="QString">PATH=/usr/lib/qt4/bin:/usr/lib/icecc/bin:/usr/bin:/bin:/usr/local/bin:/usr/X11R6/bin/:/usr/games:/usr/lib/qt4/bin:/home/alexandre/bin</value>
     <value type="QString">PULSE_PROP_media.role=none</value>
-    <value type="QString">PULSE_PROP_phonon.streamid={c7adf33d-74eb-446a-8d7b-ce765b74b074}</value>
-    <value type="QString">PWD=/home/alexandre</value>
+    <value type="QString">PULSE_PROP_phonon.streamid={bda40a79-bf37-4550-a115-261dea66cdf3}</value>
+    <value type="QString">PWD=/usr/lib/qtcreator</value>
     <value type="QString">PYTHONDONTWRITEBYTECODE=1</value>
     <value type="QString">PYTHONPATH=/usr/lib/ooo/basis-link/program</value>
     <value type="QString">PYTHONSTARTUP=/etc/pythonrc.py</value>

@@ -12,10 +12,9 @@ public:
     bool paga;
     int id;
     QString getValorFormatado();
-    double getValorAberto();
-    double getValorPago();
-
-    double valorPago;
+    float getValorAberto();
+    float getValorPago();
+    float valorPago;
 };
 
 #endif // PARCELA_H

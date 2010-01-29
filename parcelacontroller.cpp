@@ -18,9 +18,10 @@ void ParcelaController::setPaga(bool *ok,QString *error,Parcela parcela)
     QSqlQuery query(db);
 
     QString sql;
-    sql.append("UPDATE parcela SET paga = 1 WHERE id = :id");
+    sql.append("UPDATE parcela SET paga = :paga WHERE id = :id");
     query.prepare(sql);
     query.bindValue(":id",parcela.id);
+    query.bindValue(":paga",true);
 
     if( ok && !query.exec() )
     {
@@ -36,9 +37,10 @@ QList<Parcela> ParcelaController::getNaoPagasByCompra(bool *ok,QString *error,Co
     QSqlQuery query(db);
 
     QString sql;
-    sql.append("SELECT valor,data_vencimento,id FROM parcela WHERE compra_id = :compra_id and paga = 0");
+    sql.append("SELECT valor,data_vencimento,id FROM parcela WHERE compra_id = :compra_id and paga = :paga");
     query.prepare(sql);
     query.bindValue(":compra_id",compra.id);
+    query.bindValue(":paga",false);
 
     if( ok && !query.exec() )
     {
