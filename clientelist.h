@@ -2,6 +2,8 @@
 #define CLIENTELIST_H
 
 #include <QtGui/QWidget>
+#include "clientecontroller.h"
+
 
 namespace Ui {
     class ClienteList;
@@ -18,6 +20,9 @@ protected:
 
 private:
     Ui::ClienteList *m_ui;
+    ClienteController clienteController;
+private slots:
+    void repaint(QString);
 };
 
 #endif // CLIENTELIST_H

@@ -60,7 +60,7 @@ QList<Cliente> ClienteController::getClientesAtrasados(bool *ok,QString *error,Q
     int fieldId = query.record().indexOf("c.id");
     int fieldCpf = query.record().indexOf("c.cpf");
     int fieldDataNascimento = query.record().indexOf("c.data_nascimento");
-//    int fieldDataVencimento = query.record().indexOf("p.data_vencimento");
+    //    int fieldDataVencimento = query.record().indexOf("p.data_vencimento");
 
     Cliente cliente;
     while (query.next()) {
@@ -83,10 +83,18 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
 
     QSqlDatabase db = DBUtil::getDatabase(ok, error);
     QSqlQuery query(db);
-    query.prepare("select nome,id,cpf,data_nascimento from cliente where nome like :nome order by nome limit :limit");
-    query.bindValue(":nome",nome);
-    query.bindValue(":limit",limit);
 
+    if(limit <= 0)
+    {
+        query.prepare("select nome,id,cpf,data_nascimento from cliente where nome like :nome order by nome");
+        query.bindValue(":nome",nome);
+    }
+    else
+    {
+        query.prepare("select nome,id,cpf,data_nascimento from cliente where nome like :nome order by nome limit :limit");
+        query.bindValue(":nome",nome);
+        query.bindValue(":limit",limit);
+    }
     if( ok && !query.exec() )
     {
         *error = query.lastError().text();
