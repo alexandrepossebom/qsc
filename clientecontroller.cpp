@@ -121,8 +121,12 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
         error->append("\n- Cpf");
     if( cliente->getCargo().length() == 0 )
         error->append("\n- Cargo");
+    if( cliente->renda == 0 )
+        error->append(QString::fromUtf8("\n- Renda inválida"));
     if( cliente->getEnderecoNumero() == 0 )
         error->append(QString::fromUtf8("\n- Endereço Número"));
+    if( cliente->dataNascimento.operator ==(QDate::currentDate().addYears(-18)))
+        error->append(QString::fromUtf8("\n- Data de nascimento inválida"));
     if( error->length() > 0 )
     {
         QString string = "Verifique os seguintes dados:";
