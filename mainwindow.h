@@ -7,6 +7,7 @@
 #include "compraaddview.h"
 #include "clienteaddview.h"
 #include "pagaraddview.h"
+#include "clientelist.h"
 
 namespace Ui
 {
@@ -27,12 +28,14 @@ private:
     CompraAddView  *m_compraAddWidget;
     PagarAddView   *m_pagarAddWidget;
     ClienteAddView *m_clienteAdWidget;
+    ClienteList    *m_clienteListWidget;
 
 private slots:
     void compraAdd();
     void clienteAdd();
     void configSystem();
     void slotPagar();
+    void slotClientList();
 };
 
 #endif // MAINWINDOW_H

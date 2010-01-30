@@ -12,13 +12,23 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionAdicionar,SIGNAL(triggered(bool)),this,SLOT(clienteAdd()));
     connect(ui->actionConfig,SIGNAL(triggered(bool)),this,SLOT(configSystem()));
     connect(ui->actionPagar,SIGNAL(triggered(bool)),this,SLOT(slotPagar()));
+    connect(ui->actionListar,SIGNAL(triggered(bool)),this,SLOT(slotClientList()));
     m_stackedWidget = new QStackedWidget(this);
     setCentralWidget(m_stackedWidget);
     m_clienteAdWidget = NULL;
     m_compraAddWidget = NULL;
     m_pagarAddWidget = NULL;
+    m_clienteListWidget = NULL;
 
 //    setWindowState(Qt::WindowMaximized);
+}
+
+void MainWindow::slotClientList()
+{
+    delete m_clienteListWidget;
+    m_clienteListWidget = new ClienteList();
+    m_stackedWidget->addWidget(m_clienteListWidget);
+    m_stackedWidget->setCurrentWidget(m_clienteListWidget);
 }
 
 void MainWindow::slotPagar()

@@ -46,7 +46,8 @@ SOURCES += main.cpp \
     telefone.cpp \
     telefonecontroller.cpp \
     conjuge.cpp \
-    conjugecontroller.cpp
+    conjugecontroller.cpp \
+    clientelist.cpp
 HEADERS += mainwindow.h \
     clienteaddview.h \
     cliente.h \
@@ -88,7 +89,8 @@ HEADERS += mainwindow.h \
     telefone.h \
     telefonecontroller.h \
     conjuge.h \
-    conjugecontroller.h
+    conjugecontroller.h \
+    clientelist.h
 FORMS += mainwindow.ui \
     clienteaddview.ui \
     nacionalidadeaddview.ui \
@@ -96,5 +98,6 @@ FORMS += mainwindow.ui \
     cepaddview.ui \
     configuratorview.ui \
     compraaddview.ui \
-    pagaraddview.ui
+    pagaraddview.ui \
+    clientelist.ui
 RESOURCES += qsc.qrc
