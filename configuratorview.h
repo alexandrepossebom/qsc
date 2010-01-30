@@ -20,6 +20,7 @@ private:
     Ui::ConfiguratorView *m_ui;
 private slots:
     void configurar();
+    void chooseFile();
 };
 
 #endif // CONFIGURATORVIEW_H

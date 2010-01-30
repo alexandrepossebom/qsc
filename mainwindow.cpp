@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_compraAddWidget = NULL;
     m_pagarAddWidget = NULL;
 
-    setWindowState(Qt::WindowMaximized);     
+//    setWindowState(Qt::WindowMaximized);
 }
 
 void MainWindow::slotPagar()
