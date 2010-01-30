@@ -2,7 +2,6 @@
 #include "ui_configuratorview.h"
 #include <QSettings>
 #include <QFileDialog>
-#include <QDebug>
 
 ConfiguratorView::ConfiguratorView(QWidget *parent) :
         QDialog(parent),
