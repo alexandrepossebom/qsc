@@ -131,6 +131,8 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
         error->append("\n- Cargo");
     if( cliente->renda == 0 )
         error->append(QString::fromUtf8("\n- Renda inválida"));
+    if( cliente->getCep().cep == 0 )
+        error->append(QString::fromUtf8("\n- Cep"));
     if( cliente->getEnderecoNumero() == 0 )
         error->append(QString::fromUtf8("\n- Endereço Número"));
     if( cliente->dataNascimento.operator ==(QDate::currentDate().addYears(-18)))
