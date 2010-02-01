@@ -139,12 +139,46 @@
          </spacer>
         </item>
         <item>
-         <widget class="QLabel" name="label_16">
+         <widget class="QLabel" name="label_17">
           <property name="text">
-           <string>Naturalidade:</string>
+           <string>Nacionalidade:</string>
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QComboBox" name="nacionalidadeComboBox">
+          <property name="minimumSize">
+           <size>
+            <width>141</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="nacionalidadeToolButton">
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>27</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_16">
+        <property name="text">
+         <string>Naturalidade:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_11">
         <item>
          <widget class="QComboBox" name="naturalidadeComboBox">
           <property name="minimumSize">
@@ -169,32 +203,19 @@
          </spacer>
         </item>
         <item>
-         <widget class="QLabel" name="label_17">
+         <widget class="QLabel" name="label_24">
           <property name="text">
-           <string>Nacionalidade:</string>
+           <string>Local de Nascimento:</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="nacionalidadeComboBox">
+         <widget class="QComboBox" name="localNascimentoComboBox">
           <property name="minimumSize">
            <size>
-            <width>141</width>
-            <height>26</height>
+            <width>221</width>
+            <height>0</height>
            </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="nacionalidadeToolButton">
-          <property name="minimumSize">
-           <size>
-            <width>30</width>
-            <height>27</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>...</string>
           </property>
          </widget>
         </item>
@@ -211,6 +232,9 @@
         <string>Filiação</string>
        </property>
        <layout class="QFormLayout" name="formLayout_7">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::ExpandingFieldsGrow</enum>
+        </property>
         <item row="0" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
@@ -368,12 +392,15 @@
         </item>
         <item row="0" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetDefaultConstraint</enum>
+          </property>
           <item>
            <widget class="QComboBox" name="empresaComboBox">
             <property name="minimumSize">
              <size>
-              <width>271</width>
-              <height>26</height>
+              <width>270</width>
+              <height>0</height>
              </size>
             </property>
            </widget>
@@ -409,7 +436,7 @@
           <property name="minimumSize">
            <size>
             <width>120</width>
-            <height>26</height>
+            <height>0</height>
            </size>
           </property>
           <property name="prefix">
@@ -588,7 +615,7 @@
             <property name="minimumSize">
              <size>
               <width>270</width>
-              <height>24</height>
+              <height>0</height>
              </size>
             </property>
            </widget>
@@ -627,7 +654,7 @@
           <property name="minimumSize">
            <size>
             <width>120</width>
-            <height>26</height>
+            <height>0</height>
            </size>
           </property>
           <property name="prefix">

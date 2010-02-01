@@ -15,6 +15,7 @@
 #include "tipotelefone.h"
 #include "cepaddview.h"
 #include "conjugecontroller.h"
+#include "cidadecontroller.h"
 #include <QDate>
 #include <QDebug>
 
@@ -102,6 +103,12 @@ void ClienteAddView::accepted()
     cliente.setCpf( m_ui->cpfLineEdit->text().replace(".","").replace("-","").toLongLong() );
     cliente.setEstadoCivil( m_ui->estadocivilComboBox->currentText() );
     cliente.setDataNascimento( m_ui->nascimentoDateEdit->date() );
+
+    Cidade cidade;
+    i = m_ui->localNascimentoComboBox->currentIndex();
+    cidade.id =  m_ui->localNascimentoComboBox->itemData(i).toInt();
+    cliente.localNascimento = cidade;
+
 
     Nacionalidade nacionalidade;
 
@@ -213,6 +220,7 @@ void ClienteAddView::repaintAll()
     m_ui->conjugeGroupBox->setVisible(false);
     repaintEmpresa();
     repaintEstado();
+    repaintCidade();
     repaintNacionalidade();
     repaintTipoTelefone();
 }
@@ -243,6 +251,21 @@ void ClienteAddView::repaintNacionalidade()
     int br = m_ui->nacionalidadeComboBox->findText("Brasileiro");
     if (br > 0)
         m_ui->nacionalidadeComboBox->setCurrentIndex(br);
+}
+
+void ClienteAddView::repaintCidade()
+{
+    CidadeController cd;
+    int index = 0;
+    foreach(Cidade cidade, cd.getAll())
+    {
+        QVariant id(cidade.id);
+        m_ui->localNascimentoComboBox->addItem(cidade.nome,id);
+        if (cidade.nome.contains("dos Pinhais"))
+            index = cidade.id;
+    }
+    index = m_ui->localNascimentoComboBox->findData(QVariant(index));
+    m_ui->localNascimentoComboBox->setCurrentIndex(index);
 }
 
 void ClienteAddView::repaintTipoTelefone()

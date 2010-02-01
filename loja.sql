@@ -65089,9 +65089,11 @@ CREATE TABLE cliente (
 	obs varchar(255) DEFAULT NULL,
 	rg_orgao_emissor varchar(45) DEFAULT NULL,
 	endereco_numero integer DEFAULT NULL,
+	local_nascimento integer DEFAULT NULL,
 	FOREIGN KEY(empresa_id) REFERENCES empresa(id),
 	FOREIGN KEY(cep_cep) REFERENCES cep(cep),
 	FOREIGN KEY(estado_uf) REFERENCES estado(uf),
+	FOREIGN KEY(local_nascimento) REFERENCES cidade(id),
 	FOREIGN KEY(nacionalidade_id) REFERENCES nacionalidade(id)
 );
 CREATE TABLE cliente_has_telefone (

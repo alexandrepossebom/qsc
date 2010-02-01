@@ -152,11 +152,11 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
     QString sql;
     sql.append("INSERT INTO cliente ");
     sql.append("( nome, nacionalidade_id, empresa_id, estado_uf,");
-    sql.append(" cep_cep, data_nascimento, data_cadastro, cpf, estado_civil,");
+    sql.append(" cep_cep, data_nascimento, data_cadastro, cpf, estado_civil, local_nascimento,");
     sql.append(" rg, rg_data_emissao, nome_pai, nome_mae, renda, cargo, rg_orgao_emissor, endereco_numero)");
     sql.append(" VALUES ");
     sql.append("(:nome,:nacionalidade_id,:empresa_id,:estado_uf,");
-    sql.append(":cep_cep,:data_nascimento,:data_cadastro,:cpf,:estado_civil,");
+    sql.append(":cep_cep,:data_nascimento,:data_cadastro,:cpf,:estado_civil,:local_nascimento,");
     sql.append(":rg,:rg_data_emissao,:nome_pai,:nome_mae,:renda,:cargo,:rg_orgao_emissor,:endereco_numero)");
 
 
@@ -170,6 +170,7 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
     query.bindValue(":data_cadastro", QDate::currentDate() );
     query.bindValue(":cpf", cliente->getCpf() );
     query.bindValue(":estado_civil", cliente->getEstadoCivil());
+    query.bindValue(":local_nascimento", cliente->localNascimento.id);
     query.bindValue(":rg", cliente->getRg() );
     query.bindValue("rg_data_emissao", cliente->getRgDataEmissao() );
     query.bindValue(":nome_pai", cliente->getNomePai() );
@@ -178,6 +179,7 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
     query.bindValue(":cargo", cliente->getCargo() );
     query.bindValue(":rg_orgao_emissor", cliente->getRgOrgaoEmissor());
     query.bindValue(":endereco_numero", cliente->getEnderecoNumero());
+
 
     if( ok && !query.exec() )
     {

@@ -53,6 +53,7 @@ public:
     Nacionalidade nacionalidade;
     Empresa empresa;
     Naturalidade naturalidade;
+    Cidade localNascimento;
     QString nome;
     long long int cpf;
     QString estadoCivil;
