@@ -10,7 +10,7 @@ CidadeController::CidadeController()
 
 QList<Cidade> CidadeController::getAll()
 {
- bool ok;
+    bool ok;
     QString error;
 
     QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
