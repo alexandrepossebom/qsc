@@ -36,6 +36,8 @@ QList<Parcela> ParcelaController::getByCompra(Compra compra)
     bool ok;
     QString error;
     QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    if(!db.isValid())
+        qDebug() << "error open database";
     QSqlQuery query(db);
 
     QString sql;

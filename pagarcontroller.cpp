@@ -8,6 +8,8 @@ PagarController::PagarController()
 void PagarController::add(bool *ok,QString *error,Parcela parcela,double valor)
 {
     QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    if(!db.isValid())
+        qDebug() << "error open database";
     QSqlQuery query(db);
 
     QString sql;
@@ -43,6 +45,8 @@ QList<Pagamento>  PagarController::getAllByParcela(Parcela parcela)
     QString error;
 
     QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    if(!db.isValid())
+        qDebug() << "error open database";
     QSqlQuery query(db);
 
     QString sql;

@@ -61,7 +61,6 @@ void ClienteList::clearLabels()
     m_ui->labelRecado->clear();
     m_ui->labelEmpresaFone->clear();
     m_ui->labelEmpresaNome->clear();
-
 }
 
 void ClienteList::paintEmpresa(Cliente cliente)

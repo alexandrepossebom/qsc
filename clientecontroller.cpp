@@ -82,6 +82,8 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
     nome = str;
 
     QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    if(!db.isValid())
+        qDebug() << "error open database";
     QSqlQuery query(db);
 
     if(limit <= 0)

@@ -48,14 +48,18 @@ void TelefoneController::Add(bool *ok,QString *error,Telefone *telefone)
 QList<Telefone> TelefoneController::getByCliente(Cliente cliente)
 {    
     QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    if(!db.isValid())
+        qDebug() << "error open database";
     QSqlQuery query(db);
     query.prepare("select t.numero,tt.nome from tipo_telefone tt,cliente c,cliente_has_telefone ct,telefone t where c.id = :id and ct.cliente_id = c.id and t.id = ct.telefone_id and tt.id = t.tipo_telefone_id");
     query.bindValue(":id",cliente.id);
 
+
+
     QList<Telefone> telefones;
     if( ok && !query.exec() )
     {
-        error = query.lastError().text();
+        qDebug() << query.lastError().text();
         return telefones;
     }
 

@@ -29,6 +29,10 @@ void CompraController::setPaga(bool *ok,QString *error,Compra compra)
 QList<Compra> CompraController::getByCliente(Cliente cliente)
 {
     QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+
+    if(!db.isValid())
+        qDebug() << "error open database";
+
     QSqlQuery query(db);
 
     QString sql;
