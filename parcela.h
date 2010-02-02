@@ -1,6 +1,7 @@
 #ifndef PARCELA_H
 #define PARCELA_H
 #include <QDate>
+#include "pagamento.h"
 
 
 class Parcela
@@ -15,6 +16,7 @@ public:
     float getValorAberto();
     float getValorPago();
     float valorPago;
+    QList<Pagamento> pagamentos;
 };
 
 #endif // PARCELA_H

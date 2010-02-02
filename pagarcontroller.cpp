@@ -28,7 +28,7 @@ void PagarController::add(bool *ok,QString *error,Parcela parcela,double valor)
 double PagarController::getTotalPagoByParcela(bool *ok,QString *error,Parcela parcela)
 {
     double total = 0;
-    QList<Pagamento> pagamentos = getAllByParcela(ok,error,parcela);
+    QList<Pagamento> pagamentos = getAllByParcela(parcela);
     while(!pagamentos.isEmpty())
     {
         Pagamento pagamento = pagamentos.takeFirst();
@@ -37,9 +37,12 @@ double PagarController::getTotalPagoByParcela(bool *ok,QString *error,Parcela pa
     return total;
 }
 
-QList<Pagamento>  PagarController::getAllByParcela(bool *ok,QString *error,Parcela parcela)
+QList<Pagamento>  PagarController::getAllByParcela(Parcela parcela)
 {
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    bool ok;
+    QString error;
+
+    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
     QSqlQuery query(db);
 
     QString sql;
@@ -51,7 +54,7 @@ QList<Pagamento>  PagarController::getAllByParcela(bool *ok,QString *error,Parce
     if( ok && !query.exec() )
     {
         qDebug() << query.executedQuery();
-        *error = query.lastError().text();
+        error = query.lastError().text();
         ok = false;
     }
 

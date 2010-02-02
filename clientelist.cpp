@@ -15,6 +15,11 @@ m_ui(new Ui::ClienteList)
     connect(m_ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
             this, SLOT(slotClientSelected(QListWidgetItem*)));
     clearLabels();
+    QStringList labels;
+    labels << tr("Data") << tr("Valor");
+    m_ui->treeWidget->header()->setResizeMode(QHeaderView::Stretch);
+    m_ui->treeWidget->setHeaderLabels(labels);
+    m_ui->treeWidget->setColumnCount(2);
 }
 
 void ClienteList::repaint(QString filter)
@@ -59,17 +64,16 @@ void ClienteList::clearLabels()
 
 }
 
-void ClienteList::slotClientSelected(QListWidgetItem *item)
+void ClienteList::paintEmpresa(Cliente cliente)
 {
-    clearLabels();
-    Cliente cliente = item->data(ClientDataRole).value<Cliente>();
-    m_ui->nomeLineEdit->setText(cliente.nome);
-    m_ui->labelEmpresaNome->setText(cliente.empresa.nome);
-    cliente.empresa = empresaController.getById(cliente.empresa.id);
-    foreach(Telefone telefone, cliente.empresa.telefones)
+    foreach(Telefone telefone, empresaController.getById(cliente.empresa.id).telefones)
     {
         m_ui->labelEmpresaFone->setText(QString::number(telefone.numero));
     }
+}
+
+void ClienteList::paintTelefones(Cliente cliente)
+{
     foreach(Telefone telefone,telefoneController.getByCliente(cliente))
     {
         if(telefone.tipoTelefone.nome.contains("Celular"))
@@ -82,6 +86,44 @@ void ClienteList::slotClientSelected(QListWidgetItem *item)
             m_ui->labelFax->setText(QString::number(telefone.numero));
         else if(telefone.tipoTelefone.nome.contains("Recado"))
             m_ui->labelRecado->setText(QString::number(telefone.numero));
-
     }
+}
+
+void ClienteList::paintCompras(Cliente cliente)
+{
+    m_ui->treeWidget->clear();
+    foreach(Compra compra, compraController.getByCliente(cliente))
+    {
+        QTreeWidgetItem *compraItem = new QTreeWidgetItem(m_ui->treeWidget);
+        compraItem->setText(0, compra.dataCompra.toString("dd/MM/yyyy") );
+        compraItem->setText(1, compra.getValorFormatado() );
+        foreach(Parcela parcela,compra.parcelas)
+        {
+            QString valor;
+            valor.append("R$ ");
+            valor.append(QString::number(parcela.getValorAberto(),'F',2));
+
+            QTreeWidgetItem *parcelaItem = new QTreeWidgetItem(compraItem);
+            parcelaItem->setText(0,parcela.dataVencimento.toString("dd/MM/yyyy"));
+            parcelaItem->setText(1,parcela.getValorFormatado());
+            parcelaItem->setText(2,valor);
+            foreach(Pagamento pagamento,pagarController.getAllByParcela(parcela))
+            {
+                QTreeWidgetItem *pagamentoItem = new QTreeWidgetItem(parcelaItem);
+                pagamentoItem->setText(0,pagamento.dataPagamento.toString("dd/MM/yyyy"));
+                pagamentoItem->setText(1,pagamento.getValorFormatado());
+            }
+        }
+    }
+}
+
+void ClienteList::slotClientSelected(QListWidgetItem *item)
+{
+    clearLabels();
+    Cliente cliente = item->data(ClientDataRole).value<Cliente>();
+    m_ui->labelEmpresaNome->setText(cliente.empresa.nome);
+
+    paintEmpresa(cliente);
+    paintTelefones(cliente);
+    paintCompras(cliente);
 }

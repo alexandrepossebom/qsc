@@ -6,7 +6,8 @@
 #include "clientecontroller.h"
 #include "empresacontroller.h"
 #include "telefonecontroller.h"
-
+#include "compracontroller.h"
+#include "pagarcontroller.h"
 
 namespace Ui {
     class ClienteList;
@@ -26,7 +27,12 @@ private:
     ClienteController clienteController;
     EmpresaController empresaController;
     TelefoneController telefoneController;
+    CompraController compraController;
+    PagarController pagarController;
     void clearLabels();
+    void paintEmpresa(Cliente cliente);
+    void paintTelefones(Cliente cliente);
+    void paintCompras(Cliente cliente);
 private slots:
     void repaint(QString);
     void slotClientSelected(QListWidgetItem *item);

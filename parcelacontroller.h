@@ -11,6 +11,7 @@ public:
     ParcelaController();
     void Add(bool *ok,QString *error,Parcela parcela);
     QList<Parcela> getNaoPagasByCompra(bool *ok,QString *error,Compra compra);
+    QList<Parcela> getByCompra(Compra compra);
     void setPaga(bool *ok,QString *error,Parcela parcela);
 };
 

@@ -9,7 +9,7 @@ class PagarController
 public:
     PagarController();
     QList<Pagamento>  getAll(bool *ok,QString *error);
-    QList<Pagamento>  getAllByParcela(bool *ok,QString *error,Parcela parcela);
+    QList<Pagamento>  getAllByParcela(Parcela parcela);
     double getTotalPagoByParcela(bool *ok,QString *error,Parcela parcela);
     void add(bool *ok,QString *error,Parcela parcela,double valor);
 };

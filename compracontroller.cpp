@@ -25,6 +25,50 @@ void CompraController::setPaga(bool *ok,QString *error,Compra compra)
     }
 }
 
+
+QList<Compra> CompraController::getByCliente(Cliente cliente)
+{
+    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlQuery query(db);
+
+    QString sql;
+    sql.append("SELECT valor,data_compra,id,itens FROM compra WHERE cliente_id = :cliente_id order by data_compra");
+    query.prepare(sql);
+    query.bindValue(":cliente_id",cliente.id);
+
+    QList<Compra> compras;
+
+    if( ok && !query.exec() )
+    {
+        qDebug() << query.lastError();
+        return compras;
+    }
+
+    int fieldValor = query.record().indexOf("valor");
+    int fieldDataCompra = query.record().indexOf("data_compra");
+    int fieldId = query.record().indexOf("id");
+    int fieldItens = query.record().indexOf("itens");
+
+    Compra compra;
+    while (query.next()) {
+        compra.id = query.value(fieldId).toInt();
+        compra.valor = query.value(fieldValor).toDouble();
+        compra.paga = false;
+        compra.dataCompra = query.value(fieldDataCompra).toDate();
+        compra.itens = query.value(fieldItens).toInt();
+
+        ParcelaController pc;
+        compra.parcelas = pc.getByCompra(compra);
+
+        compras.append(compra);
+    }
+
+    return compras;
+}
+
+
+
+
 QList<Compra> CompraController::getNaoPagasByCliente(bool *ok,QString *error,Cliente cliente)
 {
     QSqlDatabase db = DBUtil::getDatabase(ok, error);
