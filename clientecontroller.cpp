@@ -86,12 +86,12 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
 
     if(limit <= 0)
     {
-        query.prepare("select nome,id,cpf,data_nascimento from cliente where nome like :nome order by nome");
+        query.prepare("select c.nome,c.id,c.cpf,c.data_nascimento,e.nome as empresa_nome,e.id as empresa_id from cliente c,empresa e where c.empresa_id = e.id and c.nome like :nome order by c.nome");
         query.bindValue(":nome",nome);
     }
     else
     {
-        query.prepare("select nome,id,cpf,data_nascimento from cliente where nome like :nome order by nome limit :limit");
+        query.prepare("select c.nome,c.id,c.cpf,c.data_nascimento from cliente c where c.nome like :nome order by c.nome limit :limit");
         query.bindValue(":nome",nome);
         query.bindValue(":limit",limit);
     }
@@ -106,14 +106,20 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
     int fieldNome = query.record().indexOf("nome");
     int fieldId = query.record().indexOf("id");
     int fieldCpf = query.record().indexOf("cpf");
+    int fieldEmpresa = query.record().indexOf("empresa_nome");
+    int fieldEmpresaId = query.record().indexOf("empresa_id");
     int fieldDataNascimento = query.record().indexOf("data_nascimento");
 
     Cliente cliente;
+    Empresa empresa;
     while (query.next()) {
         cliente.setNome(query.value(fieldNome).toString());
         cliente.setId(query.value(fieldId).toInt());
         cliente.cpf = query.value(fieldCpf).toLongLong();
         cliente.dataNascimento = query.value(fieldDataNascimento).toDate();
+        empresa.nome = query.value(fieldEmpresa).toString();
+        empresa.id = query.value(fieldEmpresaId).toInt();
+        cliente.setEmpresa(empresa);
         clientes.append(cliente);
     }
 

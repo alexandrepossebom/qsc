@@ -40,6 +40,32 @@ QList<Empresa> EmpresaController::getAll()
     return empresas;
 }
 
+Empresa EmpresaController::getById(int id)
+{
+    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlQuery query(db);
+    query.prepare("select e.nome,e.id,t.numero from empresa e,empresa_has_telefone et,telefone t where e.id = :id and et.empresa_id = e.id and t.id = et.telefone_id");
+    query.bindValue(":id",id);
+
+    Empresa empresa;
+    empresa.id = id;
+
+    if( ok && !query.exec() )
+    {
+        error = query.lastError().text();
+        return empresa;
+    }
+    int fieldNome = query.record().indexOf("nome");
+    int fieldNumero = query.record().indexOf("numero");
+    Telefone telefone;
+    while (query.next()) {
+       empresa.nome = query.value(fieldNome).toString();
+       telefone.numero = query.value(fieldNumero).toLongLong();
+       empresa.telefones.append(telefone);
+    }
+    return empresa;
+}
+
 
 bool EmpresaController::addEmpresa(Empresa *empresa)
 {

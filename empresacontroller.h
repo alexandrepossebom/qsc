@@ -13,6 +13,7 @@ public:
     bool addEmpresa(Empresa *empresa);
     QString getError();
     QList<Empresa> getAll();
+    Empresa getById(int id);
 private:
     QString error;
     bool ok;

@@ -44,3 +44,29 @@ void TelefoneController::Add(bool *ok,QString *error,Telefone *telefone)
         telefone->id = query.lastInsertId().toInt();
     }
 }
+
+QList<Telefone> TelefoneController::getByCliente(Cliente cliente)
+{    
+    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlQuery query(db);
+    query.prepare("select t.numero,tt.nome from tipo_telefone tt,cliente c,cliente_has_telefone ct,telefone t where c.id = :id and ct.cliente_id = c.id and t.id = ct.telefone_id and tt.id = t.tipo_telefone_id");
+    query.bindValue(":id",cliente.id);
+
+    QList<Telefone> telefones;
+    if( ok && !query.exec() )
+    {
+        error = query.lastError().text();
+        return telefones;
+    }
+
+    int fieldTipoNome = query.record().indexOf("nome");
+    int fieldNumero = query.record().indexOf("numero");
+
+    Telefone telefone;
+    while (query.next()) {
+        telefone.tipoTelefone.nome = query.value(fieldTipoNome).toString();
+        telefone.numero = query.value(fieldNumero).toLongLong();
+        telefones.append(telefone);
+    }
+    return telefones;
+}
