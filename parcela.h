@@ -1,6 +1,7 @@
 #ifndef PARCELA_H
 #define PARCELA_H
 #include <QDate>
+#include <QList>
 #include "pagamento.h"
 
 
