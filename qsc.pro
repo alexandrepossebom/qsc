@@ -47,7 +47,8 @@ SOURCES += main.cpp \
     telefonecontroller.cpp \
     conjuge.cpp \
     conjugecontroller.cpp \
-    clientelist.cpp
+    clientelist.cpp \
+    view.cpp
 HEADERS += mainwindow.h \
     clienteaddview.h \
     cliente.h \
@@ -90,7 +91,8 @@ HEADERS += mainwindow.h \
     telefonecontroller.h \
     conjuge.h \
     conjugecontroller.h \
-    clientelist.h
+    clientelist.h \
+    view.h
 FORMS += mainwindow.ui \
     clienteaddview.ui \
     nacionalidadeaddview.ui \

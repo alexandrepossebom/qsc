@@ -28,8 +28,7 @@ void DBUtil::log(QString tag,QString texto)
 
 QSqlDatabase DBUtil::getDatabase (bool  *ok, QString *error) {
     QSqlDatabase db;
-    bool a = true;
-    ok = &a;
+
     if (!QSqlDatabase::contains(DBUtil::DATABASE_CONNECT_NAME)) {
 
         QSettings settings("Possebom", "Qsc");
@@ -40,10 +39,11 @@ QSqlDatabase DBUtil::getDatabase (bool  *ok, QString *error) {
 
         db = QSqlDatabase::addDatabase("QSQLITE" , DBUtil ::DATABASE_CONNECT_NAME );
         db.setDatabaseName(databasename);
+        db.open();
     } else {
         db = QSqlDatabase::database(DBUtil ::DATABASE_CONNECT_NAME , true );
     }
-
+#if 0
     if (!db.isOpen()) {
         bool result = db.open();
         if (0 != ok) {
@@ -54,6 +54,7 @@ QSqlDatabase DBUtil::getDatabase (bool  *ok, QString *error) {
             error->append(db.lastError().text());
         }
     }
+#endif
     return db;
 }
 

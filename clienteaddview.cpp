@@ -21,13 +21,14 @@
 
 
 
-ClienteAddView::ClienteAddView(QWidget *parent) :
-        QWidget(parent),
+ClienteAddView::ClienteAddView(View *parent) :
+        View(parent),
         m_ui(new Ui::ClienteAddView)
 {
     m_ui->setupUi(this);
 
     connect(m_ui->buttonBox,SIGNAL(accepted()),this,SLOT(accepted()));
+    connect(m_ui->buttonBox,SIGNAL(rejected()),this,SLOT(rejected()));
     connect(m_ui->empresaToolButton,SIGNAL(clicked()),this,SLOT(addEmpresa()));
     connect(m_ui->conjugeEmpresaToolButton,SIGNAL(clicked()),this,SLOT(addEmpresa()));
     connect(m_ui->cepLineEdit,SIGNAL(textChanged(QString)),this,SLOT(cepEdited(QString)));
@@ -50,6 +51,11 @@ ClienteAddView::ClienteAddView(QWidget *parent) :
     m_ui->bairroLineEdit->setEnabled(false);
 
     repaintAll();
+}
+
+void ClienteAddView::rejected()
+{
+    this->close();
 }
 
 bool ClienteAddView::addCep()

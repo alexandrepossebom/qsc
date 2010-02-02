@@ -47,6 +47,7 @@ void TelefoneController::Add(bool *ok,QString *error,Telefone *telefone)
 
 QList<Telefone> TelefoneController::getByCliente(Cliente cliente)
 {    
+    qDebug() << "looking for phones of client" << cliente.id;
     QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
     if(!db.isValid())
         qDebug() << "error open database";

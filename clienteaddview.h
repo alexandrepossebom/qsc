@@ -1,7 +1,7 @@
 #ifndef CLIENTEADDVIEW_H
 #define CLIENTEADDVIEW_H
 
-#include <QtGui/QWidget>
+#include "view.h"
 #include "cliente.h"
 
 #include "clientecontroller.h"
@@ -10,10 +10,10 @@ namespace Ui {
     class ClienteAddView;
 }
 
-class ClienteAddView : public QWidget {
+class ClienteAddView : public View {
     Q_OBJECT
 public:
-    ClienteAddView(QWidget *parent = 0);
+    ClienteAddView(View *parent = 0);
     ~ClienteAddView();
 
 protected:
@@ -32,6 +32,7 @@ private:
 
 private slots:
     void accepted();
+    void rejected();
     bool addCep();
     bool addEmpresa();
     bool addNacionalidade();

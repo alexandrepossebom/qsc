@@ -22,13 +22,10 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void showWidget(QWidget *w = 0);
+
 private:
     Ui::MainWindow *ui;
-    QStackedWidget *m_stackedWidget;
-    CompraAddView  *m_compraAddWidget;
-    PagarAddView   *m_pagarAddWidget;
-    ClienteAddView *m_clienteAdWidget;
-    ClienteList    *m_clienteListWidget;
 
 private slots:
     void compraAdd();

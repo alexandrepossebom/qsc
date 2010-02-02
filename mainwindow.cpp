@@ -3,6 +3,7 @@
 #include "configuratorview.h"
 #include <QRadioButton>
 #include <QDebug>
+#include <QLabel>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -13,46 +14,29 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionConfig,SIGNAL(triggered(bool)),this,SLOT(configSystem()));
     connect(ui->actionPagar,SIGNAL(triggered(bool)),this,SLOT(slotPagar()));
     connect(ui->actionListar,SIGNAL(triggered(bool)),this,SLOT(slotClientList()));
-    m_stackedWidget = new QStackedWidget(this);
-    setCentralWidget(m_stackedWidget);
-    m_clienteAdWidget = NULL;
-    m_compraAddWidget = NULL;
-    m_pagarAddWidget = NULL;
-    m_clienteListWidget = NULL;
 
 //    setWindowState(Qt::WindowMaximized);
+    showWidget();
 }
 
 void MainWindow::slotClientList()
 {
-    delete m_clienteListWidget;
-    m_clienteListWidget = new ClienteList();
-    m_stackedWidget->addWidget(m_clienteListWidget);
-    m_stackedWidget->setCurrentWidget(m_clienteListWidget);
+    showWidget(new ClienteList());
 }
 
 void MainWindow::slotPagar()
 {
-    delete m_pagarAddWidget;
-    m_pagarAddWidget = new PagarAddView();
-    m_stackedWidget->addWidget(m_pagarAddWidget);
-    m_stackedWidget->setCurrentWidget(m_pagarAddWidget);
+    showWidget(new PagarAddView());
 }
 
 void MainWindow::compraAdd()
 {
-    delete m_compraAddWidget;
-    m_compraAddWidget = new CompraAddView();
-    m_stackedWidget->addWidget(m_compraAddWidget);
-    m_stackedWidget->setCurrentWidget(m_compraAddWidget);
+    showWidget(new CompraAddView());
 }
 
 void MainWindow::clienteAdd()
 {
-    delete m_clienteAdWidget;
-    m_clienteAdWidget = new ClienteAddView();
-    m_stackedWidget->addWidget(m_clienteAdWidget);
-    m_stackedWidget->setCurrentWidget(m_clienteAdWidget);
+    showWidget(new ClienteAddView());
 }
 
 void MainWindow::configSystem()
@@ -65,4 +49,18 @@ void MainWindow::configSystem()
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::showWidget(QWidget *w)
+{
+    delete centralWidget();
+
+    if (!w)
+    {
+        QLabel *l = new QLabel();
+        l->setPixmap(QPixmap(":/images/images/qsc.png"));
+        l->setAlignment(Qt::AlignCenter);
+        w = l;
+    }
+    setCentralWidget(w);
 }

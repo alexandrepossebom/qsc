@@ -26,6 +26,7 @@ void ClienteList::repaint(QString filter)
 {
     bool ok = true;
     QString error;
+
     foreach(Cliente cliente,clienteController.getClientesByName(&ok,&error,filter,0))
     {
         QListWidgetItem *listItem = new QListWidgetItem();
@@ -73,8 +74,11 @@ void ClienteList::paintEmpresa(Cliente cliente)
 
 void ClienteList::paintTelefones(Cliente cliente)
 {
-    foreach(Telefone telefone,telefoneController.getByCliente(cliente))
+    QList<Telefone> fones = telefoneController.getByCliente(cliente);
+    qDebug() << fones.size();
+    foreach(Telefone telefone,fones)
     {
+        qDebug() << "entered";
         if(telefone.tipoTelefone.nome.contains("Celular"))
             m_ui->labelCelular->setText(QString::number(telefone.numero));
         else if(telefone.tipoTelefone.nome.contains("Residencial"))

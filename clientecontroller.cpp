@@ -88,8 +88,8 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
 
     if(limit <= 0)
     {
-        query.prepare("select c.nome,c.id,c.cpf,c.data_nascimento,e.nome as empresa_nome,e.id as empresa_id from cliente c,empresa e where c.empresa_id = e.id and c.nome like :nome order by c.nome");
-        query.bindValue(":nome",nome);
+        query.prepare("select c.nome,c.id,c.cpf,c.data_nascimento,e.nome as empresa_nome,e.id as empresa_id from cliente c,empresa e where c.empresa_id = e.id order by c.nome");
+        //query.bindValue(":nome",nome);
     }
     else
     {
@@ -112,6 +112,7 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
     int fieldEmpresaId = query.record().indexOf("empresa_id");
     int fieldDataNascimento = query.record().indexOf("data_nascimento");
 
+    qDebug() << "bla";
     Cliente cliente;
     Empresa empresa;
     while (query.next()) {
@@ -123,6 +124,7 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
         empresa.id = query.value(fieldEmpresaId).toInt();
         cliente.setEmpresa(empresa);
         clientes.append(cliente);
+        qDebug() << "got client" << cliente.nome;
     }
 
     return clientes;
