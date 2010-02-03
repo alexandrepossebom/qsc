@@ -2,6 +2,7 @@
 #define COMPRAADDVIEW_H
 #include "formapagamento.h"
 #include "cliente.h"
+#include <QCompleter>
 
 #include "view.h"
 
@@ -24,6 +25,7 @@ private:
     void refresh();
     void refreshCliente();
     void changeWidgets(bool visible);
+    QCompleter *completer;
 
 private slots:
     void nomeChanged(QString nome);

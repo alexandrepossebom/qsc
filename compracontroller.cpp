@@ -99,7 +99,6 @@ QList<Compra> CompraController::getNaoPagasByCliente(Cliente cliente)
         compra.paga = false;
         compra.dataCompra = query.value(fieldDataCompra).toDate();
         compra.itens = query.value(fieldItens).toInt();
-        //TODO
         ParcelaController pc;
         compra.parcelas = pc.getNaoPagasByCompra(compra);
         compras.append(compra);

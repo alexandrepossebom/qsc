@@ -22,7 +22,6 @@ CompraAddView::CompraAddView(View *parent) :
     connect(m_ui->nomeClienteLineEdit,SIGNAL(returnPressed()),this,SLOT(selectCliente()));
     connect(m_ui->formadePagamentoComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(formaChanged(int)));
     connect(m_ui->valorDoubleSpinBox,SIGNAL(valueChanged(double)),this,SLOT(valorChanged(double)));
-    connect(m_ui->clienteToolButton,SIGNAL(clicked()),this,SLOT(selectCliente()));
     connect(m_ui->buttonBox,SIGNAL(accepted()),this,SLOT(addCompra()));
     connect(m_ui->buttonBox,SIGNAL(rejected()),this,SLOT(slotCancel()));
 
@@ -43,11 +42,7 @@ void CompraAddView::addCompra()
     int fpId = m_ui->formadePagamentoComboBox->itemData( fpIndex ).toInt();
 
     FormaPagamentoController fpc;
-    bool ok;
-    QString error;
-    FormaPagamento fp;
     fp = fpc.getById(fpId);
-
 
     Vendedor vendedor;
     int vendedorIndex = m_ui->vendedorComboBox->currentIndex();
@@ -194,7 +189,7 @@ void CompraAddView::nomeChanged(QString nome)
 
     model->setStringList(list);
 
-    QCompleter *completer = new QCompleter;
+    completer = new QCompleter;
     completer->setModel(model);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
@@ -202,6 +197,7 @@ void CompraAddView::nomeChanged(QString nome)
 
     m_ui->nomeClienteLineEdit->setCompleter(completer);
     connect(completer,SIGNAL(activated(QString)),this,SLOT(selectCliente()));
+
 }
 
 void CompraAddView::repaintFormas()

@@ -163,6 +163,8 @@ void PagarAddView::slotNomeChanged(QString nome)
     if (nome.length() < 3)
         return;
 
+    m_ui->treeWidget->clear();
+
     ClienteController cc;
     QStringListModel *model = new QStringListModel();
 
