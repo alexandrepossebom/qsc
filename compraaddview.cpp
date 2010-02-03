@@ -74,37 +74,31 @@ void CompraAddView::changeWidgets(bool visible)
 {
     m_ui->labelCpf->setHidden( visible );
     m_ui->labelObs->setHidden( visible );
-    m_ui->labelNascimento->setHidden( visible );
     m_ui->cpfLabel->setHidden( visible );
     m_ui->obsLabel->setHidden( visible );
     m_ui->nascimentoLabel->setHidden( visible );
+    m_ui->labelNascimento->setHidden( visible );
 }
 
 void CompraAddView::selectCliente()
 {
-    if(m_ui->nomeClienteLineEdit->isEnabled())
+    QRegExp rx("(\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2})");
+
+    long long int cpf = 0;
+    int pos = rx.indexIn( m_ui->nomeClienteLineEdit->text() );
+    if (pos > -1)
     {
-        QRegExp rx("(\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2})");
-
-        long long int cpf = 0;
-        int pos = rx.indexIn( m_ui->nomeClienteLineEdit->text() );
-        if (pos > -1)
-        {
-            cpf = rx.cap(1).replace(".","").replace("-","").toLongLong();
-        }else{
-            return;
-        }
-        ClienteController cc;
-        cliente = cc.getClienteByCpf(cpf);
-
-        if(cliente.id > 0)
-        {
-            refreshCliente();
-        }
+        cpf = rx.cap(1).replace(".","").replace("-","").toLongLong();
     }else{
-        m_ui->nomeClienteLineEdit->setEnabled(true);
+        return;
+    }
+    ClienteController cc;
+    cliente = cc.getClienteByCpf(cpf);
+
+    if(cliente.id > 0)
+    {
         changeWidgets(true);
-        cliente.setId(0);
+        refreshCliente();
     }
 }
 

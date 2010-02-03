@@ -37,7 +37,7 @@ Cliente ClienteController::getClienteByCpf(long long int cpf)
     return cliente;
 }
 
-QList<Cliente> ClienteController::getClientesAtrasados(bool *ok,QString *error,QString nome)
+QList<Cliente> ClienteController::getClientesAtrasados(QString nome)
 {
 
     QSqlDatabase db = DBUtil::getDatabase();
@@ -49,7 +49,7 @@ QList<Cliente> ClienteController::getClientesAtrasados(bool *ok,QString *error,Q
     query.bindValue(":nome",nome);
 
     QList<Cliente> clientes;
-    if( ok && !query.exec() )
+    if( !query.exec() )
     {
         qDebug() << query.lastError().text();
         return clientes;

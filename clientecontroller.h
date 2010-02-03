@@ -9,7 +9,7 @@ public:
     ClienteController();
     void addCliente(bool *ok,QString *error,Cliente *cliente);
     QList<Cliente> getClientesByName(QString nome,int limit = 0);
-    QList<Cliente> getClientesAtrasados(bool *ok,QString *error,QString nome);
+    QList<Cliente> getClientesAtrasados(QString nome);
     Cliente getClienteByCpf(long long int cpf);
 };
 

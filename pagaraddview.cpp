@@ -111,6 +111,7 @@ void PagarAddView::slotParcelaSelected(QTreeWidgetItem* item,int id)
 void PagarAddView::repaintCompras()
 {
     compras.clear();
+    m_ui->treeWidget->clear();
 
     CompraController cc;
     compras = cc.getNaoPagasByCliente(cliente);
