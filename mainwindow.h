@@ -33,6 +33,8 @@ private slots:
     void configSystem();
     void slotPagar();
     void slotClientList();
+    void slotClearView();
+
 };
 
 #endif // MAINWINDOW_H

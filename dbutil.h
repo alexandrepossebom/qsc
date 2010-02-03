@@ -15,5 +15,7 @@ public :
     static void removeDatabase ();
 
     static const QString DATABASE_CONNECT_NAME ;
+private:
+    static QSqlDatabase m_db;
 };
 #endif // DBUTIL_H

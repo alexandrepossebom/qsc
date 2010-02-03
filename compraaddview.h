@@ -3,20 +3,17 @@
 #include "formapagamento.h"
 #include "cliente.h"
 
-#include <QtGui/QDialog>
+#include "view.h"
 
 namespace Ui {
     class CompraAddView;
 }
 
-class CompraAddView : public QDialog {
+class CompraAddView : public View {
     Q_OBJECT
 public:
-    CompraAddView(QWidget *parent = 0);
+    CompraAddView(View *parent = 0);
     ~CompraAddView();
-
-protected:
-    void changeEvent(QEvent *e);
 
 private:
     Ui::CompraAddView *m_ui;
@@ -34,6 +31,7 @@ private slots:
     void valorChanged(double valor);
     void selectCliente();
     void addCompra();
+    void slotCancel();
 };
 
 #endif // COMPRAADDVIEW_H

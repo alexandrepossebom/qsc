@@ -12,8 +12,9 @@
 
 #include <QRegExp>
 
-PagarAddView::PagarAddView(QWidget *parent) :
-        QDialog(parent),
+
+PagarAddView::PagarAddView(View *parent) :
+        View(parent),
         m_ui(new Ui::PagarAddView)
 {
     m_ui->setupUi(this);
@@ -23,6 +24,7 @@ PagarAddView::PagarAddView(QWidget *parent) :
     connect(m_ui->treeWidget,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(slotParcelaSelected(QTreeWidgetItem*,int)));
     connect(m_ui->doubleSpinBox,SIGNAL(valueChanged(double)),this,SLOT(slotValorChanged(double)));
     connect(m_ui->buttonBox,SIGNAL(accepted()),this,SLOT(slotOk()));
+    connect(m_ui->buttonBox,SIGNAL(rejected()),this,SLOT(slotCancel()));
 
     m_ui->checkBox->setEnabled(false);
     m_ui->doubleSpinBox->setEnabled(false);
@@ -200,19 +202,12 @@ void PagarAddView::slotNomeChanged(QString nome)
     m_ui->nomeLineEdit->setCompleter(completer);
 }
 
+void PagarAddView::slotCancel()
+{
+    this->close();
+}
+
 PagarAddView::~PagarAddView()
 {
     delete m_ui;
-}
-
-void PagarAddView::changeEvent(QEvent *e)
-{
-    QDialog::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        m_ui->retranslateUi(this);
-        break;
-    default:
-        break;
-    }
 }

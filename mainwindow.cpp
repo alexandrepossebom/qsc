@@ -62,5 +62,14 @@ void MainWindow::showWidget(QWidget *w)
         l->setAlignment(Qt::AlignCenter);
         w = l;
     }
+
+    View *v = dynamic_cast<View*>(w);
+    if (v)
+        connect(v, SIGNAL(closed()), this, SLOT(slotClearView()));
     setCentralWidget(w);
+}
+
+void MainWindow::slotClearView()
+{
+    showWidget();
 }

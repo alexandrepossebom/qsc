@@ -10,8 +10,10 @@ public:
     explicit View(QWidget *parent = 0);
 
 signals:
+    void closed();
 
-public slots:
+protected:
+    void closeEvent(QCloseEvent *e);
 
 };
 

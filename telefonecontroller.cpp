@@ -47,15 +47,10 @@ void TelefoneController::Add(bool *ok,QString *error,Telefone *telefone)
 
 QList<Telefone> TelefoneController::getByCliente(Cliente cliente)
 {    
-    qDebug() << "looking for phones of client" << cliente.id;
-    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
-    if(!db.isValid())
-        qDebug() << "error open database";
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
     query.prepare("select t.numero,tt.nome from tipo_telefone tt,cliente c,cliente_has_telefone ct,telefone t where c.id = :id and ct.cliente_id = c.id and t.id = ct.telefone_id and tt.id = t.tipo_telefone_id");
     query.bindValue(":id",cliente.id);
-
-
 
     QList<Telefone> telefones;
     if( ok && !query.exec() )

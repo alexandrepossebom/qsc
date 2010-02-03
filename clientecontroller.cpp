@@ -82,8 +82,6 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
     nome = str;
 
     QSqlDatabase db = DBUtil::getDatabase(ok, error);
-    if(!db.isValid())
-        qDebug() << "error open database";
     QSqlQuery query(db);
 
     if(limit <= 0)
@@ -112,7 +110,6 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
     int fieldEmpresaId = query.record().indexOf("empresa_id");
     int fieldDataNascimento = query.record().indexOf("data_nascimento");
 
-    qDebug() << "bla";
     Cliente cliente;
     Empresa empresa;
     while (query.next()) {
@@ -124,9 +121,7 @@ QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QStr
         empresa.id = query.value(fieldEmpresaId).toInt();
         cliente.setEmpresa(empresa);
         clientes.append(cliente);
-        qDebug() << "got client" << cliente.nome;
     }
-
     return clientes;
 }
 

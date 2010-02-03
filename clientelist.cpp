@@ -75,7 +75,6 @@ void ClienteList::paintEmpresa(Cliente cliente)
 void ClienteList::paintTelefones(Cliente cliente)
 {
     QList<Telefone> fones = telefoneController.getByCliente(cliente);
-    qDebug() << fones.size();
     foreach(Telefone telefone,fones)
     {
         qDebug() << "entered";

@@ -3,6 +3,7 @@
 
 const QString DBUtil::DATABASE_CONNECT_NAME ( "QscDatabase" );
 
+QSqlDatabase DBUtil::m_db;
 
 DBUtil::DBUtil()
 {
@@ -27,35 +28,15 @@ void DBUtil::log(QString tag,QString texto)
 }
 
 QSqlDatabase DBUtil::getDatabase (bool  *ok, QString *error) {
-    QSqlDatabase db;
-
     if (!QSqlDatabase::contains(DBUtil::DATABASE_CONNECT_NAME)) {
-
         QSettings settings("Possebom", "Qsc");
-        QString hostname = settings.value("Database/HostName").toString();
-        QString password = settings.value("Database/Password").toString();
-        QString username = settings.value("Database/UserName").toString();
         QString databasename = settings.value("Database/DatabaseName").toString();
 
-        db = QSqlDatabase::addDatabase("QSQLITE" , DBUtil ::DATABASE_CONNECT_NAME );
-        db.setDatabaseName(databasename);
-        db.open();
-    } else {
-        db = QSqlDatabase::database(DBUtil ::DATABASE_CONNECT_NAME , true );
+        m_db = QSqlDatabase::addDatabase("QSQLITE" , DBUtil ::DATABASE_CONNECT_NAME );
+        m_db.setDatabaseName(databasename);
+        m_db.open();
     }
-#if 0
-    if (!db.isOpen()) {
-        bool result = db.open();
-        if (0 != ok) {
-            ok = &result;
-        }
-        if ((false == result) && (0 != error)) {
-            error->clear();
-            error->append(db.lastError().text());
-        }
-    }
-#endif
-    return db;
+    return m_db;
 }
 
 void  DBUtil::removeDatabase () {

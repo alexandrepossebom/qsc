@@ -9,8 +9,8 @@
 #include <QStringListModel>
 
 
-CompraAddView::CompraAddView(QWidget *parent) :
-        QDialog(parent),
+CompraAddView::CompraAddView(View *parent) :
+        View(parent),
         m_ui(new Ui::CompraAddView)
 {
     m_ui->setupUi(this);
@@ -24,10 +24,16 @@ CompraAddView::CompraAddView(QWidget *parent) :
     connect(m_ui->valorDoubleSpinBox,SIGNAL(valueChanged(double)),this,SLOT(valorChanged(double)));
     connect(m_ui->clienteToolButton,SIGNAL(clicked()),this,SLOT(selectCliente()));
     connect(m_ui->buttonBox,SIGNAL(accepted()),this,SLOT(addCompra()));
+    connect(m_ui->buttonBox,SIGNAL(rejected()),this,SLOT(slotCancel()));
 
     changeWidgets(true);
     repaintFormas();
     repaintVendedores();
+}
+
+void CompraAddView::slotCancel()
+{
+    this->close();
 }
 
 void CompraAddView::addCompra()
@@ -68,18 +74,6 @@ void CompraAddView::addCompra()
 CompraAddView::~CompraAddView()
 {
     delete m_ui;
-}
-
-void CompraAddView::changeEvent(QEvent *e)
-{
-    QDialog::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        m_ui->retranslateUi(this);
-        break;
-    default:
-        break;
-    }
 }
 
 void CompraAddView::changeWidgets(bool visible)
@@ -212,11 +206,7 @@ void CompraAddView::nomeChanged(QString nome)
     completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
     completer->setModelSorting(QCompleter::UnsortedModel);
 
-
     m_ui->nomeClienteLineEdit->setCompleter(completer);
-
-
-
 }
 
 void CompraAddView::repaintFormas()
