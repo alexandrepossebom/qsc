@@ -6,8 +6,8 @@ class VendedorController
 {
 public:
     VendedorController();
-    QList<Vendedor> * getAll(bool *ok,QString *error);
-    Vendedor * getByName(bool *ok,QString *error,QString nome);
+    QList<Vendedor> getAll();
+    Vendedor getByName(QString nome);
 };
 
 #endif // VENDEDORCONTROLLER_H

@@ -25,7 +25,7 @@ void EmpresaAddView::cepChanged(QString cepString)
     CepController cc;
     bool ok;
     QString error;
-    Cep cep = cc.getByCep(&ok,&error,cepNumber);
+    Cep cep = cc.getByCep(cepNumber);
 
     m_ui->bairroLineEdit->setText(cep.bairro.nome);
     m_ui->enderecoLineEdit->setText(cep.endereco.nome);
@@ -83,7 +83,7 @@ void EmpresaAddView::add()
             QMessageBox *msgBox;
             msgBox = new QMessageBox;
             msgBox->setIcon(QMessageBox::Warning);
-            msgBox->setText(ec.getError());
+            msgBox->setText("Erro adicionando empresa");
             msgBox->setStandardButtons(QMessageBox::Ok);
             msgBox->exec();
         }

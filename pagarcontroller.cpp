@@ -5,11 +5,9 @@ PagarController::PagarController()
 {
 }
 
-void PagarController::add(bool *ok,QString *error,Parcela parcela,double valor)
+bool PagarController::add(Parcela parcela,double valor)
 {
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
-    if(!db.isValid())
-        qDebug() << "error open database";
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     QString sql;
@@ -19,15 +17,15 @@ void PagarController::add(bool *ok,QString *error,Parcela parcela,double valor)
     query.bindValue(":valor",valor);
     query.bindValue(":data",QDateTime::currentDateTime());
 
-    if( ok && !query.exec() )
+    if( !query.exec() )
     {
-        qDebug() << query.executedQuery();
-        *error = query.lastError().text();
-        ok = false;
+        qDebug() << query.lastError().text();
+        return false;
     }
+    return true;
 }
 
-double PagarController::getTotalPagoByParcela(bool *ok,QString *error,Parcela parcela)
+double PagarController::getTotalPagoByParcela(Parcela parcela)
 {
     double total = 0;
     QList<Pagamento> pagamentos = getAllByParcela(parcela);
@@ -41,12 +39,7 @@ double PagarController::getTotalPagoByParcela(bool *ok,QString *error,Parcela pa
 
 QList<Pagamento>  PagarController::getAllByParcela(Parcela parcela)
 {
-    bool ok;
-    QString error;
-
-    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
-    if(!db.isValid())
-        qDebug() << "error open database";
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     QString sql;
@@ -54,19 +47,18 @@ QList<Pagamento>  PagarController::getAllByParcela(Parcela parcela)
     query.prepare(sql);
     query.bindValue(":parcela_id",parcela.id);
 
-
-    if( ok && !query.exec() )
+    QList<Pagamento> pagamentos;
+    if( !query.exec() )
     {
-        qDebug() << query.executedQuery();
-        error = query.lastError().text();
-        ok = false;
+        qDebug() << query.lastError().text();
+        return pagamentos;
     }
 
     int fieldValor = query.record().indexOf("valor");
     int fieldDataPagamento = query.record().indexOf("data_pagamento");
     int fieldId = query.record().indexOf("id");
 
-    QList<Pagamento> pagamentos;
+
     Pagamento pagamento;
     while (query.next()) {
         pagamento.id = query.value(fieldId).toInt();

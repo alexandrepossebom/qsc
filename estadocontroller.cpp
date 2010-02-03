@@ -9,18 +9,18 @@ QList<Estado> EstadoController::getAll()
 {
     bool ok;
 
-    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     query.prepare("select nome,uf from estado order by nome");
 
-    if( ok && !query.exec() )
+    QList<Estado> estados;
+    if( !query.exec() )
     {
-        error = query.lastError().text();
+        qDebug() << query.lastError().text();
+        return estados;
     }
 
-
-    QList<Estado> estados;
     int fieldNome = query.record().indexOf("nome");
     int fieldUF = query.record().indexOf("uf");
     Estado estado;
@@ -35,31 +35,27 @@ QList<Estado> EstadoController::getAll()
 
 Estado EstadoController::getEstadoByUF(QString uf)
 {
-    bool ok;
 
-    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     query.prepare("select nome,id from estado where uf = :uf");
     query.bindValue(":uf", uf);
 
-    if( ok && !query.exec() )
+    Estado estado;
+    if( !query.exec() )
     {
-        error = query.lastError().text();
+        qDebug() <<  query.lastError().text();
+        return estado;
     }
-
-
-
 
     int fieldNome = query.record().indexOf("nome");
     int fieldUf = query.record().indexOf("uf");
-    Estado estado;
+
     while (query.next()) {
         estado.setNome(query.value(fieldNome).toString());
         estado.setUF(query.value(fieldUf).toString());
     }
-
-    qDebug() << estado.getNome();
 
     return estado;
 }

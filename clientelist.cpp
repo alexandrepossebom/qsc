@@ -11,7 +11,6 @@ QWidget(parent),
 m_ui(new Ui::ClienteList)
 {
     m_ui->setupUi(this);
-    repaint("");
     connect(m_ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
             this, SLOT(slotClientSelected(QListWidgetItem*)));
     clearLabels();
@@ -20,6 +19,7 @@ m_ui(new Ui::ClienteList)
     m_ui->treeWidget->header()->setResizeMode(QHeaderView::Stretch);
     m_ui->treeWidget->setHeaderLabels(labels);
     m_ui->treeWidget->setColumnCount(2);
+    repaint();
 }
 
 void ClienteList::repaint(QString filter)
@@ -27,7 +27,7 @@ void ClienteList::repaint(QString filter)
     bool ok = true;
     QString error;
 
-    foreach(Cliente cliente,clienteController.getClientesByName(&ok,&error,filter,0))
+    foreach(Cliente cliente,clienteController.getClientesByName(filter))
     {
         QListWidgetItem *listItem = new QListWidgetItem();
         listItem->setText(cliente.nome);
@@ -77,7 +77,6 @@ void ClienteList::paintTelefones(Cliente cliente)
     QList<Telefone> fones = telefoneController.getByCliente(cliente);
     foreach(Telefone telefone,fones)
     {
-        qDebug() << "entered";
         if(telefone.tipoTelefone.nome.contains("Celular"))
             m_ui->labelCelular->setText(QString::number(telefone.numero));
         else if(telefone.tipoTelefone.nome.contains("Residencial"))

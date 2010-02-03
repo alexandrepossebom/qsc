@@ -7,7 +7,7 @@ class ConjugeController
 {
 public:
     ConjugeController();
-    void Add(bool *ok,QString *error,Conjuge *conjuge);
+    void Add(Conjuge *conjuge);
 };
 
 #endif // CONJUGECONTROLLER_H

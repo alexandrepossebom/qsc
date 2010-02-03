@@ -3,18 +3,19 @@
 FormaPagamentoController::FormaPagamentoController()
 {
 }
-FormaPagamento FormaPagamentoController::getById(bool *ok,QString *error,int id)
+FormaPagamento FormaPagamentoController::getById(int id)
 {
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     query.prepare("select nome,id,parcelas,entrada,desconto,juro from forma_pagamento where id =:id");
     query.bindValue(":id",id);
 
-    if( ok && !query.exec() )
+    FormaPagamento fp;
+    if( !query.exec() )
     {
-        *error = query.lastError().text();
-        *ok = false;
+        qDebug() <<  query.lastError().text();
+        return fp;
     }
 
     int fieldNome = query.record().indexOf("nome");
@@ -25,7 +26,7 @@ FormaPagamento FormaPagamentoController::getById(bool *ok,QString *error,int id)
     int fieldJuro = query.record().indexOf("juro");
 
 
-    FormaPagamento fp;
+
     query.next();
     fp.setNome( query.value( fieldNome ).toString() );
     fp.setId( query.value( fieldId ).toInt() );
@@ -37,21 +38,20 @@ FormaPagamento FormaPagamentoController::getById(bool *ok,QString *error,int id)
     return fp;
 }
 
-QList<FormaPagamento> FormaPagamentoController::getAll(bool *ok,QString *error)
+QList<FormaPagamento> FormaPagamentoController::getAll()
 {
-   QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     query.prepare("select nome,id from forma_pagamento order by nome");
 
-    if( ok && !query.exec() )
+    QList<FormaPagamento> formasPagamentos;
+    if( !query.exec() )
     {
-        *error = query.lastError().text();
-        *ok = false;
+        qDebug() << query.lastError().text();
+        return formasPagamentos;
     }
 
-
-    QList<FormaPagamento> formasPagamentos;
     int fieldNome = query.record().indexOf("nome");
     int fieldId = query.record().indexOf("id");
     FormaPagamento fp;
@@ -60,6 +60,5 @@ QList<FormaPagamento> FormaPagamentoController::getAll(bool *ok,QString *error)
         fp.setId(query.value(fieldId).toInt());
         formasPagamentos.append(fp);
     }
-
     return formasPagamentos;
 }

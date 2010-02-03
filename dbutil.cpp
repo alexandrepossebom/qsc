@@ -10,24 +10,7 @@ DBUtil::DBUtil()
 
 }
 
-void DBUtil::log(QString tag,QString texto)
-{
-    bool ok = true;
-    QString *error = new QString();
-
-    QSqlDatabase db = DBUtil::getDatabase(&ok, error);
-    QSqlQuery query(db);
-
-    QString sql;
-    sql.append("insert into log (texto,tag) VALUES (:texto,:tag)");
-    query.prepare(sql);
-    query.bindValue(":tag",tag.toLower());
-    query.bindValue(":texto",texto);
-
-    query.exec();
-}
-
-QSqlDatabase DBUtil::getDatabase (bool  *ok, QString *error) {
+QSqlDatabase DBUtil::getDatabase() {
     if (!QSqlDatabase::contains(DBUtil::DATABASE_CONNECT_NAME)) {
         QSettings settings("Possebom", "Qsc");
         QString databasename = settings.value("Database/DatabaseName").toString();

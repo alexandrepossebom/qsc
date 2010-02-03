@@ -9,24 +9,25 @@ ClienteController::ClienteController()
 
 }
 
-Cliente ClienteController::getClienteByCpf(bool *ok,QString *error,long long int cpf)
+Cliente ClienteController::getClienteByCpf(long long int cpf)
 {
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
     query.prepare("select nome,id,cpf,data_nascimento from cliente where cpf = :cpf order by nome limit 1");
     query.bindValue(":cpf",cpf);
 
-    if( ok && !query.exec() )
+    Cliente cliente;
+    if( !query.exec() )
     {
-        *error = query.lastError().text();
-        *ok = false;
+        qDebug() << query.lastError().text();
+        return cliente;
     }
 
     int fieldNome = query.record().indexOf("nome");
     int fieldId = query.record().indexOf("id");
     int fieldCpf = query.record().indexOf("cpf");
     int fieldDataNascimento = query.record().indexOf("data_nascimento");
-    Cliente cliente;
+
     query.next();
     cliente.setNome(query.value(fieldNome).toString());
     cliente.setId(query.value(fieldId).toInt());
@@ -36,11 +37,10 @@ Cliente ClienteController::getClienteByCpf(bool *ok,QString *error,long long int
     return cliente;
 }
 
-
 QList<Cliente> ClienteController::getClientesAtrasados(bool *ok,QString *error,QString nome)
 {
 
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
     query.prepare("select c.nome,c.id,c.cpf,c.data_nascimento,p.data_vencimento from cliente c, compra co, parcela p WHERE co.cliente_id = c.id AND p.compra_id = co.id AND p.paga = 0 AND p.data_vencimento < :now ");
 
@@ -48,14 +48,12 @@ QList<Cliente> ClienteController::getClientesAtrasados(bool *ok,QString *error,Q
     //TODO add nome to query.
     query.bindValue(":nome",nome);
 
+    QList<Cliente> clientes;
     if( ok && !query.exec() )
     {
-        *error = query.lastError().text();
-        *ok = false;
+        qDebug() << query.lastError().text();
+        return clientes;
     }
-
-    QList<Cliente> clientes;
-
     int fieldNome = query.record().indexOf("c.nome");
     int fieldId = query.record().indexOf("c.id");
     int fieldCpf = query.record().indexOf("c.cpf");
@@ -74,34 +72,30 @@ QList<Cliente> ClienteController::getClientesAtrasados(bool *ok,QString *error,Q
     return clientes;
 }
 
-QList<Cliente> ClienteController::getClientesByName(bool *ok,QString *error,QString nome,int limit)
+QList<Cliente> ClienteController::getClientesByName(QString nome,int limit)
 {
-    QString str = "%";
-    str.append(nome);
-    str.append("%");
-    nome = str;
+    nome = QString("%%1%").arg(nome);
 
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     if(limit <= 0)
     {
-        query.prepare("select c.nome,c.id,c.cpf,c.data_nascimento,e.nome as empresa_nome,e.id as empresa_id from cliente c,empresa e where c.empresa_id = e.id order by c.nome");
-        //query.bindValue(":nome",nome);
+        query.prepare("select c.nome,c.id,c.cpf,c.data_nascimento,e.nome as empresa_nome,e.id as empresa_id from cliente c,empresa e where c.empresa_id = e.id and c.nome like :nome order by c.nome");
+        query.bindValue(":nome",nome);
     }
     else
     {
-        query.prepare("select c.nome,c.id,c.cpf,c.data_nascimento from cliente c where c.nome like :nome order by c.nome limit :limit");
+        query.prepare("select c.nome,c.id,c.cpf,c.data_nascimento,e.nome as empresa_nome,e.id as empresa_id from cliente c,empresa e where c.empresa_id = e.id and c.nome like :nome order by c.nome limit :limit");
         query.bindValue(":nome",nome);
         query.bindValue(":limit",limit);
     }
-    if( ok && !query.exec() )
-    {
-        *error = query.lastError().text();
-        *ok = false;
-    }
-
     QList<Cliente> clientes;
+    if( !query.exec() )
+    {
+        qDebug() << "getClientesByName" << query.lastError().text();
+        return clientes;
+    }
 
     int fieldNome = query.record().indexOf("nome");
     int fieldId = query.record().indexOf("id");
@@ -152,7 +146,7 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
         return;
     }
 
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
 
@@ -188,13 +182,10 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
     query.bindValue(":endereco_numero", cliente->getEnderecoNumero());
 
 
-    if( ok && !query.exec() )
+    if( !query.exec() )
     {
-        qDebug() << query.executedQuery();
-        error->clear();
-        error->append(query.lastError().text());
-        qDebug() << error;
-        ok = false;
+        qDebug() << query.lastError().text();
+        return;
     }else{
         cliente->id = query.lastInsertId().toInt();
         while(!cliente->telefones.isEmpty())
@@ -211,5 +202,4 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
             }
         }
     }
-    DBUtil::log("cliente","Novo cliente adicionado" + cliente->nome);
 }

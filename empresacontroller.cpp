@@ -9,40 +9,34 @@ EmpresaController::EmpresaController()
 {
 }
 
-QString EmpresaController::getError()
-{
-    return error;
-}
-
 QList<Empresa> EmpresaController::getAll()
 {
-    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
     query.prepare("select nome,id from empresa order by nome");
 
     QList<Empresa> empresas;
 
-    if( ok && !query.exec() )
+    if(!query.exec() )
     {
-        error = query.lastError().text();
+        qDebug() << query.lastError().text();
         return empresas;
     }
 
     int fieldNome = query.record().indexOf("nome");
     int fieldId = query.record().indexOf("id");
-    Empresa a;
+    Empresa empresa;
     while (query.next()) {
-        a.nome = query.value(fieldNome).toString();
-        a.id = query.value(fieldId).toInt();
-        empresas.append(a);
+        empresa.nome = query.value(fieldNome).toString();
+        empresa.id = query.value(fieldId).toInt();
+        empresas.append(empresa);
     }
-
     return empresas;
 }
 
 Empresa EmpresaController::getById(int id)
 {
-    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
     query.prepare("select e.nome,e.id,t.numero from empresa e,empresa_has_telefone et,telefone t where e.id = :id and et.empresa_id = e.id and t.id = et.telefone_id");
     query.bindValue(":id",id);
@@ -50,9 +44,9 @@ Empresa EmpresaController::getById(int id)
     Empresa empresa;
     empresa.id = id;
 
-    if( ok && !query.exec() )
+    if( !query.exec() )
     {
-        error = query.lastError().text();
+       qDebug() << query.lastError().text();
         return empresa;
     }
     int fieldNome = query.record().indexOf("nome");
@@ -70,9 +64,8 @@ Empresa EmpresaController::getById(int id)
 bool EmpresaController::addEmpresa(Empresa *empresa)
 {
 
-    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
-
 
     query.prepare("INSERT INTO empresa (nome,numero,cep_cep) VALUES (:nome,:numero,:cep)");
     query.bindValue(":nome", empresa->nome);
@@ -81,8 +74,7 @@ bool EmpresaController::addEmpresa(Empresa *empresa)
 
     if (!query.exec())
     {
-        error = query.lastError().text();
-        qDebug() << error;       
+        qDebug() << query.lastError().text();
         return false;
     }
     empresa->id = query.lastInsertId().toInt();

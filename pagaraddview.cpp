@@ -7,9 +7,6 @@
 #include <QList>
 #include "compra.h"
 #include <QStringListModel>
-#include <QCompleter>
-#include <QTableView>
-
 #include <QRegExp>
 
 
@@ -21,6 +18,7 @@ PagarAddView::PagarAddView(View *parent) :
 
     connect(m_ui->nomeLineEdit,SIGNAL(textEdited(QString)),this,SLOT(slotNomeChanged(QString)));
     connect(m_ui->nomeLineEdit,SIGNAL(returnPressed()),this,SLOT(slotClienteSelected()));
+
     connect(m_ui->treeWidget,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(slotParcelaSelected(QTreeWidgetItem*,int)));
     connect(m_ui->doubleSpinBox,SIGNAL(valueChanged(double)),this,SLOT(slotValorChanged(double)));
     connect(m_ui->buttonBox,SIGNAL(accepted()),this,SLOT(slotOk()));
@@ -40,8 +38,7 @@ void PagarAddView::slotOk()
 {
     PagarController pc;
     bool ok;
-    QString error;
-    pc.add(&ok,&error,parcela,m_ui->doubleSpinBox->value());
+    ok = pc.add(parcela,m_ui->doubleSpinBox->value());
 
 
     if(m_ui->checkBox->checkState())
@@ -49,15 +46,16 @@ void PagarAddView::slotOk()
         ParcelaController pc;
         bool ok;
         QString error;
-        pc.setPaga(&ok,&error,parcela);
+        pc.setPaga(parcela);
         if (compra.parcelas.size() == 1)
         {
             CompraController cc;
-            cc.setPaga(&ok,&error,compra);
+            ok = cc.setPaga(compra);
         }
     }
     if(ok)
     {
+        m_ui->treeWidget->clear();
         repaintPagamento();
         repaintCompras();
     }
@@ -66,7 +64,6 @@ void PagarAddView::slotOk()
 void PagarAddView::slotValorChanged(double valorDouble)
 {
     float valor = (float)valorDouble;
-
     float valorAberto = parcela.getValorAberto();
     if(valor < valorAberto)
     {
@@ -116,9 +113,7 @@ void PagarAddView::repaintCompras()
     compras.clear();
 
     CompraController cc;
-    QString error;
-    bool ok;
-    compras = cc.getNaoPagasByCliente(&ok,&error,cliente);
+    compras = cc.getNaoPagasByCliente(cliente);
 
     foreach(Compra compra, compras)
     {
@@ -159,9 +154,7 @@ void PagarAddView::slotClienteSelected()
         return;
     }
     ClienteController cc;
-    bool ok;
-    QString error;
-    cliente = cc.getClienteByCpf(&ok,&error,cpf);
+    cliente = cc.getClienteByCpf(cpf);
     repaintCompras();
 }
 
@@ -171,17 +164,11 @@ void PagarAddView::slotNomeChanged(QString nome)
         return;
 
     ClienteController cc;
-    bool ok;
-    QString error;
-    QList<Cliente> clientes = cc.getClientesByName(&ok,&error,nome,20);
-
     QStringListModel *model = new QStringListModel();
 
     QStringList list;
-    while(!clientes.isEmpty())
+    foreach(Cliente cliente,cc.getClientesByName(nome,20) )
     {
-        Cliente cliente = clientes.takeFirst();
-
         QString string;
         string.append(cliente.nome);
         string.append(" - ");
@@ -194,12 +181,13 @@ void PagarAddView::slotNomeChanged(QString nome)
 
     model->setStringList(list);
 
-    QCompleter *completer = new QCompleter;
+    completer = new QCompleter;
     completer->setModel(model);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
     completer->setModelSorting(QCompleter::UnsortedModel);
     m_ui->nomeLineEdit->setCompleter(completer);
+    connect(completer,SIGNAL(activated(QString)),this,SLOT(slotClienteSelected()));
 }
 
 void PagarAddView::slotCancel()

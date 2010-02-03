@@ -11,9 +11,9 @@ CepController::CepController()
 {
 }
 
-Cep CepController::getByCep(bool *ok,QString *error,int cepnumber)
+Cep CepController::getByCep(int cepnumber)
 {
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     QString sql = "select es.nome as estado,es.uf as uf,e.nome as endereco";
@@ -25,14 +25,14 @@ Cep CepController::getByCep(bool *ok,QString *error,int cepnumber)
     query.prepare(sql);
     query.bindValue(":cep",cepnumber);
 
-
-    if( ok && !query.exec() )
+    Cep cep;
+    if( !query.exec())
     {
-        *error = query.lastError().text();
-        *ok = false;
+        qDebug() << query.lastError().text();
+        return cep;
     }
 
-    Cep cep;
+
 
     int fieldEndereco = query.record().indexOf("endereco");
     int fieldEndereco_id = query.record().indexOf("endereco_id");
@@ -45,13 +45,14 @@ Cep CepController::getByCep(bool *ok,QString *error,int cepnumber)
     int fieldEstado = query.record().indexOf("estado");
 
 
-
     Cidade cidade;
     Estado estado;
     Bairro bairro;
     Endereco endereco;
 
     query.next();
+    if (!query.isValid())
+        return cep;
 
     cep.setCep(query.value(fieldCep).toInt());
 
@@ -76,9 +77,9 @@ Cep CepController::getByCep(bool *ok,QString *error,int cepnumber)
     return cep;
 }
 
-void CepController::add(bool *ok,QString *error,Cep cep)
+void CepController::add(Cep cep)
 {
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     QString cidade = cep.getCidade().getNome();
@@ -109,7 +110,6 @@ void CepController::add(bool *ok,QString *error,Cep cep)
         query.exec();
         query.next();
         bairro_id = query.value(0).toInt();
-        qDebug() << "new" << bairro_id;
     }else{
         bairro_id = query.lastInsertId().toInt();
     }
@@ -134,10 +134,9 @@ void CepController::add(bool *ok,QString *error,Cep cep)
     query.bindValue(":estado_uf", estado);
     query.bindValue(":cep", cepint);
 
-    if( ok && !query.exec() )
+    if( !query.exec() )
     {
-        *error = query.lastError().text();
-        ok = false;
+        qDebug() << query.lastError().text();
     }
 
 }

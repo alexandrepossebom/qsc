@@ -43,19 +43,17 @@ bool NacionalidadeController::add(Nacionalidade *nacionalidade)
 QList<Nacionalidade> NacionalidadeController::getAll()
 {
 
-    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     query.prepare("select nome,id from nacionalidade order by nome");
 
-
-    if( ok && !query.exec() )
+QList<Nacionalidade> nacionalidades;
+    if( !query.exec() )
     {
-        error = query.lastError().text();
+        qDebug() << query.lastError().text();
+        return nacionalidades;
     }
-
-
-    QList<Nacionalidade> nacionalidades;
 
     int fieldNome = query.record().indexOf("nome");
     int fieldId = query.record().indexOf("id");

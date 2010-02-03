@@ -9,7 +9,7 @@ class BairroController
 {
 public:
     BairroController();
-    QList<Bairro> getAll(bool *ok,QString *error);
+    QList<Bairro> getAll();
 };
 
 #endif // BAIRROCONTROLLER_H

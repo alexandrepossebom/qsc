@@ -196,9 +196,7 @@ void ClienteAddView::accepted()
         conjuge.empresa = empresa;
         conjuge.cliente = cliente;
         ConjugeController conjugeController;
-        conjugeController.Add(&ok,&error,&conjuge);
-        if(ok)
-            this->close();
+        conjugeController.Add(&conjuge);
     } else {
          this->close();
     }
@@ -313,11 +311,9 @@ void ClienteAddView::cepEdited(QString cepString)
     if(cepString.length() < 8)
         return;
     CepController cc;
-    bool ok;
-    QString error;
-    Cep cep = cc.getByCep(&ok,&error,cepNumber);
+    Cep cep = cc.getByCep(cepNumber);
 
-    if(ok)
+    if(cep.cep > 0)
     {
         m_ui->estadoLineEdit->setText( cep.estado.nome );
         m_ui->cidadeLineEdit->setText( cep.cidade.nome );
@@ -329,5 +325,4 @@ void ClienteAddView::cepEdited(QString cepString)
         m_ui->estadoLineEdit->clear();
         m_ui->enderecoLineEdit->clear();
     }
-
 }

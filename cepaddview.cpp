@@ -57,7 +57,7 @@ CepAddView::CepAddView(QWidget *parent) :
 
     {
         BairroController bc;
-        QList<Bairro> bairros = bc.getAll(&ok,&error);
+        QList<Bairro> bairros = bc.getAll();
         while(!bairros.isEmpty())
         {
             Bairro bairro = bairros.takeFirst();
@@ -94,13 +94,8 @@ void CepAddView::addCep()
     cep.setCep(cepint);
 
     CepController cc;
-    bool ok;
-    QString error;
 
-    cc.add(&ok,&error,cep);
-    if(!ok)
-        qDebug() << error;
-
+    cc.add(cep);
 }
 
 void CepAddView::enderecoChanged(QString nome)
@@ -111,7 +106,7 @@ void CepAddView::enderecoChanged(QString nome)
     QString error;
     EnderecoController ec;
     QList<Endereco> enderecos;
-    enderecos = ec.getAll(&ok,&error,nome,20);
+    enderecos = ec.getAll(nome,20);
 
     QStringList wordList;
     while(!enderecos.isEmpty())

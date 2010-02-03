@@ -6,9 +6,9 @@ CompraController::CompraController()
 {
 }
 
-void CompraController::setPaga(bool *ok,QString *error,Compra compra)
+bool CompraController::setPaga(Compra compra)
 {
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     QString sql;
@@ -17,22 +17,18 @@ void CompraController::setPaga(bool *ok,QString *error,Compra compra)
     query.bindValue(":id",compra.id);
     query.bindValue(":paga",true);
 
-    if( ok && !query.exec() )
+    if( !query.exec() )
     {
-        qDebug() << query.executedQuery();
-        *error = query.lastError().text();
-        *ok = false;
+        qDebug() << query.lastError().text();
+        return false;
     }
+    return true;
 }
 
 
 QList<Compra> CompraController::getByCliente(Cliente cliente)
 {
-    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
-
-    if(!db.isValid())
-        qDebug() << "error open database";
-
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     QString sql;
@@ -42,7 +38,7 @@ QList<Compra> CompraController::getByCliente(Cliente cliente)
 
     QList<Compra> compras;
 
-    if( ok && !query.exec() )
+    if( !query.exec() )
     {
         qDebug() << query.lastError();
         return compras;
@@ -73,9 +69,9 @@ QList<Compra> CompraController::getByCliente(Cliente cliente)
 
 
 
-QList<Compra> CompraController::getNaoPagasByCliente(bool *ok,QString *error,Cliente cliente)
+QList<Compra> CompraController::getNaoPagasByCliente(Cliente cliente)
 {
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     QString sql;
@@ -84,12 +80,11 @@ QList<Compra> CompraController::getNaoPagasByCliente(bool *ok,QString *error,Cli
     query.bindValue(":cliente_id",cliente.id);
     query.bindValue(":paga",false);
 
-
-    if( ok && !query.exec() )
+    QList<Compra> compras;
+    if( !query.exec() )
     {
-        qDebug() << query.executedQuery();
-        *error = query.lastError().text();
-        ok = false;
+        qDebug() << query.lastError().text();
+        return compras;
     }
 
     int fieldValor = query.record().indexOf("valor");
@@ -97,7 +92,6 @@ QList<Compra> CompraController::getNaoPagasByCliente(bool *ok,QString *error,Cli
     int fieldId = query.record().indexOf("id");
     int fieldItens = query.record().indexOf("itens");
 
-    QList<Compra> compras;
     Compra compra;
     while (query.next()) {
         compra.id = query.value(fieldId).toInt();
@@ -105,19 +99,17 @@ QList<Compra> CompraController::getNaoPagasByCliente(bool *ok,QString *error,Cli
         compra.paga = false;
         compra.dataCompra = query.value(fieldDataCompra).toDate();
         compra.itens = query.value(fieldItens).toInt();
-
+        //TODO
         ParcelaController pc;
-        compra.parcelas = pc.getNaoPagasByCompra(ok,error,compra);
-
+        compra.parcelas = pc.getNaoPagasByCompra(compra);
         compras.append(compra);
     }
-
     return compras;
 }
 
-void CompraController::Add(bool *ok,QString *error,Compra compra)
+bool CompraController::Add(Compra compra)
 {
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     QString sql;
@@ -142,13 +134,10 @@ void CompraController::Add(bool *ok,QString *error,Compra compra)
     query.bindValue(":itens", compra.itens );
     query.bindValue(":paga", compra.paga );
 
-    if(ok && !query.exec() )
+    if( !query.exec() )
     {
-        qDebug() << query.executedQuery();
-        error->append(query.lastError().text());
-        ok = false;
-        return;
-
+        qDebug() << query.lastError().text();
+        return false;
     }
     compra.id = query.lastInsertId().toInt();
 
@@ -182,15 +171,11 @@ void CompraController::Add(bool *ok,QString *error,Compra compra)
         query.bindValue(":paga", compra.paga);
         query.bindValue(":valor", parcela_valor);
 
-        if(ok && !query.exec() )
+        if(!query.exec() )
         {
-            qDebug() << query.executedQuery();
-            error->append(query.lastError().text());
-            qDebug() << error;
-            ok = false;
-            return;
+            qDebug() << query.lastError().text();
+            return false;
         }
-
 
         int parcela_id = query.lastInsertId().toInt();
 
@@ -207,18 +192,12 @@ void CompraController::Add(bool *ok,QString *error,Compra compra)
             query.bindValue(":data_pagamento", compra.dataCompra);
             query.bindValue(":valor", parcela_valor);
 
-            if( ok && !query.exec() )
+            if( !query.exec() )
             {
-                qDebug() << query.executedQuery();
-                error->append( query.lastError().text() );
-                qDebug() << error;
-                ok = false;
-                return;
+                qDebug() << query.lastError().text();
             }
         }
 
     }
-
-
-
+    return true;
 }

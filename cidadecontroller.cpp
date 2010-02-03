@@ -10,18 +10,14 @@ CidadeController::CidadeController()
 
 QList<Cidade> CidadeController::getAll()
 {
-    bool ok;
-    QString error;
-
-    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     query.prepare("select nome,id from cidade order by nome");
 
-
-    if( ok && !query.exec() )
+    if( !query.exec() )
     {
-        error = query.lastError().text();
+        qDebug() << query.lastError().text();
     }
 
     QList<Cidade> cidades;

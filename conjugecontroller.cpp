@@ -4,9 +4,9 @@ ConjugeController::ConjugeController()
 {
 }
 
-void ConjugeController::Add(bool *ok,QString *error,Conjuge *conjuge)
+void ConjugeController::Add(Conjuge *conjuge)
 {
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     QString sql;
@@ -17,11 +17,10 @@ void ConjugeController::Add(bool *ok,QString *error,Conjuge *conjuge)
     query.bindValue(":cliente_id",conjuge->cliente.id);
     query.bindValue(":empresa_id",conjuge->empresa.id);
 
-    if( ok && !query.exec() )
+    if( !query.exec() )
     {
-        qDebug() << query.executedQuery();
-        *error = query.lastError().text();
-        ok = false;
+        qDebug() << query.lastError().text();
+        conjuge->id = 0;
     }else{
         conjuge->id = query.lastInsertId().toInt();
     }

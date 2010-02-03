@@ -7,14 +7,14 @@ ParcelaController::ParcelaController()
 
 
 
-void ParcelaController::Add(bool *ok,QString *error,Parcela parcela)
+bool ParcelaController::Add(Parcela parcela)
 {
-
+return true;
 }
 
-void ParcelaController::setPaga(bool *ok,QString *error,Parcela parcela)
+bool ParcelaController::setPaga(Parcela parcela)
 {
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     QString sql;
@@ -23,21 +23,17 @@ void ParcelaController::setPaga(bool *ok,QString *error,Parcela parcela)
     query.bindValue(":id",parcela.id);
     query.bindValue(":paga",true);
 
-    if( ok && !query.exec() )
+    if( !query.exec() )
     {
-        qDebug() << query.executedQuery();
-        *error = query.lastError().text();
-        *ok = false;
+        qDebug() << query.lastError().text();
+        return false;
     }
+    return true;
 }
 
 QList<Parcela> ParcelaController::getByCompra(Compra compra)
 {
-    bool ok;
-    QString error;
-    QSqlDatabase db = DBUtil::getDatabase(&ok, &error);
-    if(!db.isValid())
-        qDebug() << "error open database";
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     QString sql;
@@ -45,11 +41,9 @@ QList<Parcela> ParcelaController::getByCompra(Compra compra)
     query.prepare(sql);
     query.bindValue(":compra_id",compra.id);
 
-    if( ok && !query.exec() )
+    if( !query.exec() )
     {
-        qDebug() << query.executedQuery();
-        error = query.lastError().text();
-        ok = false;
+        qDebug() << query.lastError().text();
     }
 
     int fieldValor = query.record().indexOf("valor");
@@ -63,9 +57,6 @@ QList<Parcela> ParcelaController::getByCompra(Compra compra)
         parcela.valor = query.value(fieldValor).toDouble();
         parcela.paga = false;
         parcela.dataVencimento = query.value(fieldDataVencimento).toDate();
-
-
-
         parcelas.append(parcela);
     }
     return parcelas;
@@ -73,9 +64,9 @@ QList<Parcela> ParcelaController::getByCompra(Compra compra)
 
 
 
-QList<Parcela> ParcelaController::getNaoPagasByCompra(bool *ok,QString *error,Compra compra)
+QList<Parcela> ParcelaController::getNaoPagasByCompra(Compra compra)
 {
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     QString sql;
@@ -84,19 +75,18 @@ QList<Parcela> ParcelaController::getNaoPagasByCompra(bool *ok,QString *error,Co
     query.bindValue(":compra_id",compra.id);
     query.bindValue(":paga",false);
 
-    if( ok && !query.exec() )
+    QList<Parcela> parcelas;
+    if( !query.exec() )
     {
-        qDebug() << query.executedQuery();
-        error->clear();
-        error->append(query.lastError().text());
-        *ok = false;
+        qDebug() << query.lastError().text();
+        return parcelas;
     }
 
     int fieldValor = query.record().indexOf("valor");
     int fieldDataVencimento = query.record().indexOf("data_vencimento");
     int fieldId = query.record().indexOf("id");
 
-    QList<Parcela> parcelas;
+
     Parcela parcela;
     while (query.next()) {
         parcela.id = query.value(fieldId).toInt();
@@ -105,7 +95,7 @@ QList<Parcela> ParcelaController::getNaoPagasByCompra(bool *ok,QString *error,Co
         parcela.dataVencimento = query.value(fieldDataVencimento).toDate();
 
         PagarController pc;
-        parcela.valorPago = pc.getTotalPagoByParcela(ok,error,parcela);
+        parcela.valorPago = pc.getTotalPagoByParcela(parcela);
         parcelas.append(parcela);
 
     }

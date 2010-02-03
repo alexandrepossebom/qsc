@@ -34,7 +34,7 @@ private:
     void paintTelefones(Cliente cliente);
     void paintCompras(Cliente cliente);
 private slots:
-    void repaint(QString);
+    void repaint(QString filter = 0);
     void slotClientSelected(QListWidgetItem *item);
 };
 

@@ -1,8 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "configuratorview.h"
-#include <QRadioButton>
-#include <QDebug>
+#include "dbutil.h"
 #include <QLabel>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -49,6 +48,7 @@ void MainWindow::configSystem()
 MainWindow::~MainWindow()
 {
     delete ui;
+    DBUtil::removeDatabase();
 }
 
 void MainWindow::showWidget(QWidget *w)

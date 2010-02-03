@@ -4,21 +4,22 @@ BairroController::BairroController()
 {
 }
 
-QList<Bairro> BairroController::getAll(bool *ok,QString *error)
+QList<Bairro> BairroController::getAll()
 {
-    QSqlDatabase db = DBUtil::getDatabase(ok, error);
+    QSqlDatabase db = DBUtil::getDatabase();
     QSqlQuery query(db);
 
     query.prepare("select nome,id from bairro order by nome");
 
-
-    if( ok && !query.exec() )
+    QList<Bairro> bairros;
+    if( !query.exec() )
     {
-        *error = query.lastError().text();
-        ok = false;
+        qDebug() << query.lastError().text();
+        return bairros;
+
     }
 
-    QList<Bairro> bairros;
+
 
     int fieldNome = query.record().indexOf("nome");
     int fieldId = query.record().indexOf("id");

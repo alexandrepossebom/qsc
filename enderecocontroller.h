@@ -7,12 +7,9 @@ class EnderecoController
 {
 public:
     EnderecoController();
-    void add(bool *ok,QString *error,Endereco *endereco);
-    QString getError();
-    Endereco getByCep(bool *ok,QString *error,int cep);
-    QList<Endereco> getAll(bool *ok,QString *error);
-    QList<Endereco> getAll(bool *ok,QString *error,QString nome);
-    QList<Endereco> getAll(bool *ok,QString *error,QString nome,int limit);
+    void add(Endereco *endereco);
+    Endereco getByCep(int cep);
+    QList<Endereco> getAll(QString nome = 0,int limit = 0);
 private:
     Endereco endereco;
 };

@@ -46,7 +46,7 @@ void CompraAddView::addCompra()
     bool ok;
     QString error;
     FormaPagamento fp;
-    fp = fpc.getById(&ok,&error,fpId);
+    fp = fpc.getById(fpId);
 
 
     Vendedor vendedor;
@@ -66,8 +66,7 @@ void CompraAddView::addCompra()
     compra.dataCompra = m_ui->dataDateEdit->date();
 
     CompraController cc;
-    cc.Add(&ok,&error,compra);
-    if(ok)
+    if(cc.Add(compra))
         this->close();
 }
 
@@ -101,12 +100,9 @@ void CompraAddView::selectCliente()
             return;
         }
         ClienteController cc;
-        bool ok;
-        QString error;
-        cliente = cc.getClienteByCpf(&ok,&error,cpf);
+        cliente = cc.getClienteByCpf(cpf);
 
-
-        if(ok && cliente.id > 0)
+        if(cliente.id > 0)
         {
             refreshCliente();
         }
@@ -164,9 +160,7 @@ void CompraAddView::formaChanged(int index)
 {
     int id = m_ui->formadePagamentoComboBox->itemData( index ).toInt();
     FormaPagamentoController fpc;
-    bool ok;
-    QString error;
-    fp = fpc.getById(&ok,&error,id);
+    fp = fpc.getById(id);
     refresh();
 }
 
@@ -178,7 +172,7 @@ void CompraAddView::nomeChanged(QString nome)
     ClienteController cc;
     bool ok;
     QString error;
-    QList<Cliente> clientes = cc.getClientesByName(&ok,&error,nome,20);
+    QList<Cliente> clientes = cc.getClientesByName(nome);
 
     QStringListModel *model = new QStringListModel();
 
@@ -207,14 +201,13 @@ void CompraAddView::nomeChanged(QString nome)
     completer->setModelSorting(QCompleter::UnsortedModel);
 
     m_ui->nomeClienteLineEdit->setCompleter(completer);
+    connect(completer,SIGNAL(activated(QString)),this,SLOT(selectCliente()));
 }
 
 void CompraAddView::repaintFormas()
 {
     FormaPagamentoController fpc;
-    bool ok;
-    QString error;
-    QList<FormaPagamento> formas = fpc.getAll(&ok,&error);
+    QList<FormaPagamento> formas = fpc.getAll();
     int index = 0;
     while (!formas.isEmpty())
     {
@@ -230,14 +223,12 @@ void CompraAddView::repaintFormas()
 void CompraAddView::repaintVendedores()
 {
     VendedorController vc;
-    bool ok;
-    QString error;
-    QList<Vendedor> *vendedores = vc.getAll(&ok,&error);
+    QList<Vendedor> vendedores = vc.getAll();
     int index = 0;
-    while (!vendedores->isEmpty())
+    while (!vendedores.isEmpty())
     {
         Vendedor vendedor;
-        vendedor = vendedores->takeFirst();
+        vendedor = vendedores.takeFirst();
         QVariant v(vendedor.getId());
         m_ui->vendedorComboBox->addItem(vendedor.getNome(),v);
         if (vendedor.getNome().indexOf("Arlete") != -1)

@@ -6,6 +6,7 @@
 #include "compra.h"
 #include "parcela.h"
 #include "view.h"
+#include <QCompleter>
 
 namespace Ui {
     class PagarAddView;
@@ -26,7 +27,7 @@ private:
     int numParcelas;
     void repaintCompras();
     void repaintPagamento();
-
+    QCompleter *completer;
 private slots:
     void slotNomeChanged(QString nome);
     void slotClienteSelected();

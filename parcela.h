@@ -20,4 +20,7 @@ public:
     QList<Pagamento> pagamentos;
 };
 
+
+
+
 #endif // PARCELA_H
