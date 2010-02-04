@@ -109,6 +109,7 @@ void CompraAddView::refreshCliente()
         m_ui->nomeClienteLineEdit->setEnabled(false);
         m_ui->cpfLabel->setText(cliente.getCpfFormated());
         m_ui->nascimentoLabel->setText(cliente.getDataNascimento().toString("dd/MM/yyyy"));
+        m_ui->obsLabel->setText(cliente.aviso);
         changeWidgets(false);
     }
 }

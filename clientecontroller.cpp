@@ -3,7 +3,7 @@
 #include <QDebug>
 #include "telefonecontroller.h"
 #include "dbutil.h"
-
+#include "compracontroller.h"
 ClienteController::ClienteController()
 {
 
@@ -34,6 +34,26 @@ Cliente ClienteController::getClienteByCpf(long long int cpf)
     cliente.setCpf(query.value(fieldCpf).toLongLong());
     cliente.setDataNascimento(query.value(fieldDataNascimento).toDate());
 
+    CompraController compraController;
+    double valor = 0;
+    QDate dias = QDate::currentDate();
+    foreach(Compra compra,compraController.getByCliente(cliente))
+    {
+        if(compra.paga)
+            continue;
+        foreach(Parcela parcela,compra.parcelas)
+        {
+            if(parcela.paga)
+                continue;
+            valor = valor + parcela.getValorAberto();
+            if( parcela.dataVencimento.operator <=(dias))
+                dias = parcela.dataVencimento;
+        }
+    }
+    if(valor == 0)
+        cliente.aviso = "Cliente com pagamentos em dia.";
+    else
+        cliente.aviso = QString("Total de R$ %1 abertos, primeira parcela de %2 (%3 dias)").arg(QString::number(valor,'F',2)).arg(dias.toString("dd/MM/yyyy")).arg(dias.daysTo(QDate::currentDate()));
     return cliente;
 }
 

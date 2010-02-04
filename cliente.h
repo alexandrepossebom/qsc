@@ -71,7 +71,7 @@ public:
     QList<Telefone> telefones;
     int diasAtrasado;
     double valorAtraso;
-    
+    QString aviso;
 
 };
 
