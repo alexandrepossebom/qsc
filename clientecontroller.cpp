@@ -205,6 +205,8 @@ void ClienteController::addCliente(bool *ok,QString *error,Cliente *cliente)
     if( !query.exec() )
     {
         qDebug() << query.lastError().text();
+        error->clear();
+        error->append(query.lastError().text());
         return;
     }else{
         cliente->id = query.lastInsertId().toInt();

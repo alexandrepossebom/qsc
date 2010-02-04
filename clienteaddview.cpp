@@ -198,6 +198,16 @@ void ClienteAddView::accepted()
         conjuge.cliente = cliente;
         ConjugeController conjugeController;
         conjugeController.Add(&conjuge);
+    }else{
+        QMessageBox *msgBox;
+        msgBox = new QMessageBox;
+        msgBox->setIcon(QMessageBox::Warning);
+        if(error.contains("constraint"))
+            error = QString::fromUtf8("Atenção Cpf já cadastrado verifique.");
+        msgBox->setText(error);
+        msgBox->setStandardButtons(QMessageBox::Ok);
+        msgBox->exec();
+        return;
     }
     this->close();
 }

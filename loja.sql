@@ -70158,7 +70158,7 @@ CREATE TABLE cliente (
 	estado_uf char(2) NOT NULL,
 	nacionalidade_id integer NOT NULL,
 	empresa_id integer NOT NULL,
-	cpf bigint(11) DEFAULT NULL,
+	cpf bigint(11) NOT NULL UNIQUE,
 	data_cadastro datetime DEFAULT NULL,
 	nome varchar(100) NOT NULL,
 	data_nascimento datetime DEFAULT NULL,

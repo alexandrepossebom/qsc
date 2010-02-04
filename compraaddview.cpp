@@ -7,6 +7,7 @@
 #include "vendedorcontroller.h"
 #include "compracontroller.h"
 #include <QStringListModel>
+#include <QMessageBox>
 
 
 CompraAddView::CompraAddView(View *parent) :
@@ -59,7 +60,23 @@ void CompraAddView::addCompra()
     compra.valor = m_ui->valorDoubleSpinBox->value();
 
     compra.dataCompra = m_ui->dataDateEdit->date();
-
+    QString error;
+    if(cliente.nome.length() == 0)
+        error.append(QString::fromUtf8("- Cliente inválido.\n"));
+    if(compra.valor == 0)
+        error.append(QString::fromUtf8("- Valor inválido.\n"));
+    if(compra.itens == 0)
+        error.append(QString::fromUtf8("- Número de itens inválido.\n"));
+    if(error.length())
+    {
+        QMessageBox *msgBox;
+        msgBox = new QMessageBox;
+        msgBox->setIcon(QMessageBox::Warning);
+        msgBox->setText(error);
+        msgBox->setStandardButtons(QMessageBox::Ok);
+        msgBox->exec();
+        return;
+    }
     CompraController cc;
     if(cc.Add(compra))
         this->close();
