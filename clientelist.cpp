@@ -24,9 +24,6 @@ m_ui(new Ui::ClienteList)
 
 void ClienteList::repaint(QString filter)
 {
-    bool ok = true;
-    QString error;
-
     foreach(Cliente cliente,clienteController.getClientesByName(filter))
     {
         QListWidgetItem *listItem = new QListWidgetItem();
@@ -93,11 +90,22 @@ void ClienteList::paintTelefones(Cliente cliente)
 void ClienteList::paintCompras(Cliente cliente)
 {
     m_ui->treeWidget->clear();
+    QColor color(255,255,255,255);
     foreach(Compra compra, compraController.getByCliente(cliente))
     {
         QTreeWidgetItem *compraItem = new QTreeWidgetItem(m_ui->treeWidget);
         compraItem->setText(0, compra.dataCompra.toString("dd/MM/yyyy") );
         compraItem->setText(1, compra.getValorFormatado() );
+        if(compra.isAtrasada())
+            color.setRgb(255, 0, 0, 40);//vermelho
+        else if(compra.paga)
+            color.setRgb(124, 252, 0, 240);//verde
+        else
+            color.setRgb(255,255,255,255);//branco
+
+        compraItem->setBackgroundColor(0,color);
+        compraItem->setBackgroundColor(1,color);
+
         foreach(Parcela parcela,compra.parcelas)
         {
             QString valor;
@@ -105,12 +113,28 @@ void ClienteList::paintCompras(Cliente cliente)
             valor.append(QString::number(parcela.getValorAberto(),'F',2));
 
             QTreeWidgetItem *parcelaItem = new QTreeWidgetItem(compraItem);
+            if(parcela.paga)
+                color.setRgb(124, 252, 0, 240); //verde
+            else if(parcela.dataVencimento.operator <=(QDate::currentDate()))
+                color.setRgb(255, 0, 0, 40);//vermelho
+            else
+                color.setRgb(255,255,255,255);//branco
+
+            parcelaItem->setBackgroundColor(0,color);
+            parcelaItem->setBackgroundColor(1,color);
+            parcelaItem->setBackgroundColor(2,color);
             parcelaItem->setText(0,parcela.dataVencimento.toString("dd/MM/yyyy"));
-            parcelaItem->setText(1,parcela.getValorFormatado());
+            parcelaItem->setText(1,parcela.getValorFormatado());            
             parcelaItem->setText(2,valor);
             foreach(Pagamento pagamento,pagarController.getAllByParcela(parcela))
             {
                 QTreeWidgetItem *pagamentoItem = new QTreeWidgetItem(parcelaItem);
+                if (pagamento.dataPagamento.operator <=(parcela.dataVencimento))
+                    color.setRgb(124, 252, 0, 240); //verde
+                else
+                    color.setRgb(255, 0, 0, 40);//vermelho
+                pagamentoItem->setBackgroundColor(0,color);
+                pagamentoItem->setBackgroundColor(1,color);
                 pagamentoItem->setText(0,pagamento.dataPagamento.toString("dd/MM/yyyy"));
                 pagamentoItem->setText(1,pagamento.getValorFormatado());
             }

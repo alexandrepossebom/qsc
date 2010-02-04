@@ -21,6 +21,7 @@ public:
     int id;
     QString getValorFormatado();
     QList<Parcela> parcelas;
+    bool isAtrasada();
 };
 
 #endif // COMPRA_H

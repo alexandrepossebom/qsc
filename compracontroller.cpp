@@ -32,7 +32,7 @@ QList<Compra> CompraController::getByCliente(Cliente cliente)
     QSqlQuery query(db);
 
     QString sql;
-    sql.append("SELECT valor,data_compra,id,itens FROM compra WHERE cliente_id = :cliente_id order by data_compra");
+    sql.append("SELECT valor,data_compra,id,itens,paga FROM compra WHERE cliente_id = :cliente_id order by data_compra");
     query.prepare(sql);
     query.bindValue(":cliente_id",cliente.id);
 
@@ -48,21 +48,40 @@ QList<Compra> CompraController::getByCliente(Cliente cliente)
     int fieldDataCompra = query.record().indexOf("data_compra");
     int fieldId = query.record().indexOf("id");
     int fieldItens = query.record().indexOf("itens");
+    int fieldPaga = query.record().indexOf("paga");
 
+    QSqlQuery queryParcela(db);
     Compra compra;
     while (query.next()) {
         compra.id = query.value(fieldId).toInt();
         compra.valor = query.value(fieldValor).toDouble();
-        compra.paga = false;
+        compra.paga = query.value(fieldPaga).toBool();
         compra.dataCompra = query.value(fieldDataCompra).toDate();
         compra.itens = query.value(fieldItens).toInt();
 
-        ParcelaController pc;
-        compra.parcelas = pc.getByCompra(compra);
+        QString sql;
+        sql.append("SELECT valor,data_vencimento,id,paga FROM parcela WHERE compra_id = :compra_id ");
+        queryParcela.prepare(sql);
+        queryParcela.bindValue(":compra_id",compra.id);
 
+        compra.parcelas.clear();
+        if( !queryParcela.exec() )
+            qDebug() << query.lastError().text();
+
+        int fieldValor = queryParcela.record().indexOf("valor");
+        int fieldDataVencimento = queryParcela.record().indexOf("data_vencimento");
+        int fieldId = queryParcela.record().indexOf("id");
+        int fieldPaga = queryParcela.record().indexOf("paga");
+        Parcela parcela;
+        while (queryParcela.next()) {
+            parcela.id = queryParcela.value(fieldId).toInt();
+            parcela.valor = queryParcela.value(fieldValor).toDouble();
+            parcela.paga = queryParcela.value(fieldPaga).toBool();
+            parcela.dataVencimento = queryParcela.value(fieldDataVencimento).toDate();
+            compra.parcelas.append(parcela);
+        }
         compras.append(compra);
     }
-
     return compras;
 }
 

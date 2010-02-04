@@ -186,6 +186,7 @@ void ClienteAddView::accepted()
         msgBox->setText(error);
         msgBox->setStandardButtons(QMessageBox::Ok);
         msgBox->exec();
+        return;
     }else if (cliente.estadoCivil.indexOf("Casado") == 0){
         Conjuge conjuge;
         conjuge.nome = m_ui->conjugeNomeLineEdit->text();
@@ -197,9 +198,8 @@ void ClienteAddView::accepted()
         conjuge.cliente = cliente;
         ConjugeController conjugeController;
         conjugeController.Add(&conjuge);
-    } else {
-         this->close();
     }
+    this->close();
 }
 
 ClienteAddView::~ClienteAddView()
