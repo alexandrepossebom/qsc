@@ -13,6 +13,8 @@ m_ui(new Ui::ClienteList)
     m_ui->setupUi(this);
     connect(m_ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
             this, SLOT(slotClientSelected(QListWidgetItem*)));
+
+    connect(m_ui->nomeLineEdit,SIGNAL(textChanged(QString)),this,SLOT(repaint(QString)));
     clearLabels();
     QStringList labels;
     labels << tr("Data") << tr("Valor");
@@ -24,6 +26,11 @@ m_ui(new Ui::ClienteList)
 
 void ClienteList::repaint(QString filter)
 {
+    if(filter.length() > 0 && filter.length() < 3)
+        return;
+    m_ui->listWidget->clear();
+    m_ui->treeWidget->clear();
+    clearLabels();
     foreach(Cliente cliente,clienteController.getClientesByName(filter))
     {
         QListWidgetItem *listItem = new QListWidgetItem();
