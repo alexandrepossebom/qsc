@@ -198,7 +198,7 @@ void ClienteAddView::accepted()
         conjuge.cliente = cliente;
         ConjugeController conjugeController;
         conjugeController.Add(&conjuge);
-    }else{
+    }else if(error.length() > 0){
         QMessageBox *msgBox;
         msgBox = new QMessageBox;
         msgBox->setIcon(QMessageBox::Warning);
