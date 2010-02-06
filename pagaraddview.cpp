@@ -9,6 +9,9 @@
 #include <QStringListModel>
 #include <QRegExp>
 
+#define ParcelaDataRole Qt::UserRole
+Q_DECLARE_METATYPE(Parcela)
+
 
 PagarAddView::PagarAddView(View *parent) :
         View(parent),
@@ -29,7 +32,7 @@ PagarAddView::PagarAddView(View *parent) :
 
 
     QStringList labels;
-    labels << tr("Data") << tr("Valor Total") << tr("Valor Aberto");
+    labels << tr("Data") << tr("Valor Total") << tr("Valor Aberto") << tr("Valor Sugerido");
     m_ui->treeWidget->header()->setResizeMode(QHeaderView::Stretch);
     m_ui->treeWidget->setHeaderLabels(labels);
     m_ui->treeWidget->setColumnCount(4);
@@ -77,33 +80,15 @@ void PagarAddView::slotValorChanged(double valorDouble)
 
 void PagarAddView::repaintPagamento()
 {
-    m_ui->doubleSpinBox->setValue(parcela.getValorAberto());
+    m_ui->doubleSpinBox->setValue(parcela.getValorSugerido());
+    m_ui->doubleSpinBox->setMaximum(parcela.getValorSugerido());
 }
 
 void PagarAddView::slotParcelaSelected(QTreeWidgetItem* item,int id)
 {
     if(!item->parent())
         return;
-
-    id = item->parent()->data(3,Qt::UserRole).toInt();
-    foreach(Compra c, compras)
-    {
-        if(id == c.id)
-        {
-            compra = c;
-            break;
-        }
-    }
-
-    id = item->data(3,Qt::UserRole).toInt();
-    foreach(Parcela p,compra.parcelas)
-    {
-        if(id == p.id)
-        {
-            parcela = p;
-            break;
-        }
-    }
+    parcela = item->data(0,ParcelaDataRole).value<Parcela>();
     repaintPagamento();
     m_ui->doubleSpinBox->setEnabled(true);
 }
@@ -121,21 +106,23 @@ void PagarAddView::repaintCompras()
         QTreeWidgetItem *compraItem = new QTreeWidgetItem(m_ui->treeWidget);
         compraItem->setText(0, compra.dataCompra.toString("dd/MM/yyyy") );
         compraItem->setText(1, compra.getValorFormatado() );
-        compraItem->setData(3,Qt::UserRole,QVariant(compra.id));
-        compraItem->setText(3,QString::number(compra.id));
 
         foreach(Parcela parcela,compra.parcelas)
         {
-            QString valor;
-            valor.append("R$ ");
-            valor.append(QString::number(parcela.getValorAberto(),'F',2));
+            QString valorAberto;
+            valorAberto.append("R$ ");
+            valorAberto.append(QString::number(parcela.getValorAberto(),'F',2));
+
+            QString valorSugerido;
+            valorSugerido.append("R$ ");
+            valorSugerido.append(QString::number(parcela.getValorSugerido(),'F',2));
 
             QTreeWidgetItem *parcelaItem = new QTreeWidgetItem(compraItem);
             parcelaItem->setText(0,parcela.dataVencimento.toString("dd/MM/yyyy"));
             parcelaItem->setText(1,parcela.getValorFormatado());
-            parcelaItem->setText(2,valor);
-            parcelaItem->setData(3,Qt::UserRole,QVariant(parcela.id));
-            parcelaItem->setText(3,QString::number(parcela.id));
+            parcelaItem->setText(2,valorAberto);
+            parcelaItem->setText(3,valorSugerido);
+            parcelaItem->setData(0,ParcelaDataRole, qVariantFromValue(parcela));
         }
     }
 

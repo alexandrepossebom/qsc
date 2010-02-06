@@ -38,7 +38,6 @@ void ClienteList::repaint(QString filter)
         listItem->setData(ClientDataRole, qVariantFromValue(cliente));
         m_ui->listWidget->addItem(listItem);
     }
-
 }
 
 ClienteList::~ClienteList()

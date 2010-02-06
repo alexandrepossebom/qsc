@@ -18,6 +18,7 @@ public:
     float getValorPago();
     float valorPago;
     QList<Pagamento> pagamentos;
+    float getValorSugerido();
 };
 
 
