@@ -100,8 +100,63 @@ bool ClienteAddView::addEmpresa()
     return true;
 }
 
+void ClienteAddView::showError(QString error)
+{
+    QMessageBox *msgBox;
+    msgBox = new QMessageBox;
+    msgBox->setIcon(QMessageBox::Warning);
+    msgBox->setText(error);
+    msgBox->setStandardButtons(QMessageBox::Ok);
+    msgBox->exec();
+}
+
 void ClienteAddView::accepted()
 {
+
+    QString cpf = m_ui->cpfLineEdit->text().replace(".","").replace("-","");
+    //TODO
+    if(cpf.length() != 11)
+    {
+        showError(tr("CPF inválido."));
+        return;
+    }
+
+    int total = 0;
+    int resto = 0;
+    int digit = 0;
+
+    for(int i = 0;i<9;i++)
+    {
+        total = total + (QString(cpf.at(i)).toInt() * (10 -i));
+    }
+    resto = total%11;
+    if(resto < 2)
+        digit = 0;
+    else
+        digit = 11 - resto;
+
+    if(digit != QString(cpf.at(9)).toInt())
+    {
+        showError(tr("CPF inválido."));
+        return;
+    }
+    total = 0;
+    for(int i = 0;i<10;i++)
+    {
+        total = total + (QString(cpf.at(i)).toInt() * (11 -i));
+    }
+    resto = total%11;
+    if(resto < 2)
+        digit = 0;
+    else
+        digit = 11 - resto;
+
+    if(digit != QString(cpf.at(10)).toInt())
+    {
+        showError(tr("CPF inválido."));
+        return;
+    }
+
     int i = 0;
     Cliente cliente;
     cliente.setNome( m_ui->nomeLineEdit->text() );

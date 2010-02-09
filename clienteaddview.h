@@ -28,6 +28,7 @@ private:
     void repaintNacionalidade();
     void repaintTipoTelefone();
     void repaintCidade();
+    void showError(QString);
 
 
 private slots:
