@@ -2,6 +2,7 @@
 
 Parcela::Parcela()
 {
+    valorPago = 0;
 }
 QString Parcela::getValorFormatado()
 {
@@ -27,8 +28,10 @@ float Parcela::getValorSugerido()
 
 float Parcela::getValorAberto()
 {
+    if (paga)
+        return 0;
     if (dataVencimento.daysTo( QDate::currentDate() ) <= 5)
-            return valor - valorPago;
+        return valor - valorPago;
     return getValorSugerido();
 }
 float Parcela::getValorPago()

@@ -11,15 +11,14 @@ QWidget(parent),
 m_ui(new Ui::ClienteList)
 {
     m_ui->setupUi(this);
-    //    connect(m_ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-    //            this, SLOT(slotClientSelected(QListWidgetItem*)));
-
     connect(m_ui->columnView,SIGNAL(clicked(QModelIndex)),
             this, SLOT(slotClientSelected(QModelIndex)));
     connect(m_ui->nomeLineEdit,SIGNAL(textChanged(QString)),this,SLOT(repaint(QString)));
-    clearLabels();
     model = new QStandardItemModel();
     m_ui->columnView->setModel(model);
+
+    label = new QLabel();
+    m_ui->columnView->setPreviewWidget(label);
     repaint();
 }
 
@@ -27,7 +26,6 @@ void ClienteList::repaint(QString filter)
 {
     if(filter.length() > 0 && filter.length() < 3)
         return;
-    clearLabels();
 
     model->clear();
 
@@ -57,53 +55,63 @@ void ClienteList::changeEvent(QEvent *e)
         break;
     }
 }
-void ClienteList::clearLabels()
-{
-    m_ui->labelCelular->clear();
-    m_ui->labelResidencial->clear();
-    m_ui->labelComercial->clear();
-    m_ui->labelFax->clear();
-    m_ui->labelRecado->clear();
-    m_ui->labelEmpresaFone->clear();
-    m_ui->labelEmpresaNome->clear();
-}
 
 void ClienteList::paintEmpresa(Cliente cliente)
 {
     foreach(Telefone telefone, empresaController.getById(cliente.empresa.id).telefones)
     {
-        m_ui->labelEmpresaFone->setText(QString::number(telefone.numero));
+        if(telefone.numero != 0)
+        {
+            QString textFones;
+            textFones = label->text();
+            textFones.append("<center>Dados Comerciais:</center><br>");
+            textFones.append(QString("<center><b>Fone: </b>%0<br>").arg(telefone.numero));
+        }
     }
 }
 
 void ClienteList::paintTelefones(Cliente cliente)
 {
+    QString textFones;
+    textFones.append("<center>Dados Cadastrais:</center><br>");
     QList<Telefone> fones = telefoneController.getByCliente(cliente);
     foreach(Telefone telefone,fones)
     {
         if(telefone.tipoTelefone.nome.contains("Celular"))
-            m_ui->labelCelular->setText(QString::number(telefone.numero));
+        {
+            if(telefone.numero != 0)
+                textFones.append(QString("<center><b>Celular: </b>%0<br>").arg(telefone.numero));
+        }
         else if(telefone.tipoTelefone.nome.contains("Residencial"))
-            m_ui->labelResidencial->setText(QString::number(telefone.numero));
+        {
+            if(telefone.numero != 0)
+                textFones.append(QString("<center><b>Residencial: </b>%0<br>").arg(telefone.numero));
+        }
         else if(telefone.tipoTelefone.nome.contains("Comercial"))
-            m_ui->labelComercial->setText(QString::number(telefone.numero));
+        {
+            if(telefone.numero != 0)
+                textFones.append(QString("<center><b>Comercial: </b>%0<br>").arg(telefone.numero));
+        }
         else if(telefone.tipoTelefone.nome.contains("Fax"))
-            m_ui->labelFax->setText(QString::number(telefone.numero));
+        {
+            if(telefone.numero != 0)
+                textFones.append(QString("<center><b>Fax: </b>%0<br>").arg(telefone.numero));
+        }
         else if(telefone.tipoTelefone.nome.contains("Recado"))
-            m_ui->labelRecado->setText(QString::number(telefone.numero));
+        {
+            if(telefone.numero != 0)
+                textFones.append(QString("<center><b>Recado: </b>%0<br>").arg(telefone.numero));
+        }
     }
+
+    label->setText(textFones);
 }
 
 void ClienteList::paintCompras(Cliente cliente, QModelIndex index)
 {
-
     QStandardItem *itemCliente = model->itemFromIndex(index);
     if (itemCliente->rowCount() > 0 )
         return;
-
-
-
-
 
     QBrush brush;
     QColor color(255,255,255,255);
@@ -129,18 +137,7 @@ void ClienteList::paintCompras(Cliente cliente, QModelIndex index)
 
         foreach(Parcela parcela,compra.parcelas)
         {
-
             QStandardItem *itemParcela = new QStandardItem;
-
-            QString text;
-
-            text.append("Vencimento: ").append(parcela.dataVencimento.toString("dd/MM/yyyy"));
-            text.append("\nTotal: ").append(parcela.getValorFormatado());
-            text.append("\nEm aberto: R$").append( QString::number(parcela.getValorAberto(),'F',2) );
-            text.append("\n");
-
-            itemParcela->setText( text );
-            itemParcela->setAccessibleText( text );
 
             if(parcela.paga)
                 color.setRgb(124, 252, 0, 255); //verde
@@ -153,6 +150,7 @@ void ClienteList::paintCompras(Cliente cliente, QModelIndex index)
             itemParcela->setBackground(brush);
             itemCompra->appendRow(itemParcela);
 
+            float valorPago = 0;
             foreach(Pagamento pagamento,pagarController.getAllByParcela(parcela))
             {
                 QStandardItem *itemPagamento = new QStandardItem;
@@ -168,7 +166,17 @@ void ClienteList::paintCompras(Cliente cliente, QModelIndex index)
                 text.append("\n");
                 itemPagamento->setText(text);
                 itemParcela->appendRow(itemPagamento);
+                valorPago = valorPago + pagamento.valor;
             }
+            parcela.valorPago = valorPago;
+
+            QString text;
+            text.append("Vencimento: ").append(parcela.dataVencimento.toString("dd/MM/yyyy"));
+            text.append("\nTotal: ").append(parcela.getValorFormatado());
+            text.append("\nEm aberto: R$").append( QString::number(parcela.getValorAberto(),'F',2) );
+            text.append("\n");
+
+            itemParcela->setText( text );
         }
     }
 }
@@ -177,13 +185,9 @@ void ClienteList::slotClientSelected(QModelIndex index)
 {
     if(index.parent().isValid())
         return;
-    clearLabels();
+
     Cliente cliente = model->data(index,ClientDataRole).value<Cliente>();
-
-    m_ui->labelEmpresaNome->setText(cliente.empresa.nome);
-
-
-    paintEmpresa(cliente);
     paintTelefones(cliente);
+    paintEmpresa(cliente);
     paintCompras(cliente,index);
 }

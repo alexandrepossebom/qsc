@@ -9,6 +9,7 @@
 #include "telefonecontroller.h"
 #include "compracontroller.h"
 #include "pagarcontroller.h"
+#include <QLabel>
 
 namespace Ui {
     class ClienteList;
@@ -31,10 +32,10 @@ private:
     CompraController compraController;
     PagarController pagarController;
     QStandardItemModel *model;
-    void clearLabels();
     void paintEmpresa(Cliente cliente);
     void paintTelefones(Cliente cliente);
     void paintCompras(Cliente cliente,QModelIndex item);
+    QLabel *label;
 private slots:
     void repaint(QString filter = 0);
     void slotClientSelected(QModelIndex item);
