@@ -3,6 +3,7 @@
 
 #include <QtGui/QWidget>
 #include <QListWidgetItem>
+#include <QStandardItemModel>
 #include "clientecontroller.h"
 #include "empresacontroller.h"
 #include "telefonecontroller.h"
@@ -29,13 +30,14 @@ private:
     TelefoneController telefoneController;
     CompraController compraController;
     PagarController pagarController;
+    QStandardItemModel *model;
     void clearLabels();
     void paintEmpresa(Cliente cliente);
     void paintTelefones(Cliente cliente);
-    void paintCompras(Cliente cliente);
+    void paintCompras(Cliente cliente,QModelIndex item);
 private slots:
     void repaint(QString filter = 0);
-    void slotClientSelected(QListWidgetItem *item);
+    void slotClientSelected(QModelIndex item);
 };
 
 #endif // CLIENTELIST_H

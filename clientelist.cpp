@@ -11,16 +11,15 @@ QWidget(parent),
 m_ui(new Ui::ClienteList)
 {
     m_ui->setupUi(this);
-    connect(m_ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-            this, SLOT(slotClientSelected(QListWidgetItem*)));
+    //    connect(m_ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+    //            this, SLOT(slotClientSelected(QListWidgetItem*)));
 
+    connect(m_ui->columnView,SIGNAL(clicked(QModelIndex)),
+            this, SLOT(slotClientSelected(QModelIndex)));
     connect(m_ui->nomeLineEdit,SIGNAL(textChanged(QString)),this,SLOT(repaint(QString)));
     clearLabels();
-    QStringList labels;
-    labels << tr("Data") << tr("Valor");
-    m_ui->treeWidget->header()->setResizeMode(QHeaderView::Stretch);
-    m_ui->treeWidget->setHeaderLabels(labels);
-    m_ui->treeWidget->setColumnCount(2);
+    model = new QStandardItemModel();
+    m_ui->columnView->setModel(model);
     repaint();
 }
 
@@ -28,15 +27,17 @@ void ClienteList::repaint(QString filter)
 {
     if(filter.length() > 0 && filter.length() < 3)
         return;
-    m_ui->listWidget->clear();
-    m_ui->treeWidget->clear();
     clearLabels();
+
+    model->clear();
+
+    QStandardItem *parentItem = model->invisibleRootItem();
     foreach(Cliente cliente,clienteController.getClientesByName(filter))
     {
-        QListWidgetItem *listItem = new QListWidgetItem();
-        listItem->setText(cliente.nome);
-        listItem->setData(ClientDataRole, qVariantFromValue(cliente));
-        m_ui->listWidget->addItem(listItem);
+        QStandardItem *item = new QStandardItem();
+        item->setText(cliente.nome);
+        item->setData(qVariantFromValue(cliente),ClientDataRole);
+        parentItem->appendRow(item);
     }
 }
 
@@ -93,68 +94,96 @@ void ClienteList::paintTelefones(Cliente cliente)
     }
 }
 
-void ClienteList::paintCompras(Cliente cliente)
+void ClienteList::paintCompras(Cliente cliente, QModelIndex index)
 {
-    m_ui->treeWidget->clear();
+
+    QStandardItem *itemCliente = model->itemFromIndex(index);
+    if (itemCliente->rowCount() > 0 )
+        return;
+
+
+
+
+
+    QBrush brush;
     QColor color(255,255,255,255);
+    brush.setStyle(Qt::Dense4Pattern);
     foreach(Compra compra, compraController.getByCliente(cliente))
     {
-        QTreeWidgetItem *compraItem = new QTreeWidgetItem(m_ui->treeWidget);
-        compraItem->setText(0, compra.dataCompra.toString("dd/MM/yyyy") );
-        compraItem->setText(1, compra.getValorFormatado() );
+        QStandardItem *itemCompra = new QStandardItem;
+        QString text;
+        text.append("Data Compra: ").append(compra.dataCompra.toString("dd/MM/yyyy"));
+        text.append("\nValor Total: ").append(compra.getValorFormatado());
+        text.append("\n");
+
+        itemCompra->setText(text);
         if(compra.isAtrasada())
             color.setRgb(255, 0, 0, 40);//vermelho
         else if(compra.paga)
             color.setRgb(124, 252, 0, 240);//verde
         else
             color.setRgb(255,255,255,255);//branco
-
-        compraItem->setBackgroundColor(0,color);
-        compraItem->setBackgroundColor(1,color);
+        brush.setColor(color);
+        itemCompra->setBackground(brush);
+        itemCliente->appendRow(itemCompra);
 
         foreach(Parcela parcela,compra.parcelas)
         {
-            QString valor;
-            valor.append("R$ ");
-            valor.append(QString::number(parcela.getValorAberto(),'F',2));
 
-            QTreeWidgetItem *parcelaItem = new QTreeWidgetItem(compraItem);
+            QStandardItem *itemParcela = new QStandardItem;
+
+            QString text;
+
+            text.append("Vencimento: ").append(parcela.dataVencimento.toString("dd/MM/yyyy"));
+            text.append("\nTotal: ").append(parcela.getValorFormatado());
+            text.append("\nEm aberto: R$").append( QString::number(parcela.getValorAberto(),'F',2) );
+            text.append("\n");
+
+            itemParcela->setText( text );
+            itemParcela->setAccessibleText( text );
+
             if(parcela.paga)
-                color.setRgb(124, 252, 0, 240); //verde
+                color.setRgb(124, 252, 0, 255); //verde
             else if(parcela.dataVencimento.operator <=(QDate::currentDate()))
-                color.setRgb(255, 0, 0, 40);//vermelho
+                color.setRgb(255, 0, 0, 255);//vermelho
             else
                 color.setRgb(255,255,255,255);//branco
 
-            parcelaItem->setBackgroundColor(0,color);
-            parcelaItem->setBackgroundColor(1,color);
-            parcelaItem->setBackgroundColor(2,color);
-            parcelaItem->setText(0,parcela.dataVencimento.toString("dd/MM/yyyy"));
-            parcelaItem->setText(1,parcela.getValorFormatado());            
-            parcelaItem->setText(2,valor);
+            brush.setColor(color);
+            itemParcela->setBackground(brush);
+            itemCompra->appendRow(itemParcela);
+
             foreach(Pagamento pagamento,pagarController.getAllByParcela(parcela))
             {
-                QTreeWidgetItem *pagamentoItem = new QTreeWidgetItem(parcelaItem);
+                QStandardItem *itemPagamento = new QStandardItem;
                 if (pagamento.dataPagamento.operator <=(parcela.dataVencimento))
                     color.setRgb(124, 252, 0, 240); //verde
                 else
                     color.setRgb(255, 0, 0, 40);//vermelho
-                pagamentoItem->setBackgroundColor(0,color);
-                pagamentoItem->setBackgroundColor(1,color);
-                pagamentoItem->setText(0,pagamento.dataPagamento.toString("dd/MM/yyyy"));
-                pagamentoItem->setText(1,pagamento.getValorFormatado());
+                brush.setColor(color);
+                itemPagamento->setBackground(brush);
+                QString text;
+                text.append("Data Pagamento :").append(pagamento.dataPagamento.toString("dd/MM/yyyy"));
+                text.append("\nValor Pago: ").append(pagamento.getValorFormatado());
+                text.append("\n");
+                itemPagamento->setText(text);
+                itemParcela->appendRow(itemPagamento);
             }
         }
     }
 }
 
-void ClienteList::slotClientSelected(QListWidgetItem *item)
+void ClienteList::slotClientSelected(QModelIndex index)
 {
+    if(index.parent().isValid())
+        return;
     clearLabels();
-    Cliente cliente = item->data(ClientDataRole).value<Cliente>();
+    Cliente cliente = model->data(index,ClientDataRole).value<Cliente>();
+
     m_ui->labelEmpresaNome->setText(cliente.empresa.nome);
+
 
     paintEmpresa(cliente);
     paintTelefones(cliente);
-    paintCompras(cliente);
+    paintCompras(cliente,index);
 }
